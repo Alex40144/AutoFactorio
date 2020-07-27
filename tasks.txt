@@ -1,0 +1,35 @@
+#----------WALK
+#
+#{"walk", {x=coord,y=coord}}
+#
+#------------MINE
+#
+#{"mine", {x=coord,y=coord}}
+#
+#-------------CRAFT
+#
+#{"craft", "item", count}
+#
+#------------BUILD
+#
+#{"build", {x=coord, y=coord}, "item", defines.direction.**direction**}
+#
+#-----------PUT
+#
+#{"put", "item", count, {x=coord, y=coord}, defines.inventory.**inventory**}
+#
+#------------TAKE
+#
+#{"take", {x=coord, y=coord}, item, count, defines.inventory.**inventory**}
+#
+#
+{"walk", {x=-5,y=-21}}
+{"mine", {x=-6,y=-24}}
+{"craft", "stone-furnace", 8}
+{"walk", {x=-20,y=27}}
+{"build", {x=-22, y=29}, "burner-mining-drill", defines.direction.east}
+{"build", {x=-20,y=29}, "stone-furnace", defines.direction.south}
+{"put", "coal", 5, {x=-22, y=29}, defines.inventory.fuel}
+{"put", "coal", 3, {x=-20, y=29}, defines.inventory.fuel}
+{"debug"}
+{"end"}

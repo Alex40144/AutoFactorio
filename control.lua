@@ -3,8 +3,10 @@ local task = require("tasks")
 
 local dbg = true
 enabled = true  --this one is global
-local current_task = 1
+local current_task = 0
 local destination = {x=0, y=0}
+
+-----------------------------------------------------------------------------------------------------
 
 function debug(msg)
     if dbg then
@@ -20,11 +22,11 @@ function debugtable(msg)
     return true
 end
 
-function craft(p, item, count)
-    p.begin_crafting{recipe = item, count = count}
-    debug(string.format("crafting " .. count .. " " .. item))
-    return true
+function error(msg)
+    game.print(msg)
 end
+
+-----------------------------------------------------------------------------------------------------
 
 function walk(p, deltax, deltay)
     if deltax > 0.2 then
@@ -53,7 +55,15 @@ function walk(p, deltax, deltay)
     end
 end
 
+function craft(p, item, count)
+    p.begin_crafting{recipe = item, count = count}
+    debug(string.format("crafting " .. count .. " " .. item))
+    return true
+end
+
 function mine(p, location)
+    --check if there is an item where we are going to mine.
+    --mainly used to detect when mining has been finished so we can move on.
     if p.can_place_entity{name = "transport-belt", position = location, direction = defines.direction.north} then
         return true
     else
@@ -66,8 +76,52 @@ function build(p, location, item, direction)
     if p.can_place_entity{name = item, position = location, direction = direction} then
         p.surface.create_entity{name = item, position = location, direction = direction, force="player"}
         return true
+    else
+        error("could not place " .. item)
     end
 end
+
+function take(p, location, item, count, inv)
+    p.update_selected_entity()
+
+    if not p.can_reach_entity() then
+        return false
+    end
+
+    inv = p.selected.get_inventory(slot)
+    ammountininv = inv.get_item_count(item)
+    --take all the contents
+    if count == -1 then
+        --we can be truthful here. NO CHEATING
+        p.insert{name=item, count=ammountininv}
+        inv.remove{name=item, count=ammountininv}
+    else
+        take = math.min(count, ammountininv)
+        p.insert{name=item, count=take}
+        inv.remove{name=item, count=take}
+        error("didn't take requested ammount of " .. item .. " only took "  .. take .. " of " .. count)
+    end
+end
+
+function put(p, item, count, location, destinv)
+    p.update_selected_entity(location)
+    if not p.can_reach_entity(p.selected) then
+        return false
+    end
+
+    local countininventory = p.get_item_count(item)
+    local destination = p.selected.get_inventory(destinv)
+
+    inserted = destination.insert{name = item, count = math.min(countininventory, count)}
+
+    if inserted == 0 then
+        debug("Inserted 0 " .. item)
+    end
+    return true
+
+end
+
+-----------------------------------------------------------------------------------------------------
 
 function doTask(p, pos, tasks)
     --debugtable(tasks)
@@ -84,6 +138,12 @@ function doTask(p, pos, tasks)
     elseif tasks[1] == "mine" then
         debug("mining task started")
         return mine(p, tasks[2])
+    elseif tasks[1] == "put" then
+        debug("put task started")
+        return put(p, tasks[2], tasks[3], tasks[4], tasks[5])
+    elseif tasks[1] == "take" then
+        debug("take task started")
+        return take(p, tasks[2], tasks[3], tasks[4], tasks[5])
     elseif tasks[1] == "debug" then
         --output current run time
         return debug(string.format("Current run time %f seconds", p.online_time / 60))
@@ -102,6 +162,8 @@ function doTask(p, pos, tasks)
 
     end
 end
+
+-----------------------------------------------------------------------------------------------------
 
 script.on_event(defines.events.on_tick, function(event)
     --get player
@@ -146,3 +208,5 @@ script.on_init(function()
     walking = {walking=false}
     enabled = true
 end)
+
+--add on research ended. use file to store order of research tasks.

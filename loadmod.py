@@ -1,7 +1,10 @@
 #this copys game files into correct folder
 import os, glob, shutil
 import json
+import taskgenerator
 
+#begin by updating the lua tasks
+taskgenerator.generate_lua_tasks()
 
 #get mod version
 with open('info.json', 'r') as infofile:
