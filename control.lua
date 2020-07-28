@@ -1,7 +1,7 @@
 require "util"
 local task = require("tasks")
 
-local dbg = true
+local dbg = false
 enabled = true  --this one is global
 local current_task = 0
 local destination = {x=0, y=0}
@@ -50,14 +50,19 @@ function walk(p, deltax, deltay)
     elseif deltay < -0.2 then
         return{walking = true, direction = defines.direction.north}
     else
-        debug("At destination")
         return{walking = false}
     end
 end
 
 function craft(p, item, count)
-    p.begin_crafting{recipe = item, count = count}
-    debug(string.format("crafting " .. count .. " " .. item))
+    if count == -1 then
+        count = p.get_craftable_count(item)
+    end
+    crafted = p.begin_crafting{recipe = item, count = count}
+    debug("crafting " .. count .. " " .. item)
+    if crafted < count then
+        error("Did not craft full count of " .. item)
+    end
     return true
 end
 
@@ -65,6 +70,7 @@ function mine(p, location)
     --check if there is an item where we are going to mine.
     --mainly used to detect when mining has been finished so we can move on.
     if p.can_place_entity{name = "transport-belt", position = location, direction = defines.direction.north} then
+        debug("mined")
         return true
     else
         p.update_selected_entity(location)
@@ -73,33 +79,55 @@ function mine(p, location)
 end
 
 function build(p, location, item, direction)
-    if p.can_place_entity{name = item, position = location, direction = direction} then
-        p.surface.create_entity{name = item, position = location, direction = direction, force="player"}
-        return true
+    --create_entity already checks player reach
+    --if out of reach, placing fails, but keep trying.
+    --we can use this to place whilst walking as it will keep trying until it succeeds.
+    --we should probably check that we have the item
+    if p.get_item_count(item) < 1 then
+        error("did not have " .. item)
+        return false
+    elseif p.can_place_entity{name = item, position = location, direction = direction} then
+        built = p.surface.create_entity{name = item, position = location, direction = direction, force="player"}
+        if built then
+            --be honest
+            p.remove_item{name=item, count=1}
+            return true
+        else
+            return false
+        end
     else
-        error("could not place " .. item)
+        error("Placing failed: " .. item)
+        return false
     end
 end
 
 function take(p, location, item, count, inv)
-    p.update_selected_entity()
+    p.update_selected_entity(location)
 
-    if not p.can_reach_entity() then
+    if not p.can_reach_entity(p.selected) then
+        error("can't reach to take: " .. item)
         return false
     end
 
-    inv = p.selected.get_inventory(slot)
+    inv = p.selected.get_inventory(inv)
+    if not inv then
+        return false
+    end
     ammountininv = inv.get_item_count(item)
-    --take all the contents
-    if count == -1 then
+    if ammountininv < 1 then
+        error("did not take any " .. item)
+        return false
+    elseif count == -1 then
         --we can be truthful here. NO CHEATING
         p.insert{name=item, count=ammountininv}
         inv.remove{name=item, count=ammountininv}
+        return true
     else
         take = math.min(count, ammountininv)
         p.insert{name=item, count=take}
         inv.remove{name=item, count=take}
         error("didn't take requested ammount of " .. item .. " only took "  .. take .. " of " .. count)
+
     end
 end
 
@@ -112,54 +140,48 @@ function put(p, item, count, location, destinv)
     local countininventory = p.get_item_count(item)
     local destination = p.selected.get_inventory(destinv)
 
-    inserted = destination.insert{name = item, count = math.min(countininventory, count)}
-
-    if inserted == 0 then
-        debug("Inserted 0 " .. item)
+    --this is to check if tomove = 0 as .insert doesn't like it
+    tomove = math.min(countininventory, count)
+    if tomove < 1 then
+        error("did not put any " .. item)
+    else
+        inserted = destination.insert{name = item, count = math.min(countininventory, count)}
+        --be honest
+        p.remove_item{name=item, count=inserted}
     end
     return true
 
 end
+
+function time(p)
+    local seconds = p.online_time / 60
+    hours = string.format("%02.f", math.floor(seconds/3600));
+    mins = string.format("%02.f", math.floor(seconds/60 - (hours*60)));
+    secs = string.format("%02.f", math.floor(seconds - hours*3600 - mins *60));
+    return hours..":"..mins..":"..secs
+  end
 
 -----------------------------------------------------------------------------------------------------
 
 function doTask(p, pos, tasks)
     --debugtable(tasks)
     if tasks[1] == "build" then
-        --Build
-        debug("build task started")
         return build(p, tasks[2], tasks[3], tasks[4])
-
     elseif tasks[1] == "craft" then
-        --craft
-        debug("crafting task started")
         return craft(p,tasks[2], tasks[3])
-
     elseif tasks[1] == "mine" then
-        debug("mining task started")
         return mine(p, tasks[2])
     elseif tasks[1] == "put" then
-        debug("put task started")
         return put(p, tasks[2], tasks[3], tasks[4], tasks[5])
     elseif tasks[1] == "take" then
-        debug("take task started")
         return take(p, tasks[2], tasks[3], tasks[4], tasks[5])
-    elseif tasks[1] == "debug" then
+    elseif tasks[1] == "time" then
         --output current run time
-        return debug(string.format("Current run time %f seconds", p.online_time / 60))
-
-    elseif tasks[1] == "walk" then
-        --walk
-        debug("walking task started")
-        destination = tasks[2]
-        local destinationdelta = {x=destination.x - pos.x, y=destination.y - pos.y}
-        return walk(p, destinationdelta.x, destinationdelta.y)
-
+        return debug(time(p))
     elseif tasks[1] == "end" then
         --end the run
         debug("ending run")
         return "end"
-
     end
 end
 
@@ -174,29 +196,34 @@ script.on_event(defines.events.on_tick, function(event)
     --only run if we are allowed to
     if enabled == true then
         if p.walking_state.walking == false then
-            --if we are stopped
-            result = doTask(p, pos, task[current_task])
-            if result ~= nil then
-                if (type(result) == "table") then
-                    if result.walking == true then
-                        --do we want to continue walking
-                        walking = result
-                    elseif result.walking == false then
-                        --stopping walking
+            if task[current_task][1] == "walk" then
+                destination = task[current_task][2]
+                local destinationdelta = {x=destination.x - pos.x, y=destination.y - pos.y}
+                walking = walk(p, destinationdelta.x, destinationdelta.y)
+                current_task = current_task + 1
+            else
+                result = doTask(p, pos, task[current_task])
+                if result ~= nil then
+                    if result == true then
                         current_task = current_task + 1
+                    elseif result == "end" then
+                        enabled = false
                     end
-                elseif result == true then
-                    current_task = current_task + 1
-                elseif result == "end" then
-                    enabled = false
                 end
             end
-
 
         else
             --we are still walking so let's continue to walk
             walking = walk(p, destination.x-pos.x, destination.y-pos.y)
-            -- if the next task is building, then we can do that whilst moving.
+            -- if the next task is mining or walking, we can do that whilst moving.
+            if task[current_task][1] ~= "mine" or task[current_task][1] ~= "walk" then
+                result = doTask(p, pos, task[current_task])
+                if result ~= nil then
+                    if result == true then
+                        current_task = current_task + 1
+                    end
+                end
+            end
         end
     end
     p.walking_state = walking
