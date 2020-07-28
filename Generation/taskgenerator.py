@@ -4,10 +4,14 @@
 
 
 def generate_lua_tasks():
+    import os
     tasks = []
 
+    basepath = os.path.dirname(__file__)
+    luafile = os.path.abspath(os.path.join(basepath, "..", "tasks.lua"))
+
     #extract info from text file
-    with open("tasks.txt") as file :
+    with open(os.path.abspath(os.path.join(basepath,"tasks.txt"))) as file :
         for line in file :
             #used to have instructions at top of file
             if line[0] != "#":
@@ -21,7 +25,7 @@ def generate_lua_tasks():
     tasks.insert(0, "local task = {}")
     tasks.append("return task")
 
-    luafile = open("tasks.lua", "w")
+    luafile = open(luafile, "w")
     for line in tasks:
     # write line to output file
         luafile.write(line)

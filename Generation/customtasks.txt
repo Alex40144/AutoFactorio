@@ -2,14 +2,6 @@
 #
 #{"walk", {x=coord,y=coord}}
 #
-#---------------FASTTRACK
-#
-#{"fasttrack", {x=coord,y=coord}}
-#
-# does the same as walk, but allows the next allowed commands to happen before walking has finished
-#
-# BUILD, PUT, CRAFT, TAKE
-#
 #------------MINE
 #
 #{"mine", {x=coord,y=coord}}
