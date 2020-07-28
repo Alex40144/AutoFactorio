@@ -19,7 +19,7 @@ zS4PUSH6lA/YoMTUy4GLH1YHN3N0O59PI+7sYNW/kp/wVhqHAPYbHw+
 ```
 
 To use this mod:
-			1. Download the source code from the releases tab (v0.0.1 latest)
-			2. extract and find 2 folders. one called 'Scenarios' and the other 'mods'
-			3. Navigate to /user/appdata/roaming/Factorio and paste them there.
-			4. Start up Factorio, create a new game and choose the AutoFactorio scenario.
+			1. Download the source code from the releases tab (v0.0.1 latest)  
+			2. extract and find 2 folders. one called 'Scenarios' and the other 'mods'  
+			3. Navigate to /user/appdata/roaming/Factorio and paste them there.  
+			4. Start up Factorio, create a new game and choose the AutoFactorio scenario.  
