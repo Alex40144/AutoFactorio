@@ -1,8 +1,8 @@
 # AutoFactorio
 
-This mod is a Tool Assisted Speedrun (TAS) for Factorio.
-It uses the latest Factorio version 0.18.x
-It is a bit stupid and can only use this map:
+This mod is a Tool Assisted Speedrun (TAS) for Factorio.  
+It uses the latest Factorio version 0.18.x  
+It is a bit stupid and can only use this map:  
 ```
 >>>eNp9U0FL3EAUfqMuRgsixYMFtXtYUISEoPWyFGf0UvozstlZGchm
 tpMEaoW6B4+CZ3upB08K3r0JXlpoQfDkzeLFgweh4ElYZyaZZA2rH7y
@@ -18,7 +18,7 @@ zS4PUSH6lA/YoMTUy4GLH1YHN3N0O59PI+7sYNW/kp/wVhqHAPYbHw+
 9XT65zyZg=<<<
 ```
 
-To use this mod:
+To use this mod:  
 			1. Download the source code from the releases tab (v0.0.1 latest)  
 			2. extract and find 2 folders. one called 'Scenarios' and the other 'mods'  
 			3. Navigate to /user/appdata/roaming/Factorio and paste them there.  
