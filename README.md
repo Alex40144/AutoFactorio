@@ -23,5 +23,3 @@ To use this mod:
 			2. extract and find 2 folders. one called 'Scenarios' and the other 'mods'
 			3. Navigate to /user/appdata/roaming/Factorio and paste them there.
 			4. Start up Factorio, create a new game and choose the AutoFactorio scenario.
-			5. be sure to add the map string.
- 
