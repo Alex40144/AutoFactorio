@@ -1,7 +1,7 @@
 require "util"
 local task = require("tasks")
 
-local dbg = false
+local dbg = true
 enabled = true  --this one is global
 local current_task = 0
 local destination = {x=0, y=0}
@@ -140,8 +140,9 @@ function put(p, item, count, location, destinv)
     local countininventory = p.get_item_count(item)
     local destination = p.selected.get_inventory(destinv)
 
-    --this is to check if tomove = 0 as .insert doesn't like it
+    --we can only move what we have
     tomove = math.min(countininventory, count)
+    --this is to check if tomove = 0 as .insert doesn't like it
     if tomove < 1 then
         error("did not put any " .. item)
     else
