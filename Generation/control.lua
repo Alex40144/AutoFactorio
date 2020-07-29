@@ -1,8 +1,5 @@
 require "util"
 
-script.on_init(function()
-    game.remove_path("tasks.txt")
-end)
 
 
 script.on_event("log-walk", function(event)
