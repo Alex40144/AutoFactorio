@@ -1,9 +1,0 @@
-{
-    "name": "AutoFactorioGenerator",
-    "version": "0.0.1",
-    "title": "AutoFactorioGenerator",
-    "author": "Alex40144",
-    "factorio_version": "0.18",
-    "dependencies": ["base >= 0.18"],
-    "description": "This automises the automation of the automation of factorio"
-}
