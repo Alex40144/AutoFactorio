@@ -23,3 +23,4 @@ os.mkdir(r'C:\Users\giddy\AppData\Roaming\Factorio\mods\\' + mod_name + '_' + mo
 shutil.copy("control.lua", r'C:\Users\giddy\AppData\Roaming\Factorio\mods\\' + mod_name + '_' + mod_version)
 shutil.copy("info.json", r'C:\Users\giddy\AppData\Roaming\Factorio\mods\\' + mod_name + '_' + mod_version)
 shutil.copy("tasks.lua", r'C:\Users\giddy\AppData\Roaming\Factorio\mods\\' + mod_name + '_' + mod_version)
+shutil.copy("research.lua", r'C:\Users\giddy\AppData\Roaming\Factorio\mods\\' + mod_name + '_' + mod_version)

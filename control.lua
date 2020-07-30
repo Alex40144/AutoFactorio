@@ -1,9 +1,11 @@
 require "util"
 local task = require("tasks")
+local research = require("research")
 
-local dbg = true
+local dbg = false
 enabled = true  --this one is global
 local current_task = 0
+local current_research = 0
 local destination = {x=0, y=0}
 
 -----------------------------------------------------------------------------------------------------
@@ -86,7 +88,16 @@ function build(p, location, item, direction)
     if p.get_item_count(item) < 1 then
         error("did not have " .. item)
         return false
-    elseif p.can_place_entity{name = item, position = location, direction = direction} then
+    elseif p.surface.can_fast_replace{name = item, position = location, direction = direction, force = "player"} then
+        built = p.surface.create_entity{name = item, position = location, direction = direction, force="player", fast_replace = true, player = p}
+        if built then
+            --be honest
+            p.remove_item{name=item, count=1}
+            return true
+        else
+            return false
+        end
+    elseif p.can_place_entity{name = item, position = location, direction = direction, force = "player"} then
         built = p.surface.create_entity{name = item, position = location, direction = direction, force="player"}
         if built then
             --be honest
@@ -105,7 +116,6 @@ function take(p, location, item, count, inv)
     p.update_selected_entity(location)
 
     if not p.can_reach_entity(p.selected) then
-        error("can't reach to take: " .. item)
         return false
     end
 
@@ -159,9 +169,13 @@ function time(p)
     hours = string.format("%02.f", math.floor(seconds/3600));
     mins = string.format("%02.f", math.floor(seconds/60 - (hours*60)));
     secs = string.format("%02.f", math.floor(seconds - hours*3600 - mins *60));
-    return hours..":"..mins..":"..secs
-  end
+    error(hours..":"..mins..":"..secs)
+end
 
+function science(p)
+    p.force.add_research(research[current_research])
+    return true
+end
 -----------------------------------------------------------------------------------------------------
 
 function doTask(p, pos, tasks)
@@ -172,13 +186,16 @@ function doTask(p, pos, tasks)
         return craft(p,tasks[2], tasks[3])
     elseif tasks[1] == "mine" then
         return mine(p, tasks[2])
+    elseif tasks[1] == "research" then
+        return science(p)
     elseif tasks[1] == "put" then
         return put(p, tasks[2], tasks[3], tasks[4], tasks[5])
     elseif tasks[1] == "take" then
         return take(p, tasks[2], tasks[3], tasks[4], tasks[5])
     elseif tasks[1] == "time" then
         --output current run time
-        return debug(time(p))
+        time(p)
+        return true
     elseif tasks[1] == "end" then
         --end the run
         debug("ending run")
@@ -196,6 +213,7 @@ script.on_event(defines.events.on_tick, function(event)
 
     --only run if we are allowed to
     if enabled == true then
+        game.print(current_task)
         if p.walking_state.walking == false then
             if task[current_task][1] == "walk" then
                 destination = task[current_task][2]
@@ -231,10 +249,11 @@ script.on_event(defines.events.on_tick, function(event)
 end)
 
 
-script.on_init(function()
-    debug("player has joined game")
-    walking = {walking=false}
-    enabled = true
-end)
-
 --add on research ended. use file to store order of research tasks.
+
+script.on_event(defines.events.on_research_finished, function()
+    debug("starting next research")
+    local p = game.players[1]
+    current_research = current_research + 1
+    p.force.add_research(research[current_research])
+end)
