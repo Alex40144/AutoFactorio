@@ -176,6 +176,22 @@ function science(p)
     p.force.add_research(research[current_research])
     return true
 end
+
+function recipe(p, location, recipe)
+    p.update_selected_entity(location)
+    if not p.can_reach_entity(p.selected) then
+        return false
+    end
+
+    local contents = p.selected.set_recipe(recipe)
+    if contents then
+        for name, count in pairs(contents) do
+            p.insert{name = name, count = count}
+        end
+    end
+    return true
+end
+
 -----------------------------------------------------------------------------------------------------
 
 function doTask(p, pos, tasks)
@@ -192,6 +208,8 @@ function doTask(p, pos, tasks)
         return put(p, tasks[2], tasks[3], tasks[4], tasks[5])
     elseif tasks[1] == "take" then
         return take(p, tasks[2], tasks[3], tasks[4], tasks[5])
+    elseif tasks[1] == "recipe" then
+        return recipe(p, tasks[2], tasks[3])
     elseif tasks[1] == "time" then
         --output current run time
         time(p)
