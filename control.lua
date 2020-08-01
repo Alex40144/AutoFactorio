@@ -112,7 +112,7 @@ function build(p, location, item, direction)
     end
 end
 
-function take(p, location, item, count, inv)
+function take(p, location, item, count, skip, inv)
     p.update_selected_entity(location)
 
     if not p.can_reach_entity(p.selected) then
@@ -126,7 +126,11 @@ function take(p, location, item, count, inv)
     ammountininv = inv.get_item_count(item)
     if ammountininv < 1 then
         error("did not take any " .. item)
-        return false
+        if skip == true then
+            return true
+        else
+            return false
+        end
     elseif count == -1 then
         --we can be truthful here. NO CHEATING
         p.insert{name=item, count=ammountininv}
@@ -207,7 +211,7 @@ function doTask(p, pos, tasks)
     elseif tasks[1] == "put" then
         return put(p, tasks[2], tasks[3], tasks[4], tasks[5])
     elseif tasks[1] == "take" then
-        return take(p, tasks[2], tasks[3], tasks[4], tasks[5])
+        return take(p, tasks[2], tasks[3], tasks[4], tasks[5], tasks[6])
     elseif tasks[1] == "recipe" then
         return recipe(p, tasks[2], tasks[3])
     elseif tasks[1] == "time" then
