@@ -196,6 +196,12 @@ function recipe(p, location, recipe)
     return true
 end
 
+function speed(p, speed)
+    game.speed = speed
+    error("game speed set to" .. speed)
+    return true
+end
+
 -----------------------------------------------------------------------------------------------------
 
 function doTask(p, pos, tasks)
@@ -214,6 +220,8 @@ function doTask(p, pos, tasks)
         return take(p, tasks[2], tasks[3], tasks[4], tasks[5], tasks[6])
     elseif tasks[1] == "recipe" then
         return recipe(p, tasks[2], tasks[3])
+    elseif tasks[1] == "speed" then
+        return speed(p, tasks[2])
     elseif tasks[1] == "time" then
         --output current run time
         time(p)
