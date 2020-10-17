@@ -198,7 +198,7 @@ end
 
 function speed(p, speed)
     game.speed = speed
-    error("game speed set to" .. speed)
+    error("game speed set to " .. speed)
     return true
 end
 
