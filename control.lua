@@ -30,27 +30,84 @@ end
 
 -----------------------------------------------------------------------------------------------------
 
+
+function passable(p, x, y)
+    if p.can_place_entity{name = "transport-belt", position = {x, y}, direction = defines.direction.north} then
+        return true
+    else 
+        return false
+    end
+end
+
 function walk(p, deltax, deltay)
-    if deltax > 0.2 then
-        if deltay > 0.2 then
-            return{walking = true, direction = defines.direction.southeast}
-        elseif deltay < -0.2 then
-            return{walking = true, direction = defines.direction.northeast}
+    if deltax > 1.5 then
+        if deltay > 1.5 then
+            if passable(p, p.position.x+1, p.position.y+1) then
+                return{walking = true, direction = defines.direction.southeast}
+            else
+                if math.abs(deltax-7) > math.abs(deltay) then
+                    return{walking = true, direction = defines.direction.east}
+                else
+                    return{walking = true, direction = defines.direction.south}
+                end
+            end
+        elseif deltay < -1.5 then
+            if passable(p, p.position.x+1, p.position.y+1) then
+                return{walking = true, direction = defines.direction.northeast}
+            else
+                if math.abs(deltax-7) > math.abs(deltay) then
+                    return{walking = true, direction = defines.direction.east}
+                else
+                    return{walking = true, direction = defines.direction.north}
+                end
+            end
+        else
+            if passable(p, p.position.x, p.position.y-1) then
+                return{walking = true, direction = defines.direction.east}
+            else
+                return{walking = true, direction = defines.direction.south}
+            end
+        end
+    elseif deltax < -1.5 then
+        if deltay > 1.5 then
+            if passable(p, p.position.x-1, p.position.y+1) then
+                return{walking = true, direction = defines.direction.southwest}
+            else
+                if math.abs(deltax-7) > math.abs(deltay) then
+                    return{walking = true, direction = defines.direction.west}
+                else
+                    return{walking = true, direction = defines.direction.south}
+                end
+            end
+        elseif deltay < -1.5 then
+            if passable(p, p.position.x-1, p.position.y-1) then
+                return{walking = true, direction = defines.direction.northwest}
+            else
+                if  (deltax-7) > math.abs(deltay) then
+                    return{walking = true, direction = defines.direction.west}
+                else
+                    return{walking = true, direction = defines.direction.north}
+                end
+            end
+        else
+            if passable(p, p.position.x-1, p.position.y) then
+                return{walking = true, direction = defines.direction.west}
+            else
+                return{walking = true, direction = defines.direction.south}
+            end
+        end
+    elseif deltay > 1.5 then
+        if passable(p, p.position.x, p.position.y+1) then
+            return{walking = true, direction = defines.direction.south}
         else
             return{walking = true, direction = defines.direction.east}
         end
-    elseif deltax < -0.2 then
-        if deltay > 0.2 then
-            return{walking = true, direction = defines.direction.southwest}
-        elseif deltay < -0.2 then
-            return{walking = true, direction = defines.direction.northwest}
+    elseif deltay < -1.5 then
+        if passable(p, p.position.x, p.position.y-1) then
+            return{walking = true, direction = defines.direction.north}
         else
-            return{walking = true, direction = defines.direction.west}
+            return{walking = true, direction = defines.direction.east}
         end
-    elseif deltay > 0.2 then
-        return{walking = true, direction = defines.direction.south}
-    elseif deltay < -0.2 then
-        return{walking = true, direction = defines.direction.north}
     else
         return{walking = false}
     end
@@ -70,12 +127,16 @@ end
 
 function mine(p, location)
     --check if there is an item where we are going to mine.
-    --mainly used to detect when mining has been finished so we can move on.
+    --used to detect when mining has been finished so we can move on. This means you can't mine tiles
     if p.can_place_entity{name = "transport-belt", position = location, direction = defines.direction.north} then
-        debug("mined")
         return true
     else
         p.update_selected_entity(location)
+        --can we reach to mine?
+        if not p.can_reach_entity(p.selected) then
+            p.walking_state = walk(p, location.x-p.position.x, location.y-p.position.y)
+            return false
+        end
         p.mining_state = {mining = true, position = location}
     end
 end
@@ -84,7 +145,6 @@ function build(p, location, item, direction)
     --create_entity already checks player reach
     --if out of reach, placing fails, but keep trying.
     --we can use this to place whilst walking as it will keep trying until it succeeds.
-    --we should probably check that we have the item
     if p.get_item_count(item) < 1 then
         error("did not have " .. item)
         return false
@@ -106,8 +166,10 @@ function build(p, location, item, direction)
         else
             return false
         end
+    elseif p.position.x > location.x-2 and p.position.x < location.x+2 and p.position.y > location.y-2 and p.position.y < location.y+2 then
+            p.walking_state = walk(p, location.x-p.position.x-4, location.y-p.position.y+2)
     else
-        error("Placing failed: " .. item)
+        p.walking_state = walk(p, location.x-p.position.x, location.y-p.position.y)
         return false
     end
 end
@@ -116,6 +178,7 @@ function take(p, location, item, count, skip, inv)
     p.update_selected_entity(location)
 
     if not p.can_reach_entity(p.selected) then
+        p.walking_state = walk(p, location.x-p.position.x, location.y-p.position.y)
         return false
     end
 
@@ -148,6 +211,7 @@ end
 function put(p, item, count, location, destinv)
     p.update_selected_entity(location)
     if not p.can_reach_entity(p.selected) then
+        p.walking_state = walk(p, location.x-p.position.x, location.y-p.position.y)
         return false
     end
 
@@ -204,7 +268,7 @@ end
 
 -----------------------------------------------------------------------------------------------------
 
-function doTask(p, pos, tasks)
+function doTask(p, tasks)
     --debugtable(tasks)
     if tasks[1] == "build" then
         return build(p, tasks[2], tasks[3], tasks[4])
@@ -251,7 +315,7 @@ script.on_event(defines.events.on_tick, function(event)
                 walking = walk(p, destinationdelta.x, destinationdelta.y)
                 current_task = current_task + 1
             else
-                result = doTask(p, pos, task[current_task])
+                result = doTask(p, task[current_task])
                 if result ~= nil then
                     if result == true then
                         current_task = current_task + 1
@@ -262,11 +326,9 @@ script.on_event(defines.events.on_tick, function(event)
             end
 
         else
-            --we are still walking so let's continue to walk
-            walking = walk(p, destination.x-pos.x, destination.y-pos.y)
             -- if the next task is mining or walking, we can do that whilst moving.
             if task[current_task][1] ~= "mine" or task[current_task][1] ~= "walk" then
-                result = doTask(p, pos, task[current_task])
+                result = doTask(p, task[current_task])
                 if result ~= nil then
                     if result == true then
                         current_task = current_task + 1
@@ -275,7 +337,6 @@ script.on_event(defines.events.on_tick, function(event)
             end
         end
     end
-    p.walking_state = walking
 end)
 
 
