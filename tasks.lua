@@ -385,10 +385,10 @@ task[#task+1] = {"take", {x=-25, y=31}, "copper-plate", -1, false, defines.inven
 task[#task+1] = {"take", {x=-25, y=33}, "copper-plate", -1, false, defines.inventory.furnace_result}
 task[#task+1] = {"take", {x=-25, y=35}, "copper-plate", -1, false, defines.inventory.furnace_result}
 task[#task+1] = {"take", {x=-25, y=37}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"craft", "offshore-pump", 1}
 task[#task+1] = {"craft", "boiler", 1}
 task[#task+1] = {"craft", "electric-mining-drill", 1}
 task[#task+1] = {"craft", "steam-engine", 2}
-task[#task+1] = {"craft", "offshore-pump", 1}
 task[#task+1] = {"craft", "pipe", 10}
 task[#task+1] = {"craft", "small-electric-pole", 10}
 task[#task+1] = {"take", {x=-17, y=14}, "coal", -1, false, defines.inventory.fuel}
@@ -438,6 +438,20 @@ task[#task+1] = {"put", "coal", 5, {x=-20, y=45}, defines.inventory.fuel}
 task[#task+1] = {"put", "coal", 5, {x=-20, y=47}, defines.inventory.fuel}
 task[#task+1] = {"put", "coal", 5, {x=-22, y=47}, defines.inventory.fuel}
 task[#task+1] = {"put", "coal", 5, {x=-22, y=47}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-17, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-19, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-21, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-23, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-27, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-29, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-29, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-27, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-23, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-21, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-19, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-17, y=12}, "coal", -1, false, defines.inventory.fuel}
 task[#task+1] = {"build", {x=-55.875, y=-21.5}, "offshore-pump", 6}
 task[#task+1] = {"build", {x=-54.599609375, y=-21.5}, "pipe", 0}
 task[#task+1] = {"build", {x=-53.599609375, y=-21.5}, "pipe", 0}
@@ -452,7 +466,7 @@ task[#task+1] = {"build", {x=-45.599609375, y=-21.5}, "pipe", 0}
 task[#task+1] = {"build", {x=-44.5, y=-19.5}, "electric-mining-drill", 0}
 task[#task+1] = {"mine", {x=-45.599609375, y=-21.5}}
 task[#task+1] = {"build", {x=-44.5, y=-22}, "boiler", 0}
-task[#task+1] = {"put", "coal", 1, {x=-44.5, y=-22}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 3, {x=-44.5, y=-22}, defines.inventory.fuel}
 task[#task+1] = {"build", {x=-44.5, y=-25.5}, "steam-engine", 0}
 task[#task+1] = {"build", {x=-46.5, y=-22.5}, "small-electric-pole", 0}
 task[#task+1] = {"build", {x=-44.5, y=-30.5}, "steam-engine", 0}
