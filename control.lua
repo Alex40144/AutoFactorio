@@ -2,7 +2,7 @@ require "util"
 local task = require("tasks")
 local research = require("research")
 
-local dbg = false
+local dbg = true
 enabled = true  --this one is global
 local current_task = 0
 local current_research = 0
@@ -26,10 +26,7 @@ function debug(msg)
 end
 
 function debugtable(msg)
-    if dbg then
-        game.print(serpent.line(msg))
-    end
-    return true
+    game.print(serpent.line(msg))
 end
 
 function error(msg)
@@ -38,34 +35,6 @@ end
 
 -----------------------------------------------------------------------------------------------------
 
-
-function passable(p, tile, location)
-    --check for water
-    local onPlayerLayer = false;
-    for i, tileType in ipairs(impassibleTiles) do
-      if(tile.prototype.name == tileType) then
-        onPlayerLayer = true;
-        break;
-      end
-    end
-    if(onPlayerLayer) then
-      return false;
-    end
-
-    -- we need to check for entities we can't walk over
-    if p.surface.find_non_colliding_position_in_box("character", {location,location}, 0.5) == nil then
-        -- we need to change our bearing to avoid object
-        if p.surface.find_non_colliding_position("character", {p.position.x + x/4, p.position.y + y/4}, 1, 0.1) ~= nil then
-            return p.surface.find_non_colliding_position("character", {p.position.x + x/4, p.position.y + y/4}, 1, 0.1)
-        else
-            error("can't find path")
-            return false
-        end
-    end
-
-    return true;
-end
-  
 function calcbearing(p, from, to)
     deltax = to.x - from.x
     deltay = to.y - from.y
@@ -88,54 +57,50 @@ function calcbearing(p, from, to)
     return bearing_deg
 end
 
-function walk(p, deltax, deltay)
-    -- get bearing  --Done
-    -- "feel" along bearing
-    -- change baring to move around obstacles
-    -- slowly change back to target bearing.
-
-    local bearing = calcbearing(p, p.position, {x=p.position.x + deltax, y=p.position.y + deltay})
-
-    
-    local tile = p.surface.get_tile(p.position.x + x, p.position.y + y);
 
 
-    rendering.clear()
-    local pass = passable(p, tile, {x=p.position.x + x, y=p.position.y + y})
-    if passable(p, tile, {x=p.position.x + x, y=p.position.y + y}) == true then
-        rendering.draw_line{surface = p.surface, from = p.position, to = {p.position.x + x, p.position.y + y}, color = {g=1}, width = 2}
-    else
-        -- this means an object is in the way
-        rendering.draw_line{surface = p.surface, from = p.position, to = {p.position.x + x, p.position.y + y}, color = {r=1}, width = 2}
-        rendering.draw_line{surface = p.surface, from = p.position, to = pass, color = {b=1}, width = 2}
-        bearing = calcbearing(p, p.position, pass)
-    end
-
-   
-   
+function walk(p, location)
+    local bearing = calcbearing(p, p.position, location)
     local direction = math.floor(bearing/45 + 0.5)
 
+    debug(direction)
     if direction == 0 then
-        return{walking = true, direction = defines.direction.north}
+        game.get_player(1).walking_state = {walking = true, direction = defines.direction.north}
     elseif direction == 1 then
-        return{walking = true, direction = defines.direction.northeast}
+        game.get_player(1).walking_state = {walking = true, direction = defines.direction.northeast}
     elseif direction == 2 then
-        return{walking = true, direction = defines.direction.east}
+        game.get_player(1).walking_state = {walking = true, direction = defines.direction.east}
     elseif direction == 3 then
-        return{walking = true, direction = defines.direction.southeast}
+        game.get_player(1).walking_state = {walking = true, direction = defines.direction.southeast}
     elseif direction == 4 then
-        return{walking = true, direction = defines.direction.south}
+        game.get_player(1).walking_state = {walking = true, direction = defines.direction.south}
     elseif direction == 5 then
-        return{walking = true, direction = defines.direction.southwest}
+        game.get_player(1).walking_state = {walking = true, direction = defines.direction.southwest}
     elseif direction == 6 then
-        return{walking = true, direction = defines.direction.west}
+        game.get_player(1).walking_state = {walking = true, direction = defines.direction.west}
     elseif direction == 7 then
-        return{walking = true, direction = defines.direction.northwest}
+        game.get_player(1).walking_state = {walking = true, direction = defines.direction.northwest}
     elseif direction == 8 then
-        return{walking = true, direction = defines.direction.north}
-    else
-        return{walking = false}
+        game.get_player(1).walking_state = {walking = true, direction = defines.direction.north}
+    --else
+        --p.walking_state = {walking = false}
     end
+end
+
+function path(p, location)
+    p.surface.request_path({
+        bounding_box = p.character.prototype.collision_box,
+        collision_mask = {"object-layer"},
+        start = {p.position.x, p.position.y},
+        goal = location,
+        force = "player",
+        pathfinding_flags = {
+            allow_destroy_friendly_entities = false,
+            cache = false,
+            prefer_straight_paths = true,
+            low_priority = false
+        },
+    })
 end
 
 
@@ -161,7 +126,7 @@ function mine(p, location)
         p.update_selected_entity(location)
         --can we reach to mine?
         if not p.can_reach_entity(p.selected) then
-            p.walking_state = walk(p, location.x-p.position.x, location.y-p.position.y)
+            path(p, location) 
             return false
         end
         p.mining_state = {mining = true, position = location}
@@ -195,9 +160,9 @@ function build(p, location, item, direction)
         end
     -- we might be stood where we want to place the object
     elseif p.position.x > location.x-2 and p.position.x < location.x+2 and p.position.y > location.y-2 and p.position.y < location.y+2 then
-            p.walking_state = walk(p, location.x-p.position.x-4, location.y-p.position.y+2)
+            path(p, {location.x-p.position.x-4, location.y-p.position.y+2})
     else
-        p.walking_state = walk(p, location.x-p.position.x, location.y-p.position.y)
+        path(p, location)
         return false
     end
 end
@@ -206,7 +171,7 @@ function take(p, location, item, count, skip, inv)
     p.update_selected_entity(location)
 
     if not p.can_reach_entity(p.selected) then
-        p.walking_state = walk(p, location.x-p.position.x, location.y-p.position.y)
+        path(p, location)
         return false
     end
 
@@ -239,7 +204,7 @@ end
 function put(p, item, count, location, destinv)
     p.update_selected_entity(location)
     if not p.can_reach_entity(p.selected) then
-        p.walking_state = walk(p, location.x-p.position.x, location.y-p.position.y)
+        path(p, location)
         return false
     end
 
@@ -330,8 +295,6 @@ end
 script.on_event(defines.events.on_tick, function(event)
     --get player
     local p = game.players[1]
-    --get player's position
-    local pos = p.position
 
     --only run if we are allowed to
     if enabled == true then
@@ -339,8 +302,8 @@ script.on_event(defines.events.on_tick, function(event)
         if p.walking_state.walking == false then
             if task[current_task][1] == "walk" then
                 destination = task[current_task][2]
-                local destinationdelta = {x=destination.x - pos.x, y=destination.y - pos.y}
-                walking = walk(p, destinationdelta.x, destinationdelta.y)
+                local destinationdelta = {x=destination.x - p.position.x, y=destination.y - p.position.y}
+                path(p, destinationdelta.x, destinationdelta.y)
                 current_task = current_task + 1
             else
                 result = doTask(p, task[current_task])
@@ -365,6 +328,30 @@ script.on_event(defines.events.on_tick, function(event)
             end
         end
     end
+end)
+
+--when we have out path
+
+script.on_event(defines.events.on_script_path_request_finished, function(event)
+    if event.try_again_later then
+        debug("pathing failed")
+    elseif event.path then
+        local path = event.path
+        debug("path found")
+        local i = 1
+        if dbg then
+            rendering.clear()
+            while i < #path do
+                rendering.draw_line{surface = game.players[1].surface, from = path[i].position, to = path[i+1].position, color = {g=1}, width = 2}
+                i = i+1
+            end
+        end
+        for i in pairs(path) do
+            walk(game.players[1], path[i].position)
+        end
+    end
+
+
 end)
 
 
