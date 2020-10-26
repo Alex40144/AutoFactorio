@@ -65,25 +65,25 @@ function walk(p, location)
 
     debug(direction)
     if direction == 0 then
-        game.get_player(1).walking_state = {walking = true, direction = defines.direction.north}
+        p.walking_state = {walking = true, direction = defines.direction.north}
     elseif direction == 1 then
-        game.get_player(1).walking_state = {walking = true, direction = defines.direction.northeast}
+        p.walking_state = {walking = true, direction = defines.direction.northeast}
     elseif direction == 2 then
-        game.get_player(1).walking_state = {walking = true, direction = defines.direction.east}
+        p.walking_state = {walking = true, direction = defines.direction.east}
     elseif direction == 3 then
-        game.get_player(1).walking_state = {walking = true, direction = defines.direction.southeast}
+        p.walking_state = {walking = true, direction = defines.direction.southeast}
     elseif direction == 4 then
-        game.get_player(1).walking_state = {walking = true, direction = defines.direction.south}
+        p.walking_state = {walking = true, direction = defines.direction.south}
     elseif direction == 5 then
-        game.get_player(1).walking_state = {walking = true, direction = defines.direction.southwest}
+        p.walking_state = {walking = true, direction = defines.direction.southwest}
     elseif direction == 6 then
-        game.get_player(1).walking_state = {walking = true, direction = defines.direction.west}
+        p.walking_state = {walking = true, direction = defines.direction.west}
     elseif direction == 7 then
-        game.get_player(1).walking_state = {walking = true, direction = defines.direction.northwest}
+        p.walking_state = {walking = true, direction = defines.direction.northwest}
     elseif direction == 8 then
-        game.get_player(1).walking_state = {walking = true, direction = defines.direction.north}
-    --else
-        --p.walking_state = {walking = false}
+        p.walking_state = {walking = true, direction = defines.direction.north}
+    else
+        p.walking_state = {walking = false}
     end
 end
 
