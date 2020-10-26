@@ -5,8 +5,8 @@ task[#task+1] = {"mine", {x=-5.625, y=-23.6875}}
 task[#task+1] = {"craft", "stone-furnace", -1}
 task[#task+1] = {"build", {x=-20, y=29}, "stone-furnace", 0}
 task[#task+1] = {"build", {x=-22, y=29}, "burner-mining-drill", 2}
-task[#task+1] = {"put", "coal", 5, {x=-20, y=29}, defines.inventory.fuel}
-task[#task+1] = {"put", "coal", 5, {x=-22, y=29}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 8, {x=-20, y=29}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 8, {x=-22, y=29}, defines.inventory.fuel}
 task[#task+1] = {"mine", {x=-9.0625, y=25.0625}}
 task[#task+1] = {"mine", {x=-7.9375, y=21.625}}
 task[#task+1] = {"mine", {x=-7.75, y=20.5625}}
