@@ -15,7 +15,7 @@ task[#task+1] = {"mine", {x=-3.8125, y=19.5}}
 task[#task+1] = {"mine", {x=4.4375, y=26.375}}
 task[#task+1] = {"mine", {x=3.4375, y=25.4375}}
 task[#task+1] = {"mine", {x=-2.5, y=31}}
-task[#task+1] = {"mine", {x=-2.5, y=29}}
+task[#task+1] = {"mine", {x=-2.5, y=29.5}}
 task[#task+1] = {"mine", {x=0, y=34}}
 task[#task+1] = {"mine", {x=2, y=38}}
 task[#task+1] = {"take", {x=-20, y=29}, "iron-plate", -1, false, defines.inventory.furnace_result}
@@ -50,7 +50,7 @@ task[#task+1] = {"craft", "burner-mining-drill", -1}
 task[#task+1] = {"build", {x=-20, y=35}, "stone-furnace", 0}
 task[#task+1] = {"build", {x=-22, y=35}, "burner-mining-drill", 2}
 task[#task+1] = {"put", "coal", 5, {x=-22, y=35}, defines.inventory.fuel}
-task[#task+1] = {"put", "coal", 5, {x=-20, y=35}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 10, {x=-20, y=35}, defines.inventory.fuel}
 task[#task+1] = {"mine", {x=3.4375, y=-30.375}}
 task[#task+1] = {"mine", {x=0.5, y=-30.5}}
 task[#task+1] = {"mine", {x=0.125, y=-32.75}}
@@ -150,6 +150,7 @@ task[#task+1] = {"put", "coal", 1, {x=-17, y=12}, defines.inventory.fuel}
 task[#task+1] = {"take", {x=-20, y=29}, "iron-plate", -1, false, defines.inventory.furnace_result}
 task[#task+1] = {"take", {x=-20, y=31}, "iron-plate", -1, false, defines.inventory.furnace_result}
 task[#task+1] = {"take", {x=-20, y=33}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 10, {x=-20, y=35}, defines.inventory.fuel}
 task[#task+1] = {"take", {x=-20, y=35}, "iron-plate", -1, false, defines.inventory.furnace_result}
 task[#task+1] = {"take", {x=-20, y=37}, "iron-plate", -1, false, defines.inventory.furnace_result}
 task[#task+1] = {"take", {x=-20, y=39}, "iron-plate", -1, false, defines.inventory.furnace_result}
@@ -304,40 +305,40 @@ task[#task+1] = {"take", {x=-19, y=12}, "coal", -1, false, defines.inventory.fue
 task[#task+1] = {"take", {x=-17, y=12}, "coal", -1, false, defines.inventory.fuel}
 task[#task+1] = {"put", "coal", 5, {x=-22, y=29}, defines.inventory.fuel}
 task[#task+1] = {"put", "coal", 5, {x=-20, y=29}, defines.inventory.fuel}
-task[#task+1] = {"take", {x=-20, y=29}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-20, y=29}, "iron-plate", -1, true, defines.inventory.furnace_result}
 task[#task+1] = {"put", "coal", 5, {x=-22, y=31}, defines.inventory.fuel}
 task[#task+1] = {"put", "coal", 5, {x=-20, y=31}, defines.inventory.fuel}
-task[#task+1] = {"take", {x=-20, y=31}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-20, y=31}, "iron-plate", -1, true, defines.inventory.furnace_result}
 task[#task+1] = {"put", "coal", 5, {x=-22, y=33}, defines.inventory.fuel}
 task[#task+1] = {"put", "coal", 5, {x=-20, y=33}, defines.inventory.fuel}
-task[#task+1] = {"take", {x=-20, y=33}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-20, y=33}, "iron-plate", -1, true, defines.inventory.furnace_result}
 task[#task+1] = {"put", "coal", 5, {x=-22, y=35}, defines.inventory.fuel}
 task[#task+1] = {"put", "coal", 5, {x=-20, y=35}, defines.inventory.fuel}
-task[#task+1] = {"take", {x=-20, y=35}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-20, y=35}, "iron-plate", -1, true, defines.inventory.furnace_result}
 task[#task+1] = {"put", "coal", 5, {x=-22, y=37}, defines.inventory.fuel}
 task[#task+1] = {"put", "coal", 5, {x=-20, y=37}, defines.inventory.fuel}
-task[#task+1] = {"take", {x=-20, y=37}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-20, y=37}, "iron-plate", -1, true, defines.inventory.furnace_result}
 task[#task+1] = {"put", "coal", 5, {x=-22, y=39}, defines.inventory.fuel}
 task[#task+1] = {"put", "coal", 5, {x=-20, y=39}, defines.inventory.fuel}
-task[#task+1] = {"take", {x=-20, y=39}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-20, y=39}, "iron-plate", -1, true, defines.inventory.furnace_result}
 task[#task+1] = {"put", "coal", 5, {x=-22, y=41}, defines.inventory.fuel}
 task[#task+1] = {"put", "coal", 5, {x=-20, y=41}, defines.inventory.fuel}
-task[#task+1] = {"take", {x=-20, y=41}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-20, y=41}, "iron-plate", -1, true, defines.inventory.furnace_result}
 task[#task+1] = {"put", "coal", 5, {x=-22, y=43}, defines.inventory.fuel}
 task[#task+1] = {"put", "coal", 5, {x=-20, y=43}, defines.inventory.fuel}
-task[#task+1] = {"take", {x=-20, y=43}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-20, y=43}, "iron-plate", -1, true, defines.inventory.furnace_result}
 task[#task+1] = {"put", "coal", 5, {x=-22, y=45}, defines.inventory.fuel}
 task[#task+1] = {"put", "coal", 5, {x=-20, y=45}, defines.inventory.fuel}
-task[#task+1] = {"take", {x=-20, y=45}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-20, y=45}, "iron-plate", -1, true, defines.inventory.furnace_result}
 task[#task+1] = {"put", "coal", 5, {x=-22, y=47}, defines.inventory.fuel}
 task[#task+1] = {"put", "coal", 5, {x=-20, y=47}, defines.inventory.fuel}
-task[#task+1] = {"take", {x=-20, y=47}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-20, y=47}, "iron-plate", -1, true, defines.inventory.furnace_result}
 task[#task+1] = {"put", "coal", 5, {x=-27, y=29}, defines.inventory.fuel}
 task[#task+1] = {"put", "coal", 5, {x=-25, y=29}, defines.inventory.fuel}
-task[#task+1] = {"take", {x=-25, y=29}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-25, y=29}, "copper-plate", -1, true, defines.inventory.furnace_result}
 task[#task+1] = {"put", "coal", 5, {x=-27, y=27}, defines.inventory.fuel}
 task[#task+1] = {"put", "coal", 5, {x=-25, y=27}, defines.inventory.fuel}
-task[#task+1] = {"take", {x=-25, y=27}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-25, y=27}, "copper-plate", -1, true, defines.inventory.furnace_result}
 task[#task+1] = {"craft", "stone-furnace", -1}
 task[#task+1] = {"craft", "automation-science-pack", 10}
 task[#task+1] = {"build", {x=-25, y=31}, "stone-furnace", 0}
@@ -356,6 +357,20 @@ task[#task+1] = {"build", {x=-25, y=37}, "stone-furnace", 0}
 task[#task+1] = {"build", {x=-27, y=37}, "burner-mining-drill", 2}
 task[#task+1] = {"put", "coal", 5, {x=-25, y=37}, defines.inventory.fuel}
 task[#task+1] = {"put", "coal", 5, {x=-27, y=37}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-17, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-19, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-21, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-23, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-27, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-29, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-29, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-27, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-23, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-21, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-19, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-17, y=12}, "coal", -1, false, defines.inventory.fuel}
 task[#task+1] = {"build", {x=-67, y=80}, "burner-mining-drill", 4}
 task[#task+1] = {"build", {x=-65, y=81}, "burner-mining-drill", 6}
 task[#task+1] = {"build", {x=-66, y=83}, "burner-mining-drill", 0}
@@ -369,22 +384,22 @@ task[#task+1] = {"mine", {x=-57.8125, y=93.73828125}}
 task[#task+1] = {"mine", {x=-47.875, y=103.30078125}}
 task[#task+1] = {"take", {x=-66.5, y=81.5}, "stone", -1, false, defines.inventory.chest}
 task[#task+1] = {"mine", {x=-65.5, y=77.48828125}}
-task[#task+1] = {"take", {x=-20, y=47}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[#task+1] = {"take", {x=-20, y=45}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[#task+1] = {"take", {x=-20, y=43}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[#task+1] = {"take", {x=-20, y=41}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[#task+1] = {"take", {x=-20, y=39}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[#task+1] = {"take", {x=-20, y=37}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[#task+1] = {"take", {x=-20, y=35}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[#task+1] = {"take", {x=-20, y=33}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[#task+1] = {"take", {x=-20, y=31}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[#task+1] = {"take", {x=-20, y=29}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[#task+1] = {"take", {x=-25, y=27}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[#task+1] = {"take", {x=-25, y=29}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[#task+1] = {"take", {x=-25, y=31}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[#task+1] = {"take", {x=-25, y=33}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[#task+1] = {"take", {x=-25, y=35}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[#task+1] = {"take", {x=-25, y=37}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-20, y=47}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-20, y=45}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-20, y=43}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-20, y=41}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-20, y=39}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-20, y=37}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-20, y=35}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-20, y=33}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-20, y=31}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-20, y=29}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-25, y=27}, "copper-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-25, y=29}, "copper-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-25, y=31}, "copper-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-25, y=33}, "copper-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-25, y=35}, "copper-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-25, y=37}, "copper-plate", -1, true, defines.inventory.furnace_result}
 task[#task+1] = {"craft", "offshore-pump", 1}
 task[#task+1] = {"craft", "boiler", 1}
 task[#task+1] = {"craft", "electric-mining-drill", 1}
@@ -875,663 +890,663 @@ task[#task+1] = {"put", "coal", 5, {x=-20, y=45}, defines.inventory.fuel}
 task[#task+1] = {"take", {x=-20, y=45}, "iron-plate", -1, false, defines.inventory.furnace_result}
 task[#task+1] = {"put", "coal", 5, {x=-22, y=47}, defines.inventory.fuel}
 task[#task+1] = {"put", "coal", 5, {x=-20, y=47}, defines.inventory.fuel}
-task[1000] = {"take", {x=-20, y=47}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[1001] = {"craft", "inserter", 5}
-task[1002] = {"craft", "inserter", 5}
-task[1003] = {"craft", "transport-belt", 5}
-task[1004] = {"craft", "transport-belt", 5}
-task[1005] = {"craft", "transport-belt", 5}
-task[1006] = {"craft", "transport-belt", 5}
-task[1007] = {"craft", "transport-belt", 5}
-task[1008] = {"craft", "inserter", 5}
-task[1009] = {"craft", "inserter", 5}
-task[1011] = {"build", {x=-3, y=6}, "stone-furnace", 0}
-task[1012] = {"build", {x=-3, y=4}, "stone-furnace", 0}
-task[1013] = {"build", {x=-4.5, y=5.5}, "inserter", 6}
-task[1014] = {"build", {x=-4.5, y=4.5}, "inserter", 6}
-task[1015] = {"build", {x=-5.5, y=4.5}, "transport-belt", 0}
-task[1016] = {"build", {x=-5.5, y=3.5}, "transport-belt", 0}
-task[1017] = {"build", {x=-5.5, y=2.5}, "transport-belt", 0}
-task[1018] = {"build", {x=-5.5, y=1.5}, "transport-belt", 0}
-task[1019] = {"build", {x=-5.5, y=0.5}, "transport-belt", 0}
-task[1020] = {"build", {x=-5.5, y=-0.5}, "transport-belt", 0}
-task[1021] = {"build", {x=-5.5, y=-1.5}, "transport-belt", 0}
-task[1022] = {"build", {x=-3, y=2}, "stone-furnace", 0}
-task[1023] = {"build", {x=-3, y=0}, "stone-furnace", 0}
-task[1024] = {"build", {x=-4.5, y=1.5}, "inserter", 6}
-task[1025] = {"build", {x=-4.5, y=0.5}, "inserter", 6}
-task[1026] = {"craft", "small-electric-pole", 5}
-task[1027] = {"craft", "small-electric-pole", 5}
-task[1028] = {"build", {x=-4.5, y=-0.5}, "small-electric-pole", 0}
-task[1029] = {"build", {x=-5.5, y=-2.5}, "transport-belt", 0}
-task[1030] = {"build", {x=-5.5, y=-3.5}, "transport-belt", 0}
-task[1031] = {"build", {x=-5.5, y=-4.5}, "transport-belt", 0}
-task[1032] = {"build", {x=-5.5, y=-5.5}, "transport-belt", 0}
-task[1033] = {"build", {x=-5.5, y=-6.5}, "transport-belt", 0}
-task[1034] = {"build", {x=-5.5, y=-7.5}, "transport-belt", 0}
-task[1035] = {"build", {x=-5.5, y=-8.5}, "transport-belt", 0}
-task[1036] = {"build", {x=-5.5, y=-9.5}, "transport-belt", 0}
-task[1037] = {"build", {x=-5.5, y=-10.5}, "transport-belt", 0}
-task[1038] = {"build", {x=-5.5, y=-11.5}, "transport-belt", 0}
-task[1039] = {"build", {x=-5.5, y=-12.5}, "transport-belt", 0}
-task[1040] = {"build", {x=-5.5, y=-13.5}, "transport-belt", 0}
-task[1041] = {"build", {x=-3, y=-2}, "stone-furnace", 0}
-task[1042] = {"build", {x=-3, y=-4}, "stone-furnace", 0}
-task[1043] = {"build", {x=-3, y=-6}, "stone-furnace", 0}
-task[1044] = {"build", {x=-3, y=-8}, "stone-furnace", 0}
-task[1045] = {"build", {x=-3, y=-10}, "stone-furnace", 0}
-task[1046] = {"build", {x=-3, y=-12}, "stone-furnace", 0}
-task[1047] = {"build", {x=-3, y=-14}, "stone-furnace", 0}
-task[1048] = {"build", {x=-4.5, y=-2.5}, "inserter", 6}
-task[1049] = {"build", {x=-4.5, y=-3.5}, "inserter", 6}
-task[1050] = {"build", {x=-4.5, y=-6.5}, "inserter", 6}
-task[1051] = {"build", {x=-4.5, y=-7.5}, "inserter", 6}
-task[1052] = {"build", {x=-4.5, y=-10.5}, "inserter", 6}
-task[1053] = {"build", {x=-4.5, y=-11.5}, "inserter", 6}
-task[1054] = {"build", {x=-4.5, y=-14.5}, "inserter", 6}
-task[1055] = {"build", {x=-4.5, y=-15.5}, "inserter", 6}
-task[1056] = {"build", {x=-3, y=-16}, "stone-furnace", 0}
-task[1057] = {"build", {x=-5.5, y=-14.5}, "transport-belt", 0}
-task[1058] = {"build", {x=-5.5, y=-15.5}, "transport-belt", 0}
-task[1059] = {"build", {x=-5.5, y=-16.5}, "transport-belt", 0}
-task[1060] = {"build", {x=-4.5, y=-5.5}, "small-electric-pole", 0}
-task[1061] = {"build", {x=-4.5, y=-12.5}, "small-electric-pole", 0}
-task[1062] = {"build", {x=-4.5, y=-17.5}, "small-electric-pole", 0}
-task[1066] = {"take", {x=-3, y=-16}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1067] = {"take", {x=-3, y=-14}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1068] = {"take", {x=-3, y=-12}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1069] = {"take", {x=-3, y=-10}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1070] = {"take", {x=-3, y=-8}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1071] = {"take", {x=-3, y=-6}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1072] = {"take", {x=-3, y=-4}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1073] = {"take", {x=-3, y=-2}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1074] = {"take", {x=-3, y=0}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1075] = {"take", {x=-3, y=2}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1076] = {"take", {x=-3, y=4}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1077] = {"take", {x=-3, y=6}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1078] = {"take", {x=-3, y=8}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1079] = {"take", {x=-3, y=10}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1080] = {"take", {x=-3, y=12}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1081] = {"take", {x=-3, y=14}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1082] = {"take", {x=-3, y=16}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1083] = {"take", {x=-3, y=18}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1084] = {"take", {x=-3, y=20}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1085] = {"take", {x=-3, y=22}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1086] = {"take", {x=-3, y=24}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1087] = {"take", {x=-3, y=26}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1089] = {"take", {x=-3.5, y=29.5}, "iron-gear-wheel", -1, false, defines.inventory.assembling_machine_output}
-task[1090] = {"take", {x=-3.5, y=32.5}, "iron-gear-wheel", -1, false, defines.inventory.assembling_machine_output}
-task[1092] = {"take", {x=-14.5, y=22.5}, "copper-cable", -1, false, defines.inventory.assembling_machine_output}
-task[1093] = {"take", {x=-14.5, y=19.5}, "copper-cable", -1, false, defines.inventory.assembling_machine_output}
-task[1094] = {"put", "copper-plate", 100, {x=-14.5, y=22.5}, defines.inventory.assembling_machine_input}
-task[1095] = {"put", "copper-plate", 100, {x=-14.5, y=19.5}, defines.inventory.assembling_machine_input}
-task[1096] = {"craft", "electric-mining-drill", 4}
-task[1097] = {"craft", "assembling-machine-1", 6}
-task[1098] = {"craft", "electric-mining-drill", 4}
-task[1101] = {"build", {x=-7.5, y=19.5}, "electric-mining-drill", 2}
-task[1102] = {"build", {x=-7.5, y=16.5}, "electric-mining-drill", 2}
-task[1103] = {"build", {x=-7.5, y=13.5}, "electric-mining-drill", 2}
-task[1104] = {"build", {x=-7.5, y=10.5}, "electric-mining-drill", 2}
-task[1106] = {"build", {x=-7.5, y=7.5}, "electric-mining-drill", 2}
-task[1109] = {"take", {x=-17, y=14}, "coal", -1, false, defines.inventory.fuel}
-task[1110] = {"take", {x=-19, y=14}, "coal", -1, false, defines.inventory.fuel}
-task[1111] = {"take", {x=-21, y=14}, "coal", -1, false, defines.inventory.fuel}
-task[1112] = {"take", {x=-25, y=14}, "coal", -1, false, defines.inventory.fuel}
-task[1113] = {"take", {x=-23, y=14}, "coal", -1, false, defines.inventory.fuel}
-task[1114] = {"take", {x=-25, y=12}, "coal", -1, false, defines.inventory.fuel}
-task[1115] = {"take", {x=-25, y=14}, "coal", -1, false, defines.inventory.fuel}
-task[1116] = {"take", {x=-23, y=12}, "coal", -1, false, defines.inventory.fuel}
-task[1117] = {"take", {x=-19, y=12}, "coal", -1, false, defines.inventory.fuel}
-task[1118] = {"take", {x=-21, y=12}, "coal", -1, false, defines.inventory.fuel}
-task[1119] = {"take", {x=-17, y=12}, "coal", -1, false, defines.inventory.fuel}
-task[1122] = {"put", "coal", 5, {x=-27, y=27}, defines.inventory.fuel}
-task[1123] = {"put", "coal", 5, {x=-25, y=27}, defines.inventory.fuel}
-task[1124] = {"take", {x=-25, y=27}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[1125] = {"put", "coal", 5, {x=-27, y=29}, defines.inventory.fuel}
-task[1126] = {"put", "coal", 5, {x=-25, y=29}, defines.inventory.fuel}
-task[1127] = {"take", {x=-25, y=29}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[1128] = {"put", "coal", 5, {x=-22, y=29}, defines.inventory.fuel}
-task[1129] = {"put", "coal", 5, {x=-20, y=29}, defines.inventory.fuel}
-task[1130] = {"take", {x=-20, y=29}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[1131] = {"put", "coal", 5, {x=-27, y=31}, defines.inventory.fuel}
-task[1132] = {"put", "coal", 5, {x=-25, y=31}, defines.inventory.fuel}
-task[1133] = {"take", {x=-25, y=31}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[1134] = {"put", "coal", 5, {x=-22, y=31}, defines.inventory.fuel}
-task[1135] = {"put", "coal", 5, {x=-20, y=31}, defines.inventory.fuel}
-task[1136] = {"take", {x=-20, y=31}, "iron-plate",-1, false, defines.inventory.furnace_result}
-task[1137] = {"put", "coal", 5, {x=-27, y=33}, defines.inventory.fuel}
-task[1138] = {"put", "coal", 5, {x=-25, y=33}, defines.inventory.fuel}
-task[1139] = {"take", {x=-25, y=33}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[1140] = {"put", "coal", 5, {x=-22, y=33}, defines.inventory.fuel}
-task[1141] = {"put", "coal", 5, {x=-20, y=33}, defines.inventory.fuel}
-task[1142] = {"take", {x=-20, y=33}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[1143] = {"put", "coal", 5, {x=-27, y=35}, defines.inventory.fuel}
-task[1144] = {"put", "coal", 5, {x=-25, y=35}, defines.inventory.fuel}
-task[1145] = {"take", {x=-25, y=35}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[1146] = {"put", "coal", 5, {x=-22, y=35}, defines.inventory.fuel}
-task[1147] = {"put", "coal", 5, {x=-20, y=35}, defines.inventory.fuel}
-task[1148] = {"take", {x=-20, y=35}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[1149] = {"put", "coal", 5, {x=-27, y=37}, defines.inventory.fuel}
-task[1150] = {"put", "coal", 5, {x=-25, y=37}, defines.inventory.fuel}
-task[1151] = {"take", {x=-25, y=37}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[1152] = {"put", "coal", 5, {x=-22, y=37}, defines.inventory.fuel}
-task[1153] = {"put", "coal", 5, {x=-20, y=37}, defines.inventory.fuel}
-task[1154] = {"take", {x=-20, y=37}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[1155] = {"put", "coal", 5, {x=-22, y=39}, defines.inventory.fuel}
-task[1156] = {"put", "coal", 5, {x=-20, y=39}, defines.inventory.fuel}
-task[1157] = {"take", {x=-20, y=39}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[1158] = {"put", "coal", 5, {x=-22, y=41}, defines.inventory.fuel}
-task[1159] = {"put", "coal", 5, {x=-20, y=41}, defines.inventory.fuel}
-task[1160] = {"take", {x=-20, y=41}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[1161] = {"put", "coal", 5, {x=-22, y=43}, defines.inventory.fuel}
-task[1162] = {"put", "coal", 5, {x=-20, y=43}, defines.inventory.fuel}
-task[1163] = {"take", {x=-20, y=43}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[1164] = {"put", "coal", 5, {x=-22, y=45}, defines.inventory.fuel}
-task[1165] = {"put", "coal", 5, {x=-20, y=45}, defines.inventory.fuel}
-task[1166] = {"take", {x=-20, y=45}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[1167] = {"put", "coal", 5, {x=-22, y=47}, defines.inventory.fuel}
-task[1168] = {"put", "coal", 5, {x=-20, y=47}, defines.inventory.fuel}
-task[1169] = {"take", {x=-20, y=47}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[1170] = {"craft", "iron-chest", 5}
-task[1171] = {"craft", "iron-chest", 5}
-task[1172] = {"craft", "inserter", 5}
-task[1173] = {"craft", "inserter", 5}
-task[1175] = {"build", {x=-5.5, y=30.5}, "inserter", 2}
-task[1176] = {"build", {x=-5.5, y=31.5}, "inserter", 2}
-task[1177] = {"build", {x=-7.5, y=31.5}, "inserter", 2}
-task[1178] = {"build", {x=-7.5, y=30.5}, "inserter", 2}
-task[1180] = {"craft", "lab", 3}
-task[1181] = {"build", {x=-6.5, y=29.5}, "inserter", 4}
-task[1182] = {"build", {x=-6.5, y=32.5}, "inserter", 0}
-task[1183] = {"put", "iron-plate", 50, {x=-3.5, y=29}, defines.inventory.assembling_machine_input}
-task[1184] = {"put", "iron-plate", 50, {x=-3.5, y=32}, defines.inventory.assembling_machine_input}
-task[1185] = {"build", {x=-6.5, y=34.5}, "assembling-machine-1", 0}
-task[1186] = {"recipe", {x=-6.5, y=34.5}, "automation-science-pack"}
-task[1187] = {"put", "copper-plate", 50, {x=-6.5, y=34.5}, defines.inventory.assembling_machine_input}
-task[1188] = {"build", {x=-9.5, y=32.5}, "assembling-machine-1", 0}
-task[1189] = {"recipe", {x=-9.5, y=32.5}, "automation-science-pack"}
-task[1190] = {"put", "copper-plate", 50, {x=-9.5, y=32.5}, defines.inventory.assembling_machine_input}
-task[1191] = {"build", {x=-9.5, y=29.5}, "assembling-machine-1", 0}
-task[1192] = {"recipe", {x=-9.5, y=29.5}, "automation-science-pack"}
-task[1193] = {"put", "copper-plate", 50, {x=-9.5, y=29.5}, defines.inventory.assembling_machine_input}
-task[1194] = {"build", {x=-6.5, y=27.5}, "assembling-machine-1", 0}
-task[1195] = {"recipe", {x=-6.5, y=27.5}, "automation-science-pack"}
-task[1196] = {"put", "copper-plate", 50, {x=-6.5, y=27.5}, defines.inventory.assembling_machine_input}
-task[1197] = {"build", {x=-6.5, y=30.5}, "iron-chest", 0}
-task[1198] = {"build", {x=-6.5, y=31.5}, "iron-chest", 0}
-task[1199] = {"build", {x=-7.5, y=29.5}, "small-electric-pole", 0}
-task[1200] = {"build", {x=-8.5, y=27.5}, "inserter", 2}
-task[1202] = {"build", {x=-11.5, y=30.5}, "inserter", 2}
-task[1203] = {"build", {x=-11.5, y=31.5}, "inserter", 2}
-task[1204] = {"build", {x=-8.5, y=34.5}, "inserter", 2}
-task[1205] = {"build", {x=-7.5, y=32.5}, "small-electric-pole", 0}
-task[1206] = {"build", {x=-11.5, y=32.5}, "small-electric-pole", 0}
-task[1207] = {"build", {x=-13.5, y=29.5}, "lab", 0}
-task[1208] = {"build", {x=-13.5, y=32.5}, "lab", 0}
-task[1211] = {"build", {x=-10.5, y=35.5}, "lab", 0}
-task[1212] = {"time"}
-task[1213] = {"speed", 2}
-task[1217] = {"build", {x=-3.5, y=35.5}, "assembling-machine-1", 0}
-task[1218] = {"recipe", {x=-3.5, y=35.5}, "iron-gear-wheel"}
-task[1219] = {"build", {x=-3.5, y=39.5}, "assembling-machine-1", 0}
-task[1220] = {"recipe", {x=-3.5, y=39.5}, "transport-belt"}
-task[1221] = {"build", {x=-2.5, y=37.5}, "inserter", 0}
-task[1222] = {"build", {x=-5.5, y=38.5}, "inserter", 2}
-task[1223] = {"build", {x=-6.5, y=39.5}, "inserter", 0}
-task[1224] = {"build", {x=-5.5, y=40.5}, "inserter", 2}
-task[1225] = {"craft", "iron-chest", 1}
-task[1226] = {"build", {x=-5.5, y=39.5}, "small-electric-pole", 0}
-task[1227] = {"build", {x=-1.5, y=37.5}, "small-electric-pole", 0}
-task[1228] = {"build", {x=-6.5, y=40.5}, "iron-chest", 0}
-task[1231] = {"put", "iron-plate", 50, {x=-3.5, y=29.5}, defines.inventory.assembling_machine_input}
-task[1232] = {"put", "iron-plate", 50, {x=-3.5, y=32.5}, defines.inventory.assembling_machine_input}
-task[1234] = {"take", {x=-3, y=26}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1235] = {"take", {x=-3, y=24}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1236] = {"take", {x=-3, y=22}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1237] = {"take", {x=-3, y=20}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1238] = {"take", {x=-3, y=18}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1239] = {"take", {x=-3, y=16}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1240] = {"take", {x=-3, y=14}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1241] = {"take", {x=-3, y=12}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1242] = {"take", {x=-3, y=10}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1243] = {"take", {x=-3, y=8}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1244] = {"take", {x=-3, y=6}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1245] = {"take", {x=-3, y=4}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1246] = {"take", {x=-3, y=2}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1247] = {"take", {x=-3, y=0}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1248] = {"take", {x=-3, y=-2}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1249] = {"take", {x=-3, y=-4}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1250] = {"take", {x=-3, y=-6}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1251] = {"take", {x=-3, y=-8}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1252] = {"take", {x=-3, y=-10}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1253] = {"take", {x=-3, y=-12}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1254] = {"take", {x=-3, y=-14}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1255] = {"take", {x=-3, y=-16}, "iron-plate", -1, true, defines.inventory.furnace_result}
-task[1256] = {"craft", "boiler", 1}
-task[1257] = {"craft", "steam-engine", 1}
-task[1258] = {"craft", "steam-engine", 1}
-task[1259] = {"craft", "boiler", 1}
-task[1260] = {"craft", "steam-engine", 1}
-task[1261] = {"craft", "steam-engine", 1}
-task[1262] = {"craft", "boiler", 1}
-task[1263] = {"craft", "steam-engine", 1}
-task[1264] = {"craft", "steam-engine", 1}
-task[1265] = {"craft", "boiler", 1}
-task[1266] = {"craft", "steam-engine", 1}
-task[1267] = {"craft", "steam-engine", 1}
-task[1268] = {"craft", "pipe", 10}
-task[1269] = {"craft", "transport-belt", 10}
-task[1270] = {"craft", "transport-belt", 10}
-task[1271] = {"craft", "inserter", 5}
-task[1272] = {"craft", "inserter", 5}
-task[1273] = {"craft", "inserter", 5}
-task[1274] = {"craft", "inserter", 5}
-task[1276] = {"build", {x=-41.5, y=-19.5}, "electric-mining-drill", 0}
-task[1277] = {"build", {x=-41.5, y=-22}, "boiler", 0}
-task[1278] = {"build", {x=-41.5, y=-25.5}, "steam-engine", 0}
-task[1280] = {"build", {x=-41.5, y=-30.5}, "steam-engine", 0}
-task[1281] = {"build", {x=-39.5, y=-22.5}, "small-electric-pole", 0}
-task[1282] = {"build", {x=-39.5, y=-29.5}, "small-electric-pole", 0}
-task[1283] = {"craft", "pipe", 1}
-task[1285] = {"build", {x=-37.5, y=-22}, "boiler", 0}
-task[1286] = {"build", {x=-37.5, y=-25.5}, "steam-engine", 0}
-task[1287] = {"build", {x=-37.5, y=-30.5}, "steam-engine", 0}
-task[1288] = {"build", {x=-37.5, y=-19.5}, "electric-mining-drill", 0}
-task[1289] = {"build", {x=-39.5, y=-21.5}, "pipe", 0}
-task[1290] = {"build", {x=-34.5, y=-19.5}, "electric-mining-drill", 0}
-task[1291] = {"build", {x=-34.5, y=-22}, "boiler", 0}
-task[1293] = {"build", {x=-34.5, y=-25.5}, "steam-engine", 0}
-task[1294] = {"build", {x=-34.5, y=-30.5}, "steam-engine", 0}
-task[1295] = {"build", {x=-32.5, y=-22.5}, "small-electric-pole", 0}
-task[1296] = {"build", {x=-32.5, y=-29.5}, "small-electric-pole", 0}
-task[1297] = {"build", {x=-32.599609375, y=-21.5}, "pipe", 0}
-task[1298] = {"build", {x=-30.5, y=-22}, "boiler", 0}
-task[1299] = {"build", {x=-30.5, y=-19.5}, "electric-mining-drill", 0}
-task[1301] = {"build", {x=-30.5, y=-25.5}, "steam-engine", 0}
-task[1302] = {"build", {x=-30.5, y=-30.5}, "steam-engine", 0}
-task[1305] = {"take", {x=-17, y=12}, "coal", -1, false, defines.inventory.fuel}
-task[1306] = {"take", {x=-19, y=12}, "coal", -1, false, defines.inventory.fuel}
-task[1307] = {"take", {x=-21, y=12}, "coal", -1, false, defines.inventory.fuel}
-task[1308] = {"take", {x=-23, y=12}, "coal", -1, false, defines.inventory.fuel}
-task[1309] = {"take", {x=-25, y=12}, "coal", -1, false, defines.inventory.fuel}
-task[1310] = {"take", {x=-25, y=14}, "coal", -1, false, defines.inventory.fuel}
-task[1311] = {"take", {x=-23, y=14}, "coal", -1, false, defines.inventory.fuel}
-task[1312] = {"take", {x=-21, y=14}, "coal", -1, false, defines.inventory.fuel}
-task[1313] = {"take", {x=-19, y=14}, "coal", -1, false, defines.inventory.fuel}
-task[1314] = {"take", {x=-17, y=14}, "coal", -1, false, defines.inventory.fuel}
-task[1317] = {"put", "coal", 5, {x=-22, y=29}, defines.inventory.fuel}
-task[1318] = {"put", "coal", 5, {x=-20, y=29}, defines.inventory.fuel}
-task[1319] = {"take", {x=-20, y=29}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[1320] = {"put", "coal", 5, {x=-22, y=31}, defines.inventory.fuel}
-task[1321] = {"put", "coal", 5, {x=-20, y=31}, defines.inventory.fuel}
-task[1322] = {"take", {x=-20, y=31}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[1323] = {"put", "coal", 5, {x=-22, y=33}, defines.inventory.fuel}
-task[1324] = {"put", "coal", 5, {x=-20, y=33}, defines.inventory.fuel}
-task[1325] = {"take", {x=-20, y=33}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[1326] = {"put", "coal", 5, {x=-22, y=35}, defines.inventory.fuel}
-task[1327] = {"put", "coal", 5, {x=-20, y=35}, defines.inventory.fuel}
-task[1328] = {"take", {x=-20, y=35}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[1329] = {"put", "coal", 5, {x=-22, y=37}, defines.inventory.fuel}
-task[1330] = {"put", "coal", 5, {x=-20, y=37}, defines.inventory.fuel}
-task[1331] = {"take", {x=-20, y=37}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[1332] = {"put", "coal", 5, {x=-22, y=39}, defines.inventory.fuel}
-task[1333] = {"put", "coal", 5, {x=-20, y=39}, defines.inventory.fuel}
-task[1334] = {"take", {x=-20, y=39}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[1335] = {"put", "coal", 5, {x=-22, y=41}, defines.inventory.fuel}
-task[1336] = {"put", "coal", 5, {x=-20, y=41}, defines.inventory.fuel}
-task[1337] = {"take", {x=-20, y=41}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[1338] = {"put", "coal", 5, {x=-22, y=43}, defines.inventory.fuel}
-task[1339] = {"put", "coal", 5, {x=-20, y=43}, defines.inventory.fuel}
-task[1340] = {"take", {x=-20, y=43}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[1341] = {"put", "coal", 5, {x=-22, y=45}, defines.inventory.fuel}
-task[1342] = {"put", "coal", 5, {x=-20, y=45}, defines.inventory.fuel}
-task[1343] = {"take", {x=-20, y=45}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[1344] = {"put", "coal", 5, {x=-22, y=47}, defines.inventory.fuel}
-task[1345] = {"put", "coal", 5, {x=-20, y=47}, defines.inventory.fuel}
-task[1346] = {"take", {x=-20, y=47}, "iron-plate", -1, false, defines.inventory.furnace_result}
-task[1348] = {"craft", "transport-belt", 10}
-task[1349] = {"craft", "transport-belt", 10}
-task[1352] = {"take", {x=-6.5, y=40.5}, "transport-belt", -1, true, defines.inventory.chest}
-task[1355] = {"put", "coal", 5, {x=-27, y=37}, defines.inventory.fuel}
-task[1356] = {"put", "coal", 5, {x=-25, y=37}, defines.inventory.fuel}
-task[1357] = {"take", {x=-25, y=37}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[1358] = {"put", "coal", 5, {x=-27, y=35}, defines.inventory.fuel}
-task[1359] = {"put", "coal", 5, {x=-25, y=35}, defines.inventory.fuel}
-task[1360] = {"take", {x=-25, y=35}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[1361] = {"put", "coal", 5, {x=-27, y=33}, defines.inventory.fuel}
-task[1362] = {"put", "coal", 5, {x=-25, y=33}, defines.inventory.fuel}
-task[1363] = {"take", {x=-25, y=33}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[1364] = {"put", "coal", 5, {x=-27, y=31}, defines.inventory.fuel}
-task[1365] = {"put", "coal", 5, {x=-25, y=31}, defines.inventory.fuel}
-task[1366] = {"take", {x=-25, y=31}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[1367] = {"put", "coal", 5, {x=-27, y=29}, defines.inventory.fuel}
-task[1368] = {"put", "coal", 5, {x=-25, y=29}, defines.inventory.fuel}
-task[1369] = {"take", {x=-25, y=29}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[1370] = {"put", "coal", 5, {x=-27, y=27}, defines.inventory.fuel}
-task[1371] = {"put", "coal", 5, {x=-25, y=27}, defines.inventory.fuel}
-task[1372] = {"take", {x=-25, y=27}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[1374] = {"take", {x=-14.5, y=19.5}, "copper-cable", -1, true, defines.inventory.assembling_machine_output}
-task[1375] = {"take", {x=-14.5, y=22.5}, "copper-cable", -1, true, defines.inventory.assembling_machine_output}
-task[1376] = {"put", "copper-plate", 100, {x=-14.5, y=19.5}, defines.inventory.assembling_machine_input}
-task[1377] = {"put", "copper-plate", 100, {x=-14.5, y=22.5}, defines.inventory.assembling_machine_input}
-task[1378] = {"craft", "inserter", 5}
-task[1379] = {"craft", "inserter", 5}
-task[1380] = {"craft", "inserter", 5}
-task[1381] = {"craft", "inserter", 5}
-task[1382] = {"craft", "inserter", 5}
-task[1385] = {"craft", "transport-belt", 10}
-task[1386] = {"craft", "inserter", 10}
-task[1387] = {"craft", "assembling-machine-1", 4}
-task[1391] = {"build", {x=-0.5, y=26.5}, "transport-belt", 4}
-task[1392] = {"build", {x=-0.5, y=25.5}, "transport-belt", 4}
-task[1393] = {"build", {x=-0.5, y=24.5}, "transport-belt", 4}
-task[1394] = {"build", {x=-0.5, y=23.5}, "transport-belt", 4}
-task[1395] = {"build", {x=-0.5, y=22.5}, "transport-belt", 4}
-task[1396] = {"build", {x=-0.5, y=21.5}, "transport-belt", 4}
-task[1398] = {"build", {x=-1.5, y=25.5}, "inserter", 6}
-task[1399] = {"build", {x=-1.5, y=24.5}, "inserter", 6}
-task[1400] = {"build", {x=-1.5, y=23.5}, "small-electric-pole", 0}
-task[1401] = {"build", {x=-1.5, y=18.5}, "small-electric-pole", 0}
-task[1402] = {"build", {x=-1.5, y=21.5}, "inserter", 6}
-task[1403] = {"build", {x=-1.5, y=20.5}, "inserter", 6}
-task[1404] = {"build", {x=-0.5, y=20.5}, "transport-belt", 4}
-task[1405] = {"build", {x=-0.5, y=19.5}, "transport-belt", 4}
-task[1406] = {"build", {x=-0.5, y=18.5}, "transport-belt", 4}
-task[1407] = {"build", {x=-0.5, y=17.5}, "transport-belt", 4}
-task[1408] = {"build", {x=-0.5, y=16.5}, "transport-belt", 4}
-task[1409] = {"build", {x=-0.5, y=15.5}, "transport-belt", 4}
-task[1410] = {"build", {x=-0.5, y=14.5}, "transport-belt", 4}
-task[1411] = {"build", {x=-0.5, y=13.5}, "transport-belt", 4}
-task[1412] = {"build", {x=-1.5, y=17.5}, "inserter", 6}
-task[1413] = {"build", {x=-1.5, y=16.5}, "inserter", 6}
-task[1414] = {"build", {x=-1.5, y=13.5}, "inserter", 6}
-task[1415] = {"build", {x=-1.5, y=12.5}, "inserter", 6}
-task[1417] = {"build", {x=-0.5, y=12.5}, "transport-belt", 4}
-task[1418] = {"build", {x=-0.5, y=11.5}, "transport-belt", 4}
-task[1419] = {"build", {x=-0.5, y=10.5}, "transport-belt", 4}
-task[1420] = {"build", {x=-0.5, y=9.5}, "transport-belt", 4}
-task[1421] = {"build", {x=-0.5, y=8.5}, "transport-belt", 4}
-task[1422] = {"build", {x=-0.5, y=7.5}, "transport-belt", 4}
-task[1423] = {"build", {x=-0.5, y=6.5}, "transport-belt", 4}
-task[1424] = {"build", {x=-1.5, y=11.5}, "small-electric-pole", 0}
-task[1425] = {"build", {x=-1.5, y=9.5}, "inserter", 6}
-task[1426] = {"build", {x=-1.5, y=8.5}, "inserter", 6}
-task[1427] = {"build", {x=-1.5, y=5.5}, "inserter", 6}
-task[1428] = {"build", {x=-1.5, y=4.5}, "inserter", 6}
-task[1430] = {"build", {x=-1.5, y=6.5}, "small-electric-pole", 0}
-task[1431] = {"build", {x=-0.5, y=5.5}, "transport-belt", 4}
-task[1432] = {"build", {x=-0.5, y=4.5}, "transport-belt", 4}
-task[1433] = {"build", {x=-0.5, y=3.5}, "transport-belt", 4}
-task[1434] = {"build", {x=-0.5, y=2.5}, "transport-belt", 4}
-task[1435] = {"build", {x=-0.5, y=1.5}, "transport-belt", 4}
-task[1436] = {"build", {x=-0.5, y=0.5}, "transport-belt", 4}
-task[1437] = {"build", {x=-0.5, y=-0.5}, "transport-belt", 4}
-task[1438] = {"build", {x=-0.5, y=-1.5}, "transport-belt", 4}
-task[1439] = {"build", {x=-1.5, y=1.5}, "inserter", 6}
-task[1440] = {"build", {x=-1.5, y=0.5}, "inserter", 6}
-task[1441] = {"build", {x=-1.5, y=-0.5}, "small-electric-pole", 0}
-task[1442] = {"build", {x=-1.5, y=-2.5}, "inserter", 6}
-task[1443] = {"build", {x=-1.5, y=-3.5}, "inserter", 6}
-task[1444] = {"build", {x=-0.5, y=-2.5}, "transport-belt", 4}
-task[1445] = {"build", {x=-0.5, y=-3.5}, "transport-belt", 4}
-task[1446] = {"build", {x=-0.5, y=-4.5}, "transport-belt", 4}
-task[1447] = {"build", {x=-0.5, y=-5.5}, "transport-belt", 4}
-task[1448] = {"build", {x=-0.5, y=-6.5}, "transport-belt", 4}
-task[1449] = {"build", {x=-0.5, y=-7.5}, "transport-belt", 4}
-task[1450] = {"build", {x=-0.5, y=-8.5}, "transport-belt", 4}
-task[1451] = {"build", {x=-0.5, y=-9.5}, "transport-belt", 4}
-task[1452] = {"build", {x=-0.5, y=-10.5}, "transport-belt", 4}
-task[1453] = {"build", {x=-1.5, y=-5.5}, "small-electric-pole", 0}
-task[1455] = {"build", {x=-1.5, y=-6.5}, "inserter", 6}
-task[1456] = {"build", {x=-1.5, y=-7.5}, "inserter", 6}
-task[1457] = {"build", {x=-1.5, y=-10.5}, "inserter", 6}
-task[1458] = {"build", {x=-1.5, y=-11.5}, "inserter", 6}
-task[1459] = {"build", {x=-1.5, y=-12.5}, "small-electric-pole", 0}
-task[1460] = {"build", {x=-0.5, y=-11.5}, "transport-belt", 4}
-task[1461] = {"build", {x=-0.5, y=-12.5}, "transport-belt", 4}
-task[1462] = {"build", {x=-0.5, y=-13.5}, "transport-belt", 4}
-task[1463] = {"build", {x=-0.5, y=-14.5}, "transport-belt", 4}
-task[1464] = {"build", {x=-0.5, y=-15.5}, "transport-belt", 4}
-task[1465] = {"build", {x=-0.5, y=-16.5}, "transport-belt", 4}
-task[1466] = {"build", {x=-0.5, y=-17.5}, "transport-belt", 4}
-task[1467] = {"build", {x=-1.5, y=-14.5}, "inserter", 6}
-task[1468] = {"build", {x=-1.5, y=-15.5}, "inserter", 6}
-task[1469] = {"build", {x=-1.5, y=-17.5}, "small-electric-pole", 0}
-task[1472] = {"build", {x=-0.5, y=27.5}, "transport-belt", 4}
-task[1473] = {"build", {x=-0.5, y=28.5}, "transport-belt", 4}
-task[1474] = {"build", {x=-0.5, y=29.5}, "transport-belt", 4}
-task[1475] = {"build", {x=-1.5, y=29.5}, "inserter", 2}
-task[1476] = {"build", {x=-0.5, y=30.5}, "transport-belt", 4}
-task[1477] = {"build", {x=-0.5, y=31.5}, "transport-belt", 4}
-task[1478] = {"build", {x=-1.5, y=30.5}, "inserter", 2}
-task[1479] = {"build", {x=-1.5, y=32.5}, "inserter", 2}
-task[1480] = {"build", {x=-0.5, y=32.5}, "transport-belt", 4}
-task[1481] = {"build", {x=-0.5, y=33.5}, "transport-belt", 4}
-task[1482] = {"build", {x=-0.5, y=34.5}, "transport-belt", 4}
-task[1483] = {"build", {x=-0.5, y=35.5}, "transport-belt", 4}
-task[1484] = {"build", {x=-0.5, y=36.5}, "transport-belt", 4}
-task[1485] = {"build", {x=-0.5, y=37.5}, "transport-belt", 4}
-task[1486] = {"build", {x=-0.5, y=38.5}, "transport-belt", 4}
-task[1487] = {"build", {x=-0.5, y=39.5}, "transport-belt", 4}
-task[1488] = {"build", {x=-1.5, y=35.5}, "inserter", 2}
-task[1489] = {"build", {x=-1.5, y=38.5}, "inserter", 2}
-task[1490] = {"build", {x=-1.5, y=36.5}, "inserter", 2}
-task[1491] = {"build", {x=-1.5, y=33.5}, "inserter", 2}
-task[1494] = {"build", {x=-0.5, y=40.5}, "transport-belt", 4}
-task[1495] = {"build", {x=-0.5, y=41.5}, "transport-belt", 4}
-task[1496] = {"build", {x=-0.5, y=42.5}, "transport-belt", 4}
-task[1497] = {"build", {x=-0.5, y=43.5}, "transport-belt", 4}
-task[1498] = {"build", {x=-0.5, y=44.5}, "transport-belt", 4}
-task[1499] = {"build", {x=-0.5, y=45.5}, "transport-belt", 4}
-task[1500] = {"build", {x=-0.5, y=46.5}, "transport-belt", 4}
-task[1501] = {"build", {x=-0.5, y=47.5}, "transport-belt", 4}
-task[1502] = {"build", {x=-0.5, y=48.5}, "transport-belt", 4}
-task[1503] = {"build", {x=-0.5, y=49.5}, "transport-belt", 4}
-task[1505] = {"build", {x=-3.5, y=42.5}, "assembling-machine-1", 0}
-task[1506] = {"recipe", {x=-3.5, y=42.5}, "iron-gear-wheel"}
-task[1507] = {"build", {x=-3.5, y=45.5}, "assembling-machine-1", 0}
-task[1508] = {"recipe", {x=-3.5, y=45.5}, "iron-gear-wheel"}
-task[1509] = {"build", {x=-1.5, y=43.5}, "small-electric-pole", 0}
-task[1510] = {"build", {x=-1.5, y=41.5}, "inserter", 2}
-task[1511] = {"build", {x=-1.5, y=42.5}, "inserter", 2}
-task[1512] = {"build", {x=-1.5, y=44.5}, "inserter", 2}
-task[1513] = {"build", {x=-1.5, y=45.5}, "inserter", 2}
-task[1514] = {"craft", "iron-chest", 1}
-task[1515] = {"craft", "iron-chest", 1}
-task[1516] = {"build", {x=-5.5, y=43.5}, "inserter", 2}
-task[1517] = {"build", {x=-5.5, y=44.5}, "inserter", 2}
-task[1518] = {"build", {x=-5.5, y=42.5}, "small-electric-pole", 0}
-task[1519] = {"build", {x=-6.5, y=43.5}, "iron-chest", 0}
-task[1520] = {"build", {x=-6.5, y=44.5}, "iron-chest", 0}
-task[1526] = {"take", {x=-25, y=27}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[1527] = {"take", {x=-25, y=29}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[1528] = {"take", {x=-25, y=31}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[1529] = {"take", {x=-25, y=33}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[1530] = {"take", {x=-25, y=35}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[1531] = {"take", {x=-25, y=37}, "copper-plate", -1, false, defines.inventory.furnace_result}
-task[1536] = {"take", {x=-14.5, y=19.5}, "copper-cable", -1, false, defines.inventory.assembling_machine_output}
-task[1537] = {"take", {x=-14.5, y=22.5}, "copper-cable", -1, false, defines.inventory.assembling_machine_output}
-task[1538] = {"put", "copper-plate", 100, {x=-14.5, y=19.5}, defines.inventory.assembling_machine_input}
-task[1539] = {"put", "copper-plate", 100, {x=-14.5, y=22.5}, defines.inventory.assembling_machine_input}
-task[1540] = {"craft", "electric-mining-drill", 5}
-task[1541] = {"craft", "electric-mining-drill", 5}
-task[1542] = {"craft", "inserter", 5}
-task[1543] = {"craft", "inserter", 5}
-task[1544] = {"craft", "inserter", 5}
-task[1545] = {"craft", "inserter", 5}
-task[1546] = {"craft", "inserter", 5}
-task[1547] = {"craft", "inserter", 5}
-task[1549] = {"build", {x=-23.5, y=16.5}, "electric-mining-drill", 4}
-task[1550] = {"build", {x=-26.5, y=16.5}, "electric-mining-drill", 4}
-task[1551] = {"build", {x=-22.5, y=18.5}, "transport-belt", 2}
-task[1552] = {"build", {x=-23.5, y=18.5}, "transport-belt", 2}
-task[1553] = {"build", {x=-24.5, y=18.5}, "transport-belt", 2}
-task[1554] = {"build", {x=-25.5, y=18.5}, "transport-belt", 2}
-task[1555] = {"build", {x=-26.5, y=18.5}, "transport-belt", 2}
-task[1556] = {"build", {x=-27.5, y=18.5}, "transport-belt", 2}
-task[1557] = {"build", {x=-28.5, y=18.5}, "transport-belt", 2}
-task[1559] = {"build", {x=-29.5, y=18.5}, "transport-belt", 2}
-task[1560] = {"build", {x=-28.5, y=17.5}, "small-electric-pole", 0}
-task[1561] = {"build", {x=-30.5, y=18.5}, "transport-belt", 2}
-task[1562] = {"build", {x=-31.5, y=18.5}, "transport-belt", 2}
-task[1563] = {"build", {x=-32.5, y=18.5}, "transport-belt", 2}
-task[1564] = {"build", {x=-33.5, y=18.5}, "transport-belt", 2}
-task[1565] = {"build", {x=-34.5, y=18.5}, "transport-belt", 2}
-task[1566] = {"build", {x=-35.5, y=18.5}, "transport-belt", 2}
-task[1567] = {"build", {x=-35.5, y=17.5}, "small-electric-pole", 0}
-task[1569] = {"build", {x=-36.5, y=18.5}, "transport-belt", 2}
-task[1570] = {"build", {x=-37.5, y=18.5}, "transport-belt", 2}
-task[1571] = {"build", {x=-38.5, y=18.5}, "transport-belt", 2}
-task[1572] = {"build", {x=-39.5, y=18.5}, "transport-belt", 2}
-task[1573] = {"build", {x=-40.5, y=18.5}, "transport-belt", 2}
-task[1574] = {"build", {x=-41.5, y=18.5}, "transport-belt", 2}
-task[1575] = {"build", {x=-42.5, y=18.5}, "transport-belt", 2}
-task[1576] = {"build", {x=-43.5, y=18.5}, "transport-belt", 2}
-task[1577] = {"build", {x=-44.5, y=18.5}, "transport-belt", 2}
-task[1578] = {"build", {x=-45.5, y=18.5}, "transport-belt", 2}
-task[1579] = {"build", {x=-46.5, y=18.5}, "transport-belt", 2}
-task[1580] = {"build", {x=-42.5, y=17.5}, "small-electric-pole", 0}
-task[1581] = {"build", {x=-49.5, y=17.5}, "small-electric-pole", 0}
-task[1583] = {"build", {x=-44.5, y=20.5}, "electric-mining-drill", 0}
-task[1584] = {"build", {x=-41.5, y=20.5}, "electric-mining-drill", 0}
-task[1585] = {"build", {x=-38.5, y=20.5}, "electric-mining-drill", 0}
-task[1586] = {"build", {x=-35.5, y=20.5}, "electric-mining-drill", 0}
-task[1587] = {"build", {x=-32.5, y=20.5}, "electric-mining-drill", 0}
-task[1588] = {"build", {x=-29.5, y=20.5}, "electric-mining-drill", 0}
-task[1590] = {"build", {x=-21.5, y=17.5}, "small-electric-pole", 0}
-task[1591] = {"build", {x=-20.5, y=17.5}, "small-electric-pole", 0}
-task[1592] = {"build", {x=-21.5, y=18.5}, "transport-belt", 2}
-task[1593] = {"build", {x=-20.5, y=18.5}, "transport-belt", 2}
-task[1594] = {"build", {x=-19.5, y=18.5}, "transport-belt", 2}
-task[1595] = {"build", {x=-18.5, y=18.5}, "transport-belt", 2}
-task[1596] = {"build", {x=-17.5, y=18.5}, "transport-belt", 2}
-task[1597] = {"build", {x=-16.5, y=18.5}, "transport-belt", 4}
-task[1598] = {"build", {x=-16.5, y=19.5}, "transport-belt", 4}
-task[1599] = {"build", {x=-16.5, y=20.5}, "transport-belt", 4}
-task[1600] = {"build", {x=-16.5, y=21.5}, "transport-belt", 4}
-task[1601] = {"build", {x=-16.5, y=22.5}, "transport-belt", 4}
-task[1602] = {"build", {x=-16.5, y=23.5}, "transport-belt", 4}
-task[1603] = {"build", {x=-16.5, y=24.5}, "transport-belt", 4}
-task[1604] = {"build", {x=-16.5, y=25.5}, "transport-belt", 4}
-task[1606] = {"build", {x=-16.5, y=26.5}, "transport-belt", 4}
-task[1607] = {"build", {x=-16.5, y=27.5}, "transport-belt", 4}
-task[1608] = {"build", {x=-16.5, y=28.5}, "transport-belt", 4}
-task[1609] = {"build", {x=-16.5, y=29.5}, "transport-belt", 4}
-task[1610] = {"build", {x=-16.5, y=30.5}, "transport-belt", 4}
-task[1611] = {"build", {x=-16.5, y=31.5}, "transport-belt", 4}
-task[1612] = {"build", {x=-16.5, y=32.5}, "transport-belt", 4}
-task[1613] = {"build", {x=-16.5, y=33.5}, "transport-belt", 4}
-task[1614] = {"build", {x=-15.5, y=33.5}, "transport-belt", 4}
-task[1615] = {"build", {x=-15.5, y=34.5}, "transport-belt", 4}
-task[1616] = {"build", {x=-15.5, y=35.5}, "transport-belt", 4}
-task[1617] = {"mine", {x=-15.5, y=33.5}}
-task[1618] = {"mine", {x=-15.5, y=35.5}}
-task[1619] = {"mine", {x=-15.5, y=34.5}}
-task[1620] = {"build", {x=-16.5, y=34.5}, "transport-belt", 4}
-task[1621] = {"build", {x=-16.5, y=35.5}, "transport-belt", 4}
-task[1622] = {"build", {x=-16.5, y=36.5}, "transport-belt", 4}
-task[1624] = {"build", {x=-11.5, y=37.5}, "transport-belt", 4}
-task[1625] = {"build", {x=-11.5, y=38.5}, "transport-belt", 4}
-task[1626] = {"build", {x=-11.5, y=39.5}, "transport-belt", 4}
-task[1627] = {"build", {x=-16.5, y=37.5}, "transport-belt", 4}
-task[1628] = {"build", {x=-16.5, y=38.5}, "transport-belt", 4}
-task[1629] = {"build", {x=-16.5, y=39.5}, "transport-belt", 4}
-task[1630] = {"build", {x=-16.5, y=40.5}, "transport-belt", 4}
-task[1631] = {"build", {x=-14, y=39}, "stone-furnace", 0}
-task[1632] = {"build", {x=-14, y=41}, "stone-furnace", 0}
-task[1633] = {"build", {x=-15.5, y=39.5}, "inserter", 6}
-task[1634] = {"build", {x=-15.5, y=40.5}, "inserter", 6}
-task[1635] = {"build", {x=-12.5, y=39.5}, "inserter", 6}
-task[1636] = {"build", {x=-12.5, y=40.5}, "inserter", 6}
-task[1637] = {"build", {x=-15.5, y=38.5}, "small-electric-pole", 0}
-task[1638] = {"build", {x=-12.5, y=38.5}, "small-electric-pole", 0}
-task[1639] = {"build", {x=-11.5, y=40.5}, "transport-belt", 4}
-task[1640] = {"build", {x=-11.5, y=41.5}, "transport-belt", 4}
-task[1642] = {"build", {x=-16.5, y=41.5}, "transport-belt", 4}
-task[1643] = {"build", {x=-16.5, y=42.5}, "transport-belt", 4}
-task[1644] = {"build", {x=-16.5, y=43.5}, "transport-belt", 4}
-task[1645] = {"build", {x=-16.5, y=44.5}, "transport-belt", 4}
-task[1646] = {"build", {x=-16.5, y=45.5}, "transport-belt", 4}
-task[1647] = {"build", {x=-16.5, y=46.5}, "transport-belt", 4}
-task[1648] = {"build", {x=-16.5, y=47.5}, "transport-belt", 4}
-task[1649] = {"build", {x=-16.5, y=48.5}, "transport-belt", 4}
-task[1650] = {"build", {x=-16.5, y=49.5}, "transport-belt", 4}
-task[1651] = {"build", {x=-16.5, y=50.5}, "transport-belt", 4}
-task[1652] = {"build", {x=-16.5, y=51.5}, "transport-belt", 4}
-task[1653] = {"build", {x=-16.5, y=52.5}, "transport-belt", 4}
-task[1654] = {"build", {x=-16.5, y=53.5}, "transport-belt", 4}
-task[1655] = {"build", {x=-16.5, y=54.5}, "transport-belt", 4}
-task[1656] = {"build", {x=-11.5, y=42.5}, "transport-belt", 4}
-task[1657] = {"build", {x=-11.5, y=43.5}, "transport-belt", 4}
-task[1658] = {"build", {x=-11.5, y=44.5}, "transport-belt", 4}
-task[1659] = {"build", {x=-11.5, y=45.5}, "transport-belt", 4}
-task[1660] = {"build", {x=-11.5, y=46.5}, "transport-belt", 4}
-task[1661] = {"build", {x=-11.5, y=47.5}, "transport-belt", 4}
-task[1662] = {"build", {x=-11.5, y=48.5}, "transport-belt", 4}
-task[1663] = {"build", {x=-11.5, y=49.5}, "transport-belt", 4}
-task[1664] = {"build", {x=-11.5, y=50.5}, "transport-belt", 4}
-task[1665] = {"build", {x=-11.5, y=51.5}, "transport-belt", 4}
-task[1666] = {"build", {x=-11.5, y=52.5}, "transport-belt", 4}
-task[1667] = {"build", {x=-11.5, y=53.5}, "transport-belt", 4}
-task[1668] = {"build", {x=-11.5, y=54.5}, "transport-belt", 4}
-task[1669] = {"build", {x=-14, y=43}, "stone-furnace", 0}
-task[1670] = {"build", {x=-14, y=45}, "stone-furnace", 0}
-task[1671] = {"build", {x=-14, y=47}, "stone-furnace", 0}
-task[1672] = {"build", {x=-14, y=49}, "stone-furnace", 0}
-task[1673] = {"build", {x=-14, y=51}, "stone-furnace", 0}
-task[1674] = {"build", {x=-14, y=53}, "stone-furnace", 0}
-task[1675] = {"build", {x=-14, y=55}, "stone-furnace", 0}
-task[1676] = {"build", {x=-15.5, y=43.5}, "inserter", 6}
-task[1677] = {"build", {x=-12.5, y=43.5}, "inserter", 6}
-task[1678] = {"build", {x=-12.5, y=44.5}, "inserter", 6}
-task[1679] = {"build", {x=-15.5, y=44.5}, "inserter", 6}
-task[1680] = {"build", {x=-15.5, y=47.5}, "inserter", 6}
-task[1681] = {"build", {x=-12.5, y=47.5}, "inserter", 6}
-task[1682] = {"build", {x=-12.5, y=48.5}, "inserter", 6}
-task[1683] = {"build", {x=-15.5, y=48.5}, "inserter", 6}
-task[1684] = {"build", {x=-15.5, y=51.5}, "inserter", 6}
-task[1685] = {"build", {x=-12.5, y=51.5}, "inserter", 6}
-task[1686] = {"build", {x=-12.5, y=52.5}, "inserter", 6}
-task[1687] = {"build", {x=-15.5, y=52.5}, "inserter", 6}
-task[1688] = {"build", {x=-15.5, y=45.5}, "small-electric-pole", 0}
-task[1689] = {"build", {x=-15.5, y=49.5}, "small-electric-pole", 0}
-task[1690] = {"build", {x=-12.5, y=49.5}, "small-electric-pole", 0}
-task[1691] = {"build", {x=-12.5, y=45.5}, "small-electric-pole", 0}
-task[1692] = {"build", {x=-14, y=57}, "stone-furnace", 0}
-task[1693] = {"build", {x=-15.5, y=55.5}, "inserter", 6}
-task[1694] = {"build", {x=-15.5, y=56.5}, "inserter", 6}
-task[1695] = {"build", {x=-12.5, y=55.5}, "inserter", 6}
-task[1696] = {"build", {x=-12.5, y=56.5}, "inserter", 6}
-task[1697] = {"build", {x=-16.5, y=55.5}, "transport-belt", 4}
-task[1698] = {"build", {x=-16.5, y=56.5}, "transport-belt", 4}
-task[1699] = {"build", {x=-11.5, y=55.5}, "transport-belt", 4}
-task[1700] = {"build", {x=-11.5, y=56.5}, "transport-belt", 4}
-task[1701] = {"build", {x=-15.5, y=54.5}, "small-electric-pole", 0}
-task[1702] = {"build", {x=-12.5, y=54.5}, "small-electric-pole", 0}
-task[1704] = {"build", {x=-8.5, y=56.5}, "assembling-machine-1", 0}
-task[1705] = {"build", {x=-8.5, y=53.5}, "assembling-machine-1", 0}
-task[1706] = {"build", {x=-8.5, y=50.5}, "assembling-machine-1", 0}
-task[1707] = {"build", {x=-4.5, y=50.5}, "assembling-machine-1", 0}
-task[1708] = {"build", {x=-4.5, y=53.5}, "assembling-machine-1", 0}
-task[1709] = {"build", {x=-4.5, y=56.5}, "assembling-machine-1", 0}
-task[1710] = {"build", {x=-10.5, y=51.5}, "inserter", 6}
-task[1711] = {"build", {x=-6.5, y=51.5}, "inserter", 6}
-task[1712] = {"build", {x=-2.5, y=51.5}, "inserter", 6}
-task[1713] = {"build", {x=-2.5, y=52.5}, "inserter", 6}
-task[1714] = {"build", {x=-6.5, y=52.5}, "inserter", 6}
-task[1715] = {"build", {x=-10.5, y=52.5}, "inserter", 6}
-task[1717] = {"build", {x=-6.5, y=49.5}, "inserter", 6}
-task[1718] = {"build", {x=-6.5, y=54.5}, "inserter", 6}
-task[1719] = {"build", {x=-6.5, y=55.5}, "inserter", 6}
-task[1720] = {"build", {x=-10.5, y=57.5}, "inserter", 6}
-task[1721] = {"build", {x=-6.5, y=57.5}, "inserter", 6}
-task[1722] = {"build", {x=-2.5, y=57.5}, "inserter", 6}
-task[1723] = {"craft", "long-handed-inserter", 1}
-task[1724] = {"build", {x=-2.5, y=50.5}, "long-handed-inserter", 2}
-task[1725] = {"build", {x=-2.5, y=54.5}, "long-handed-inserter", 2}
-task[1726] = {"build", {x=-2.5, y=55.5}, "long-handed-inserter", 2}
-task[1727] = {"build", {x=-10.5, y=50.5}, "small-electric-pole", 0}
-task[1728] = {"build", {x=-6.5, y=50.5}, "small-electric-pole", 0}
+task[#task+1] = {"take", {x=-20, y=47}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"craft", "transport-belt", 5}
+task[#task+1] = {"craft", "transport-belt", 5}
+task[#task+1] = {"craft", "transport-belt", 5}
+task[#task+1] = {"craft", "transport-belt", 5}
+task[#task+1] = {"craft", "transport-belt", 5}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"build", {x=-3, y=6}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-3, y=4}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-4.5, y=5.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-4.5, y=4.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-5.5, y=4.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-5.5, y=3.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-5.5, y=2.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-5.5, y=1.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-5.5, y=0.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-5.5, y=-0.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-5.5, y=-1.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-3, y=2}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-3, y=0}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-4.5, y=1.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-4.5, y=0.5}, "inserter", 6}
+task[#task+1] = {"craft", "small-electric-pole", 5}
+task[#task+1] = {"craft", "small-electric-pole", 5}
+task[#task+1] = {"build", {x=-4.5, y=-0.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-5.5, y=-2.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-5.5, y=-3.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-5.5, y=-4.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-5.5, y=-5.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-5.5, y=-6.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-5.5, y=-7.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-5.5, y=-8.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-5.5, y=-9.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-5.5, y=-10.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-5.5, y=-11.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-5.5, y=-12.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-5.5, y=-13.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-3, y=-2}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-3, y=-4}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-3, y=-6}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-3, y=-8}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-3, y=-10}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-3, y=-12}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-3, y=-14}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-4.5, y=-2.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-4.5, y=-3.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-4.5, y=-6.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-4.5, y=-7.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-4.5, y=-10.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-4.5, y=-11.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-4.5, y=-14.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-4.5, y=-15.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-3, y=-16}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-5.5, y=-14.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-5.5, y=-15.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-5.5, y=-16.5}, "transport-belt", 0}
+task[#task+1] = {"build", {x=-4.5, y=-5.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-4.5, y=-12.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-4.5, y=-17.5}, "small-electric-pole", 0}
+task[#task+1] = {"take", {x=-3, y=-16}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=-14}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=-12}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=-10}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=-8}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=-6}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=-4}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=-2}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=0}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=2}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=4}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=6}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=8}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=10}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=12}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=14}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=16}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=18}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=20}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=22}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=24}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=26}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3.5, y=29.5}, "iron-gear-wheel", -1, false, defines.inventory.assembling_machine_output}
+task[#task+1] = {"take", {x=-3.5, y=32.5}, "iron-gear-wheel", -1, false, defines.inventory.assembling_machine_output}
+task[#task+1] = {"take", {x=-14.5, y=22.5}, "copper-cable", -1, false, defines.inventory.assembling_machine_output}
+task[#task+1] = {"take", {x=-14.5, y=19.5}, "copper-cable", -1, false, defines.inventory.assembling_machine_output}
+task[#task+1] = {"put", "copper-plate", 100, {x=-14.5, y=22.5}, defines.inventory.assembling_machine_input}
+task[#task+1] = {"put", "copper-plate", 100, {x=-14.5, y=19.5}, defines.inventory.assembling_machine_input}
+task[#task+1] = {"craft", "electric-mining-drill", 4}
+task[#task+1] = {"craft", "assembling-machine-1", 6}
+task[#task+1] = {"craft", "electric-mining-drill", 4}
+task[#task+1] = {"build", {x=-7.5, y=19.5}, "electric-mining-drill", 2}
+task[#task+1] = {"build", {x=-7.5, y=16.5}, "electric-mining-drill", 2}
+task[#task+1] = {"build", {x=-7.5, y=13.5}, "electric-mining-drill", 2}
+task[#task+1] = {"build", {x=-7.5, y=10.5}, "electric-mining-drill", 2}
+task[#task+1] = {"build", {x=-7.5, y=7.5}, "electric-mining-drill", 2}
+task[#task+1] = {"take", {x=-17, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-19, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-21, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-23, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-23, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-19, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-21, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-17, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-27, y=27}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-25, y=27}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=27}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-27, y=29}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-25, y=29}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=29}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-22, y=29}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-20, y=29}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-20, y=29}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-27, y=31}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-25, y=31}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=31}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-22, y=31}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-20, y=31}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-20, y=31}, "iron-plate",-1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-27, y=33}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-25, y=33}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=33}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-22, y=33}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-20, y=33}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-20, y=33}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-27, y=35}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-25, y=35}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=35}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-22, y=35}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-20, y=35}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-20, y=35}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-27, y=37}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-25, y=37}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=37}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-22, y=37}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-20, y=37}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-20, y=37}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-22, y=39}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-20, y=39}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-20, y=39}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-22, y=41}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-20, y=41}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-20, y=41}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-22, y=43}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-20, y=43}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-20, y=43}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-22, y=45}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-20, y=45}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-20, y=45}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-22, y=47}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-20, y=47}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-20, y=47}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"craft", "iron-chest", 5}
+task[#task+1] = {"craft", "iron-chest", 5}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"build", {x=-5.5, y=30.5}, "inserter", 2}
+task[#task+1] = {"build", {x=-5.5, y=31.5}, "inserter", 2}
+task[#task+1] = {"build", {x=-7.5, y=31.5}, "inserter", 2}
+task[#task+1] = {"build", {x=-7.5, y=30.5}, "inserter", 2}
+task[#task+1] = {"craft", "lab", 3}
+task[#task+1] = {"build", {x=-6.5, y=29.5}, "inserter", 4}
+task[#task+1] = {"build", {x=-6.5, y=32.5}, "inserter", 0}
+task[#task+1] = {"put", "iron-plate", 50, {x=-3.5, y=29}, defines.inventory.assembling_machine_input}
+task[#task+1] = {"put", "iron-plate", 50, {x=-3.5, y=32}, defines.inventory.assembling_machine_input}
+task[#task+1] = {"build", {x=-6.5, y=34.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-6.5, y=34.5}, "automation-science-pack"}
+task[#task+1] = {"put", "copper-plate", 50, {x=-6.5, y=34.5}, defines.inventory.assembling_machine_input}
+task[#task+1] = {"build", {x=-9.5, y=32.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-9.5, y=32.5}, "automation-science-pack"}
+task[#task+1] = {"put", "copper-plate", 50, {x=-9.5, y=32.5}, defines.inventory.assembling_machine_input}
+task[#task+1] = {"build", {x=-9.5, y=29.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-9.5, y=29.5}, "automation-science-pack"}
+task[#task+1] = {"put", "copper-plate", 50, {x=-9.5, y=29.5}, defines.inventory.assembling_machine_input}
+task[#task+1] = {"build", {x=-6.5, y=27.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-6.5, y=27.5}, "automation-science-pack"}
+task[#task+1] = {"put", "copper-plate", 50, {x=-6.5, y=27.5}, defines.inventory.assembling_machine_input}
+task[#task+1] = {"build", {x=-6.5, y=30.5}, "iron-chest", 0}
+task[#task+1] = {"build", {x=-6.5, y=31.5}, "iron-chest", 0}
+task[#task+1] = {"build", {x=-7.5, y=29.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-8.5, y=27.5}, "inserter", 2}
+task[#task+1] = {"build", {x=-11.5, y=30.5}, "inserter", 2}
+task[#task+1] = {"build", {x=-11.5, y=31.5}, "inserter", 2}
+task[#task+1] = {"build", {x=-8.5, y=34.5}, "inserter", 2}
+task[#task+1] = {"build", {x=-7.5, y=32.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-11.5, y=32.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-13.5, y=29.5}, "lab", 0}
+task[#task+1] = {"build", {x=-13.5, y=32.5}, "lab", 0}
+task[#task+1] = {"build", {x=-10.5, y=35.5}, "lab", 0}
+task[#task+1] = {"time"}
+task[#task+1] = {"speed", 2}
+task[#task+1] = {"build", {x=-3.5, y=35.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-3.5, y=35.5}, "iron-gear-wheel"}
+task[#task+1] = {"build", {x=-3.5, y=39.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-3.5, y=39.5}, "transport-belt"}
+task[#task+1] = {"build", {x=-2.5, y=37.5}, "inserter", 0}
+task[#task+1] = {"build", {x=-5.5, y=38.5}, "inserter", 2}
+task[#task+1] = {"build", {x=-6.5, y=39.5}, "inserter", 0}
+task[#task+1] = {"build", {x=-5.5, y=40.5}, "inserter", 2}
+task[#task+1] = {"craft", "iron-chest", 1}
+task[#task+1] = {"build", {x=-5.5, y=39.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-1.5, y=37.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-6.5, y=40.5}, "iron-chest", 0}
+task[#task+1] = {"put", "iron-plate", 50, {x=-3.5, y=29.5}, defines.inventory.assembling_machine_input}
+task[#task+1] = {"put", "iron-plate", 50, {x=-3.5, y=32.5}, defines.inventory.assembling_machine_input}
+task[#task+1] = {"take", {x=-3, y=26}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=24}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=22}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=20}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=18}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=16}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=14}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=12}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=10}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=8}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=6}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=4}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=2}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=0}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=-2}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=-4}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=-6}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=-8}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=-10}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=-12}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=-14}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-3, y=-16}, "iron-plate", -1, true, defines.inventory.furnace_result}
+task[#task+1] = {"craft", "boiler", 1}
+task[#task+1] = {"craft", "steam-engine", 1}
+task[#task+1] = {"craft", "steam-engine", 1}
+task[#task+1] = {"craft", "boiler", 1}
+task[#task+1] = {"craft", "steam-engine", 1}
+task[#task+1] = {"craft", "steam-engine", 1}
+task[#task+1] = {"craft", "boiler", 1}
+task[#task+1] = {"craft", "steam-engine", 1}
+task[#task+1] = {"craft", "steam-engine", 1}
+task[#task+1] = {"craft", "boiler", 1}
+task[#task+1] = {"craft", "steam-engine", 1}
+task[#task+1] = {"craft", "steam-engine", 1}
+task[#task+1] = {"craft", "pipe", 10}
+task[#task+1] = {"craft", "transport-belt", 10}
+task[#task+1] = {"craft", "transport-belt", 10}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"build", {x=-41.5, y=-19.5}, "electric-mining-drill", 0}
+task[#task+1] = {"build", {x=-41.5, y=-22}, "boiler", 0}
+task[#task+1] = {"build", {x=-41.5, y=-25.5}, "steam-engine", 0}
+task[#task+1] = {"build", {x=-41.5, y=-30.5}, "steam-engine", 0}
+task[#task+1] = {"build", {x=-39.5, y=-22.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-39.5, y=-29.5}, "small-electric-pole", 0}
+task[#task+1] = {"craft", "pipe", 1}
+task[#task+1] = {"build", {x=-37.5, y=-22}, "boiler", 0}
+task[#task+1] = {"build", {x=-37.5, y=-25.5}, "steam-engine", 0}
+task[#task+1] = {"build", {x=-37.5, y=-30.5}, "steam-engine", 0}
+task[#task+1] = {"build", {x=-37.5, y=-19.5}, "electric-mining-drill", 0}
+task[#task+1] = {"build", {x=-39.5, y=-21.5}, "pipe", 0}
+task[#task+1] = {"build", {x=-34.5, y=-19.5}, "electric-mining-drill", 0}
+task[#task+1] = {"build", {x=-34.5, y=-22}, "boiler", 0}
+task[#task+1] = {"build", {x=-34.5, y=-25.5}, "steam-engine", 0}
+task[#task+1] = {"build", {x=-34.5, y=-30.5}, "steam-engine", 0}
+task[#task+1] = {"build", {x=-32.5, y=-22.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-32.5, y=-29.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-32.599609375, y=-21.5}, "pipe", 0}
+task[#task+1] = {"build", {x=-30.5, y=-22}, "boiler", 0}
+task[#task+1] = {"build", {x=-30.5, y=-19.5}, "electric-mining-drill", 0}
+task[#task+1] = {"build", {x=-30.5, y=-25.5}, "steam-engine", 0}
+task[#task+1] = {"build", {x=-30.5, y=-30.5}, "steam-engine", 0}
+task[#task+1] = {"take", {x=-17, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-19, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-21, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-23, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=12}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-23, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-21, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-19, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-17, y=14}, "coal", -1, false, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-22, y=29}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-20, y=29}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-20, y=29}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-22, y=31}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-20, y=31}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-20, y=31}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-22, y=33}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-20, y=33}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-20, y=33}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-22, y=35}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-20, y=35}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-20, y=35}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-22, y=37}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-20, y=37}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-20, y=37}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-22, y=39}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-20, y=39}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-20, y=39}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-22, y=41}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-20, y=41}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-20, y=41}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-22, y=43}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-20, y=43}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-20, y=43}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-22, y=45}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-20, y=45}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-20, y=45}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-22, y=47}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-20, y=47}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-20, y=47}, "iron-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"craft", "transport-belt", 10}
+task[#task+1] = {"craft", "transport-belt", 10}
+task[#task+1] = {"take", {x=-6.5, y=40.5}, "transport-belt", -1, true, defines.inventory.chest}
+task[#task+1] = {"put", "coal", 5, {x=-27, y=37}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-25, y=37}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=37}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-27, y=35}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-25, y=35}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=35}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-27, y=33}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-25, y=33}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=33}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-27, y=31}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-25, y=31}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=31}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-27, y=29}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-25, y=29}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=29}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"put", "coal", 5, {x=-27, y=27}, defines.inventory.fuel}
+task[#task+1] = {"put", "coal", 5, {x=-25, y=27}, defines.inventory.fuel}
+task[#task+1] = {"take", {x=-25, y=27}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-14.5, y=19.5}, "copper-cable", -1, true, defines.inventory.assembling_machine_output}
+task[#task+1] = {"take", {x=-14.5, y=22.5}, "copper-cable", -1, true, defines.inventory.assembling_machine_output}
+task[#task+1] = {"put", "copper-plate", 100, {x=-14.5, y=19.5}, defines.inventory.assembling_machine_input}
+task[#task+1] = {"put", "copper-plate", 100, {x=-14.5, y=22.5}, defines.inventory.assembling_machine_input}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"craft", "transport-belt", 10}
+task[#task+1] = {"craft", "inserter", 10}
+task[#task+1] = {"craft", "assembling-machine-1", 4}
+task[#task+1] = {"build", {x=-0.5, y=26.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=25.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=24.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=23.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=22.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=21.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-1.5, y=25.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-1.5, y=24.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-1.5, y=23.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-1.5, y=18.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-1.5, y=21.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-1.5, y=20.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-0.5, y=20.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=19.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=18.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=17.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=16.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=15.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=14.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=13.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-1.5, y=17.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-1.5, y=16.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-1.5, y=13.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-1.5, y=12.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-0.5, y=12.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=11.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=10.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=9.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=8.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=7.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=6.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-1.5, y=11.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-1.5, y=9.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-1.5, y=8.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-1.5, y=5.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-1.5, y=4.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-1.5, y=6.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-0.5, y=5.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=4.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=3.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=2.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=1.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=0.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=-0.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=-1.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-1.5, y=1.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-1.5, y=0.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-1.5, y=-0.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-1.5, y=-2.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-1.5, y=-3.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-0.5, y=-2.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=-3.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=-4.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=-5.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=-6.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=-7.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=-8.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=-9.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=-10.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-1.5, y=-5.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-1.5, y=-6.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-1.5, y=-7.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-1.5, y=-10.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-1.5, y=-11.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-1.5, y=-12.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-0.5, y=-11.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=-12.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=-13.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=-14.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=-15.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=-16.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=-17.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-1.5, y=-14.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-1.5, y=-15.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-1.5, y=-17.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-0.5, y=27.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=28.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=29.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-1.5, y=29.5}, "inserter", 2}
+task[#task+1] = {"build", {x=-0.5, y=30.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=31.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-1.5, y=30.5}, "inserter", 2}
+task[#task+1] = {"build", {x=-1.5, y=32.5}, "inserter", 2}
+task[#task+1] = {"build", {x=-0.5, y=32.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=33.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=34.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=35.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=36.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=37.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=38.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=39.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-1.5, y=35.5}, "inserter", 2}
+task[#task+1] = {"build", {x=-1.5, y=38.5}, "inserter", 2}
+task[#task+1] = {"build", {x=-1.5, y=36.5}, "inserter", 2}
+task[#task+1] = {"build", {x=-1.5, y=33.5}, "inserter", 2}
+task[#task+1] = {"build", {x=-0.5, y=40.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=41.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=42.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=43.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=44.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=45.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=46.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=47.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=48.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-0.5, y=49.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-3.5, y=42.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-3.5, y=42.5}, "iron-gear-wheel"}
+task[#task+1] = {"build", {x=-3.5, y=45.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-3.5, y=45.5}, "iron-gear-wheel"}
+task[#task+1] = {"build", {x=-1.5, y=43.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-1.5, y=41.5}, "inserter", 2}
+task[#task+1] = {"build", {x=-1.5, y=42.5}, "inserter", 2}
+task[#task+1] = {"build", {x=-1.5, y=44.5}, "inserter", 2}
+task[#task+1] = {"build", {x=-1.5, y=45.5}, "inserter", 2}
+task[#task+1] = {"craft", "iron-chest", 1}
+task[#task+1] = {"craft", "iron-chest", 1}
+task[#task+1] = {"build", {x=-5.5, y=43.5}, "inserter", 2}
+task[#task+1] = {"build", {x=-5.5, y=44.5}, "inserter", 2}
+task[#task+1] = {"build", {x=-5.5, y=42.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-6.5, y=43.5}, "iron-chest", 0}
+task[#task+1] = {"build", {x=-6.5, y=44.5}, "iron-chest", 0}
+task[#task+1] = {"take", {x=-25, y=27}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-25, y=29}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-25, y=31}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-25, y=33}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-25, y=35}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-25, y=37}, "copper-plate", -1, false, defines.inventory.furnace_result}
+task[#task+1] = {"take", {x=-14.5, y=19.5}, "copper-cable", -1, false, defines.inventory.assembling_machine_output}
+task[#task+1] = {"take", {x=-14.5, y=22.5}, "copper-cable", -1, false, defines.inventory.assembling_machine_output}
+task[#task+1] = {"put", "copper-plate", 100, {x=-14.5, y=19.5}, defines.inventory.assembling_machine_input}
+task[#task+1] = {"put", "copper-plate", 100, {x=-14.5, y=22.5}, defines.inventory.assembling_machine_input}
+task[#task+1] = {"craft", "electric-mining-drill", 5}
+task[#task+1] = {"craft", "electric-mining-drill", 5}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"craft", "inserter", 5}
+task[#task+1] = {"build", {x=-23.5, y=16.5}, "electric-mining-drill", 4}
+task[#task+1] = {"build", {x=-26.5, y=16.5}, "electric-mining-drill", 4}
+task[#task+1] = {"build", {x=-22.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-23.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-24.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-25.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-26.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-27.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-28.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-29.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-28.5, y=17.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-30.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-31.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-32.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-33.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-34.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-35.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-35.5, y=17.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-36.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-37.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-38.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-39.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-40.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-41.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-42.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-43.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-44.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-45.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-46.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-42.5, y=17.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-49.5, y=17.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-44.5, y=20.5}, "electric-mining-drill", 0}
+task[#task+1] = {"build", {x=-41.5, y=20.5}, "electric-mining-drill", 0}
+task[#task+1] = {"build", {x=-38.5, y=20.5}, "electric-mining-drill", 0}
+task[#task+1] = {"build", {x=-35.5, y=20.5}, "electric-mining-drill", 0}
+task[#task+1] = {"build", {x=-32.5, y=20.5}, "electric-mining-drill", 0}
+task[#task+1] = {"build", {x=-29.5, y=20.5}, "electric-mining-drill", 0}
+task[#task+1] = {"build", {x=-21.5, y=17.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-20.5, y=17.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-21.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-20.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-19.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-18.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-17.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-16.5, y=18.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=19.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=20.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=21.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=22.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=23.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=24.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=25.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=26.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=27.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=28.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=29.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=30.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=31.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=32.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=33.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-15.5, y=33.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-15.5, y=34.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-15.5, y=35.5}, "transport-belt", 4}
+task[#task+1] = {"mine", {x=-15.5, y=33.5}}
+task[#task+1] = {"mine", {x=-15.5, y=35.5}}
+task[#task+1] = {"mine", {x=-15.5, y=34.5}}
+task[#task+1] = {"build", {x=-16.5, y=34.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=35.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=36.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-11.5, y=37.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-11.5, y=38.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-11.5, y=39.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=37.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=38.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=39.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=40.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-14, y=39}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-14, y=41}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-15.5, y=39.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-15.5, y=40.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-12.5, y=39.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-12.5, y=40.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-15.5, y=38.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-12.5, y=38.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-11.5, y=40.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-11.5, y=41.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=41.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=42.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=43.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=44.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=45.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=46.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=47.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=48.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=49.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=50.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=51.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=52.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=53.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=54.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-11.5, y=42.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-11.5, y=43.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-11.5, y=44.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-11.5, y=45.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-11.5, y=46.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-11.5, y=47.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-11.5, y=48.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-11.5, y=49.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-11.5, y=50.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-11.5, y=51.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-11.5, y=52.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-11.5, y=53.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-11.5, y=54.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-14, y=43}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-14, y=45}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-14, y=47}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-14, y=49}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-14, y=51}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-14, y=53}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-14, y=55}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-15.5, y=43.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-12.5, y=43.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-12.5, y=44.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-15.5, y=44.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-15.5, y=47.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-12.5, y=47.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-12.5, y=48.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-15.5, y=48.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-15.5, y=51.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-12.5, y=51.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-12.5, y=52.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-15.5, y=52.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-15.5, y=45.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-15.5, y=49.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-12.5, y=49.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-12.5, y=45.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-14, y=57}, "stone-furnace", 0}
+task[#task+1] = {"build", {x=-15.5, y=55.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-15.5, y=56.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-12.5, y=55.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-12.5, y=56.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-16.5, y=55.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-16.5, y=56.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-11.5, y=55.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-11.5, y=56.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-15.5, y=54.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-12.5, y=54.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-8.5, y=56.5}, "assembling-machine-1", 0}
+task[#task+1] = {"build", {x=-8.5, y=53.5}, "assembling-machine-1", 0}
+task[#task+1] = {"build", {x=-8.5, y=50.5}, "assembling-machine-1", 0}
+task[#task+1] = {"build", {x=-4.5, y=50.5}, "assembling-machine-1", 0}
+task[#task+1] = {"build", {x=-4.5, y=53.5}, "assembling-machine-1", 0}
+task[#task+1] = {"build", {x=-4.5, y=56.5}, "assembling-machine-1", 0}
+task[#task+1] = {"build", {x=-10.5, y=51.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-6.5, y=51.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-2.5, y=51.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-2.5, y=52.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-6.5, y=52.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-10.5, y=52.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-6.5, y=49.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-6.5, y=54.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-6.5, y=55.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-10.5, y=57.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-6.5, y=57.5}, "inserter", 6}
+task[#task+1] = {"build", {x=-2.5, y=57.5}, "inserter", 6}
+task[#task+1] = {"craft", "long-handed-inserter", 1}
+task[#task+1] = {"build", {x=-2.5, y=50.5}, "long-handed-inserter", 2}
+task[#task+1] = {"build", {x=-2.5, y=54.5}, "long-handed-inserter", 2}
+task[#task+1] = {"build", {x=-2.5, y=55.5}, "long-handed-inserter", 2}
+task[#task+1] = {"build", {x=-10.5, y=50.5}, "small-electric-pole", 0}
+task[#task+1] = {"build", {x=-6.5, y=50.5}, "small-electric-pole", 0}
 task[1729] = {"build", {x=-2.5, y=49.5}, "small-electric-pole", 0}
 task[1730] = {"build", {x=-2.5, y=53.5}, "small-electric-pole", 0}
 task[1731] = {"build", {x=-6.5, y=56.5}, "small-electric-pole", 0}

@@ -74,18 +74,40 @@ function walk(p, location)
         p.walking_state = {walking = true, direction = defines.direction.northwest}
     elseif direction == 8 then
         p.walking_state = {walking = true, direction = defines.direction.north}
-    --else
-        --p.walking_state = {walking = false}
     end
 end
 
 function path(p, location)
     p.surface.request_path({
         bounding_box = p.character.prototype.collision_box,
-        collision_mask = {"object-layer"},
-        start = {p.position.x, p.position.y},
+        collision_mask = {"player-layer", "water-tile"},
+        start = p.position,
+        radius = 3.5,
         goal = location,
-        force = "player",
+        force = p.force,
+        can_open_gates = true,
+        entity_to_ignore = p.character,
+        pathfinding_flags = {
+            allow_destroy_friendly_entities = false,
+            cache = false,
+            prefer_straight_paths = true,
+            low_priority = false
+        },
+    })
+    return
+end
+
+--this is needed as the reach distance for mining is shorten than placing/interracting 
+function minepath(p, location)
+    p.surface.request_path({
+        bounding_box = p.character.prototype.collision_box,
+        collision_mask = {"player-layer", "water-tile"},
+        start = p.position,
+        radius = 0.5,
+        goal = location,
+        force = p.force,
+        can_open_gates = true,
+        entity_to_ignore = p.character,
         pathfinding_flags = {
             allow_destroy_friendly_entities = false,
             cache = false,
@@ -121,7 +143,7 @@ function mine(p, location)
         --can we reach to mine?
         if not p.can_reach_entity(p.selected) then
             if not route then
-                path(p, location) 
+                minepath(p, location) 
             end
             return false
         end
@@ -130,7 +152,7 @@ function mine(p, location)
 end
 
 function build(p, location, item, direction)
-    --create_entity already checks player reach
+    --can_place_entity already checks player reach
     --if out of reach, placing fails, but keep trying.
     --we can use this to place whilst walking as it will keep trying until it succeeds.
     if p.get_item_count(item) < 1 then
@@ -249,13 +271,13 @@ function science(p)
 end
 
 function recipe(p, location, recipe)
+    p.update_selected_entity(location)
     if not p.can_reach_entity(p.selected) then
         if not route then
             path(p, location)
         end
         return false
     else
-        p.update_selected_entity(location)
         delroute(p)
     end
 
@@ -280,7 +302,7 @@ function delroute(p)
 end
 
 function within(one, two)
-    if one.x>two.x-0.7 and one.x<two.x+0.7 and one.y>two.y-0.7 and one.y<two.y+0.7 then
+    if one.x>two.x-0.4 and one.x<two.x+0.4 and one.y>two.y-0.4 and one.y<two.y+0.4 then
         return true
     else
         return false
@@ -375,6 +397,8 @@ script.on_event(defines.events.on_script_path_request_finished, function(event)
                 i = i+1
             end
         end
+    else
+        error("Pathing failed")
     end
 
 
