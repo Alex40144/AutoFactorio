@@ -1,4 +1,5 @@
 #this copys game files into correct folder
+#this is used for development to you can just ignore it.
 import os, glob, shutil
 import json
 
