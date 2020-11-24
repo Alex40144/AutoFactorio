@@ -80,7 +80,7 @@ end
 function path(p, location)
     p.surface.request_path({
         bounding_box = p.character.prototype.collision_box,
-        collision_mask = {"player-layer", "water-tile"},
+        collision_mask = p.character.prototype.collision_mask,
         start = p.position,
         radius = 3.5,
         goal = location,
@@ -101,7 +101,7 @@ end
 function minepath(p, location)
     p.surface.request_path({
         bounding_box = p.character.prototype.collision_box,
-        collision_mask = {"player-layer", "water-tile"},
+        collision_mask = p.character.prototype.collision_mask,
         start = p.position,
         radius = 0.5,
         goal = location,
