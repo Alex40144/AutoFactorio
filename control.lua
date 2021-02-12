@@ -79,10 +79,10 @@ end
 
 function path(p, location)
     p.surface.request_path({
-        bounding_box = p.character.prototype.collision_box,
-        collision_mask = p.character.prototype.collision_mask,
+        bounding_box = p.character.bounding_box,
+        collision_mask = {"player-layer"},
         start = p.position,
-        radius = 3.5,
+        radius = 5,
         goal = location,
         force = p.force,
         can_open_gates = true,
@@ -330,11 +330,9 @@ function doTask(p, tasks)
     elseif tasks[1] == "speed" then
         return speed(p, tasks[2])
     elseif tasks[1] == "time" then
-        --output current run time
         time(p)
         return true
     elseif tasks[1] == "end" then
-        --end the run
         debug("ending run")
         return "end"
     end

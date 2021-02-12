@@ -3,7 +3,7 @@
     "version": "0.0.2",
     "title": "AutoFactorio",
     "author": "Alex40144",
-    "factorio_version": "0.18",
-    "dependencies": ["base >= 0.18"],
+    "factorio_version": "1.1",
+    "dependencies": ["base >= 1.1"],
     "description": "This automises the automation of factorio"
 }
