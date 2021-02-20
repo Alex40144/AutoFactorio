@@ -28,7 +28,7 @@ end
 
 -----------------------------------------------------------------------------------------------------
 
-function calcbearing(p, from, to)
+function calcbearing(from, to)
     deltax = to.x - from.x
     deltay = to.y - from.y
 
@@ -36,10 +36,8 @@ function calcbearing(p, from, to)
     if bearing < 0 then
         bearing = bearing + 2* math.pi
     end
-    x = 2 * math.cos(bearing)  --radians
-    y = 2 * math.sin(bearing)  --radians
 
-    bearing_deg = math.floor(bearing * 57.2957795)
+    bearing_deg = math.deg(bearing)
 
     if bearing_deg > 270 then
         bearing_deg = bearing_deg - 270
@@ -53,8 +51,14 @@ end
 
 
 function walk(p, location)
-    local bearing = calcbearing(p, p.position, location)
-    local direction = math.floor(bearing/45 + 0.5)
+    local bearing = calcbearing(p.position, location)
+    local direction = bearing/45  --get compass direction in terms of 8 point compass
+
+    if direction % 1 >= 0.5 then --round to nearest compass direction
+        direction = math.ceil(direction)
+    else
+        direction = math.floor(direction)
+    end
 
     if direction == 0 then
         p.walking_state = {walking = true, direction = defines.direction.north}
@@ -100,8 +104,8 @@ end
 --this is needed as the reach distance for mining is shorten than placing/interracting 
 function minepath(p, location)
     p.surface.request_path({
-        bounding_box = p.character.prototype.collision_box,
-        collision_mask = p.character.prototype.collision_mask,
+        bounding_box = p.character.bounding_box,
+        collision_mask = {"player-layer"},
         start = p.position,
         radius = 0.5,
         goal = location,
@@ -121,11 +125,13 @@ end
 
 
 function craft(p, item, count)
-    if count == -1 then
+    if count == -1 then --craft as many as possible
         count = p.get_craftable_count(item)
     end
+
     crafted = p.begin_crafting{recipe = item, count = count}
     debug("crafting " .. count .. " " .. item)
+
     if crafted < count then
         error("Did not craft full count of " .. item)
     end
@@ -166,6 +172,7 @@ function build(p, location, item, direction)
             p.remove_item{name=item, count=1}
             return true
         else
+            error("Fast replace failed")
             return false
         end
     elseif p.can_place_entity{name = item, position = location, direction = direction, force = "player"} then
@@ -176,11 +183,12 @@ function build(p, location, item, direction)
             p.remove_item{name=item, count=1}
             return true
         else
+            error("building failed")
             return false
         end
     -- we might be stood where we want to place the object
-    elseif p.position.x > location.x-2 and p.position.x < location.x+2 and p.position.y > location.y-2 and p.position.y < location.y+2 then
-            path(p, {location.x-p.position.x-4, location.y-p.position.y+2})
+    elseif within(p.position, location, 2) then --move to a random place hoping that we can move to it.
+            path(p, {p.position.x+math.random(-4, 4), p.position.y+math.random(-4, 4)})
     else
         if not route then
             path(p, location)
@@ -206,17 +214,21 @@ function take(p, location, item, count, skip, inv)
     end
     ammountininv = inv.get_item_count(item)
     if ammountininv < 1 then
-        error("did not take any " .. item)
+        error("There wasn't any " .. item)
         if skip == true then
             delroute(p)
             return true
         else
             return false
         end
-    elseif count == -1 then
-        --take everything
+    elseif count == -1 then  --take everything
         p.insert{name=item, count=ammountininv}
         inv.remove{name=item, count=ammountininv}
+        delroute(p)
+        return true
+    elseif count < ammountininv then
+        p.insert{name=item, count=count}
+        inv.remove{name=item, count=count}
         delroute(p)
         return true
     else
@@ -241,15 +253,15 @@ function put(p, item, count, location, destinv)
     local countininventory = p.get_item_count(item)
     local destination = p.selected.get_inventory(destinv)
 
-    --we can only move what we have
-    tomove = math.min(countininventory, count)
-
     --this is to check if tomove = 0 as .insert doesn't like it
-    if tomove < 1 then
+    if countininventory < 1 then
         error("did not put any " .. item)
-    else
+    elseif count < countininventory then --we have enough items to move
+        inserted = destination.insert{name = item, count = count}
+        p.remove_item{name=item, count=inserted}
+    else --we don't have enough items to move, we will do all
+        tomove = math.min(countininventory, count)
         inserted = destination.insert{name = item, count = tomove}
-        --be honest
         p.remove_item{name=item, count=inserted}
     end
     delroute(p)
@@ -277,8 +289,6 @@ function recipe(p, location, recipe)
             path(p, location)
         end
         return false
-    else
-        delroute(p)
     end
 
     local contents = p.selected.set_recipe(recipe)
@@ -287,6 +297,7 @@ function recipe(p, location, recipe)
             p.insert{name = name, count = count}
         end
     end
+    delroute(p)
     return true
 end
 
@@ -301,8 +312,8 @@ function delroute(p)
     p.walking_state = {walking = false}
 end
 
-function within(one, two)
-    if one.x>two.x-0.4 and one.x<two.x+0.4 and one.y>two.y-0.4 and one.y<two.y+0.4 then
+function within(one, two, margin)
+    if one.x>two.x-margin and one.x<two.x+margin and one.y>two.y-margin and one.y<two.y+margin then
         return true
     else
         return false
@@ -351,7 +362,7 @@ script.on_event(defines.events.on_tick, function(event)
             if route then
                 if #route > 2 then
                     walk(p, route[2].position)
-                    if within( p.position, route[2].position) then
+                    if within( p.position, route[2].position, 0.4) then
                         table.remove(route, 1)
                     end
                 end
@@ -366,12 +377,14 @@ script.on_event(defines.events.on_tick, function(event)
             end
 
         else
-            -- if the next task is mining or walking, we can do that whilst moving.
-            if task[current_task][1] ~= "mine" or task[current_task][1] ~= "walk" then
+            -- if the next task is not mining then we can do other ones whilst moving.
+            if task[current_task][1] ~= "mine" then
                 result = doTask(p, task[current_task])
                 if result ~= nil then
                     if result == true then
                         current_task = current_task + 1
+                    elseif result == "end" then
+                        enabled = false
                     end
                 end
             end
@@ -387,7 +400,6 @@ script.on_event(defines.events.on_script_path_request_finished, function(event)
     elseif event.path then
         route = event.path
         if dbg then
-            
             local i = 1
             rendering.clear()
             while i < #route do
