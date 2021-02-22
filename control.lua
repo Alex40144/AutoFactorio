@@ -3,7 +3,7 @@ local task = require("tasks")
 local research = require("research")
 
 dbg = true
-enabled = true
+enabled = false
 route = nil
 local current_task = 0
 local current_research = 0
@@ -81,39 +81,18 @@ function walk(p, location)
     end
 end
 
-function path(p, location)
+function path(p, location, radius)
     p.surface.request_path({
         bounding_box = p.character.bounding_box,
-        collision_mask = {"player-layer"},
+        collision_mask = p.character.prototype.collision_mask,
         start = p.position,
-        radius = 5,
+        radius = radius,
         goal = location,
         force = p.force,
-        can_open_gates = true,
         entity_to_ignore = p.character,
         pathfinding_flags = {
             allow_destroy_friendly_entities = false,
-            cache = false,
-            prefer_straight_paths = true,
-            low_priority = false
-        },
-    })
-    return
-end
-
---this is needed as the reach distance for mining is shorten than placing/interracting 
-function minepath(p, location)
-    p.surface.request_path({
-        bounding_box = p.character.bounding_box,
-        collision_mask = {"player-layer"},
-        start = p.position,
-        radius = 0.5,
-        goal = location,
-        force = p.force,
-        can_open_gates = true,
-        entity_to_ignore = p.character,
-        pathfinding_flags = {
-            allow_destroy_friendly_entities = false,
+            allow_paths_through_own_entities = false,
             cache = false,
             prefer_straight_paths = true,
             low_priority = false
@@ -149,7 +128,7 @@ function mine(p, location)
         --can we reach to mine?
         if not p.can_reach_entity(p.selected) then
             if not route then
-                minepath(p, location) 
+                path(p, location, 0.5) 
             end
             return false
         end
@@ -188,10 +167,10 @@ function build(p, location, item, direction)
         end
     -- we might be stood where we want to place the object
     elseif within(p.position, location, 2) then --move to a random place hoping that we can move to it.
-            path(p, {p.position.x+math.random(-4, 4), p.position.y+math.random(-4, 4)})
+            path(p, {p.position.x+math.random(-4, 4), p.position.y+math.random(-4, 4)}, 2)
     else
         if not route then
-            path(p, location)
+            path(p, location, 3)
         end
         return false
     end
@@ -202,7 +181,7 @@ function take(p, location, item, count, skip, inv)
 
     if not p.can_reach_entity(p.selected) then
         if not route then
-            path(p, location)
+            path(p, location, 3)
         end
         return false
     end
@@ -245,7 +224,7 @@ function put(p, item, count, location, destinv)
     p.update_selected_entity(location)
     if not p.can_reach_entity(p.selected) then
         if not route then
-            path(p, location)
+            path(p, location, 3)
         end
         return false
     end
@@ -286,7 +265,7 @@ function recipe(p, location, recipe)
     p.update_selected_entity(location)
     if not p.can_reach_entity(p.selected) then
         if not route then
-            path(p, location)
+            path(p, location, 5)
         end
         return false
     end
@@ -390,6 +369,12 @@ script.on_event(defines.events.on_tick, function(event)
             end
         end
     end
+end)
+
+script.on_event(defines.events.on_cutscene_cancelled, function(event)
+    enabled = true
+
+
 end)
 
 --when we have out path

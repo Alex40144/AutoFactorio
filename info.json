@@ -5,5 +5,5 @@
     "author": "Alex40144",
     "factorio_version": "1.1",
     "dependencies": ["base >= 1.1"],
-    "description": "This automises the automation of factorio"
+    "description": "This automates the automation"
 }
