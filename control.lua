@@ -99,7 +99,7 @@ function path(p, location, radius)
         entity_to_ignore = p.character,
         pathfinding_flags = {
             allow_paths_through_own_entities = true,
-            prefer_straight_paths = true,
+            prefer_straight_paths = false,
             low_priority = false
         },
     })
@@ -131,11 +131,16 @@ function mine(p, location)
     else
         p.update_selected_entity(location)
         --can we reach to mine?
-        if not p.can_reach_entity(p.selected) then
-            if not route then
-                path(p, location, 0.5) 
+        if p.selected ~= nil then
+            if not p.can_reach_entity(p.selected) then
+                if not route then
+                    path(p, location, 0.5) 
+                end
+                return false
             end
-            return false
+        else
+            error("no entity selected")
+            error(location)
         end
         p.mining_state = {mining = true, position = location}
     end
