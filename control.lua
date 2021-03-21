@@ -82,8 +82,15 @@ function walk(p, location)
 end
 
 function path(p, location, radius)
+
+    local x1 = p.character.bounding_box.left_top.x - p.position.x
+    local y1 = p.character.bounding_box.left_top.y - p.position.y
+    local x2 = p.character.bounding_box.right_bottom.x - p.position.x
+    local y2 = p.character.bounding_box.right_bottom.y - p.position.y
+    local bounding = {{x1, y1},{x2, y2}}
+
     p.surface.request_path({
-        bounding_box = p.character.bounding_box,
+        bounding_box = bounding,
         collision_mask = p.character.prototype.collision_mask,
         start = p.position,
         radius = radius,
@@ -91,9 +98,7 @@ function path(p, location, radius)
         force = p.force,
         entity_to_ignore = p.character,
         pathfinding_flags = {
-            allow_destroy_friendly_entities = false,
-            allow_paths_through_own_entities = false,
-            cache = false,
+            allow_paths_through_own_entities = true,
             prefer_straight_paths = true,
             low_priority = false
         },
@@ -346,6 +351,7 @@ script.on_event(defines.events.on_tick, function(event)
                     end
                 end
             end
+            debug(current_task)
             result = doTask(p, task[current_task])
             if result ~= nil then
                 if result == true then
@@ -358,6 +364,7 @@ script.on_event(defines.events.on_tick, function(event)
         else
             -- if the next task is not mining then we can do other ones whilst moving.
             if task[current_task][1] ~= "mine" then
+                debug(current_task)
                 result = doTask(p, task[current_task])
                 if result ~= nil then
                     if result == true then
