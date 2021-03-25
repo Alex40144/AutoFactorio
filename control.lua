@@ -1,10 +1,12 @@
 require "util"
 local task = require("tasks")
 local research = require("research")
+local Position = require("__stdlib__/stdlib/area/position")
 
 dbg = true
 enabled = false
 route = nil
+path_progress = 1
 local current_task = 0
 local current_research = 0
 local destination = {x=0, y=0}
@@ -28,58 +30,7 @@ end
 
 -----------------------------------------------------------------------------------------------------
 
-function calcbearing(from, to)
-    deltax = to.x - from.x
-    deltay = to.y - from.y
 
-    bearing = math.atan2(deltay,deltax)  --radians
-    if bearing < 0 then
-        bearing = bearing + 2* math.pi
-    end
-
-    bearing_deg = math.deg(bearing)
-
-    if bearing_deg > 270 then
-        bearing_deg = bearing_deg - 270
-    else
-        bearing_deg = bearing_deg + 90
-    end
-
-    return bearing_deg
-end
-
-
-
-function walk(p, location)
-    local bearing = calcbearing(p.position, location)
-    local direction = bearing/45  --get compass direction in terms of 8 point compass
-
-    if direction % 1 >= 0.5 then --round to nearest compass direction
-        direction = math.ceil(direction)
-    else
-        direction = math.floor(direction)
-    end
-
-    if direction == 0 then
-        p.walking_state = {walking = true, direction = defines.direction.north}
-    elseif direction == 1 then
-        p.walking_state = {walking = true, direction = defines.direction.northeast}
-    elseif direction == 2 then
-        p.walking_state = {walking = true, direction = defines.direction.east}
-    elseif direction == 3 then
-        p.walking_state = {walking = true, direction = defines.direction.southeast}
-    elseif direction == 4 then
-        p.walking_state = {walking = true, direction = defines.direction.south}
-    elseif direction == 5 then
-        p.walking_state = {walking = true, direction = defines.direction.southwest}
-    elseif direction == 6 then
-        p.walking_state = {walking = true, direction = defines.direction.west}
-    elseif direction == 7 then
-        p.walking_state = {walking = true, direction = defines.direction.northwest}
-    elseif direction == 8 then
-        p.walking_state = {walking = true, direction = defines.direction.north}
-    end
-end
 
 function path(p, location, radius)
 
@@ -97,13 +48,34 @@ function path(p, location, radius)
         goal = location,
         force = p.force,
         entity_to_ignore = p.character,
+        path_resolution_modifier = 3,
         pathfinding_flags = {
             allow_paths_through_own_entities = true,
-            prefer_straight_paths = false,
+            prefer_straight_paths = true,
             low_priority = false
         },
     })
     return
+end
+
+function moveAlongPath(p, path)
+    local nextNode = path[path_progress]
+    if nextNode == nil then
+        return false
+    end
+
+    local nodeDistance = Position.distance(p.position, nextNode.position)
+
+    while nodeDistance <= p.character_running_speed * 5 do
+        path_progress = path_progress + 1
+        nextNode = path[path_progress]
+        if nextNode == nil then
+            return true
+        end
+        nodeDistance = Position.distance(p.position, nextNode.position)
+    end
+    local direction = Position.complex_direction_to(p.position, nextNode.position, true)
+    p.character.walking_state = {walking = true, direction = direction}
 end
 
 
@@ -130,11 +102,11 @@ function mine(p, location)
         return true
     else
         p.update_selected_entity(location)
-        --can we reach to mine?
+        local bottom_right = p.selected.selection_box.right_bottom
         if p.selected ~= nil then
             if not p.can_reach_entity(p.selected) then
                 if not route then
-                    path(p, location, 0.5) 
+                    path(p, bottom_right, 0.5) 
                 end
                 return false
             end
@@ -177,10 +149,10 @@ function build(p, location, item, direction)
         end
     -- we might be stood where we want to place the object
     elseif within(p.position, location, 2) then --move to a random place hoping that we can move to it.
-            path(p, {p.position.x+math.random(-4, 4), p.position.y+math.random(-4, 4)}, 2)
+            path(p, {p.position.x+math.random(-4, 4), p.position.y+math.random(-4, 4)}, 4)
     else
         if not route then
-            path(p, location, 3)
+            path(p, location, 4)
         end
         return false
     end
@@ -244,7 +216,7 @@ function put(p, item, count, location, destinv)
 
     --this is to check if tomove = 0 as .insert doesn't like it
     if countininventory < 1 then
-        error("did not put any " .. item)
+        error("did not put any"  .. item)
     elseif count < countininventory then --we have enough items to move
         inserted = destination.insert{name = item, count = count}
         p.remove_item{name=item, count=inserted}
@@ -310,6 +282,8 @@ function within(one, two, margin)
 end
 
 
+
+
 -----------------------------------------------------------------------------------------------------
 
 function doTask(p, tasks)
@@ -349,12 +323,7 @@ script.on_event(defines.events.on_tick, function(event)
         --game.print(current_task) -- +3 for line number
         if p.walking_state.walking == false then
             if route then
-                if #route > 2 then
-                    walk(p, route[2].position)
-                    if within( p.position, route[2].position, 0.4) then
-                        table.remove(route, 1)
-                    end
-                end
+                moveAlongPath(p, route)
             end
             debug(current_task)
             result = doTask(p, task[current_task])
@@ -395,6 +364,7 @@ script.on_event(defines.events.on_script_path_request_finished, function(event)
     if event.try_again_later then
         error("pathing failed")
     elseif event.path then
+        path_progress = 1
         route = event.path
         if dbg then
             local i = 1
