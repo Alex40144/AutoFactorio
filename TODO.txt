@@ -1,8 +1,0 @@
-1. Improve detection for trying to build where player is stood
-    use bounding boxes instead of within function
-2. better crafting
-    work out what needs crafting
-3. better resource gathering
-    workout where resources are and go collect them
-4. mining entity selection error handling
-    get_closest() maybe

@@ -1,7 +1,8 @@
 require "util"
-local task = require("tasks")
+local taskList = require("tasks")
 local research = require("research")
 local Position = require("__stdlib__/stdlib/area/position")
+local Area = require("__stdlib__/stdlib/area/area")
 
 dbg = true
 enabled = false
@@ -51,7 +52,7 @@ function path(p, location, radius)
         path_resolution_modifier = 3,
         pathfinding_flags = {
             allow_paths_through_own_entities = true,
-            prefer_straight_paths = true,
+            prefer_straight_paths = false,
             low_priority = false
         },
     })
@@ -66,7 +67,7 @@ function moveAlongPath(p, path)
 
     local nodeDistance = Position.distance(p.position, nextNode.position)
 
-    while nodeDistance <= p.character_running_speed * 5 do
+    while nodeDistance <= p.character_running_speed * 4 do
         path_progress = path_progress + 1
         nextNode = path[path_progress]
         if nextNode == nil then
@@ -94,31 +95,69 @@ function craft(p, item, count)
     return true
 end
 
+function calculateCraft(p, ...)
+    local arg = ...
+
+    if not arg.item and not arg.count then
+        local step = current_task + 1
+        local iterate = true
+        local toCraft = {}
+        while iterate do
+            if taskList[step][1] == "build" then
+                toCraft[#toCraft+1] = taskList[step][3]
+            elseif taskList[step][1] == "craft" then
+                iterate = false
+            end
+            step = step + 1
+        end
+        debugtable(toCraft)
+
+        for i = 1, #toCraft do
+            local response = craft(p, toCraft[i], 1)
+            if not response then
+                error("failed to craft all that was needed")
+                return false
+            end
+        end
+        return true
+    else
+        return craft(p, arg.item, arg.count)
+    end
+end
+            
+
+
 function mine(p, location)
     --check if there is an item where we are going to mine.
-    --used to detect when mining has been finished so we can move on. This means you can't mine tiles
+    --used to detect when mining has been finished so we can move on. This means you can't mine surface stuff
     if p.can_place_entity{name = "transport-belt", position = location, direction = defines.direction.north} then
         delroute(p)
         return true
     else
         p.update_selected_entity(location)
-        local bottom_right = p.selected.selection_box.right_bottom
         if p.selected ~= nil then
             if not p.can_reach_entity(p.selected) then
                 if not route then
-                    path(p, bottom_right, 0.5) 
+                    --#TODO choose nearest side??
+                    path(p, p.selected.selection_box.right_bottom, 0.5) 
                 end
                 return false
             end
         else
             error("no entity selected")
             error(location)
+            path(p, location, 4) 
         end
         p.mining_state = {mining = true, position = location}
     end
 end
 
 function build(p, location, item, direction)
+    local entitybounding = game.entity_prototypes[item].collision_box
+    local entitycollision = Area.offset(entitybounding, location)
+
+    local playercollision = p.character.bounding_box
+
     --can_place_entity already checks player reach
     --if out of reach, placing fails, but keep trying.
     --we can use this to place whilst walking as it will keep trying until it succeeds.
@@ -148,14 +187,14 @@ function build(p, location, item, direction)
             return false
         end
     -- we might be stood where we want to place the object
-    elseif within(p.position, location, 2) then --move to a random place hoping that we can move to it.
-            path(p, {p.position.x+math.random(-4, 4), p.position.y+math.random(-4, 4)}, 4)
-    else
-        if not route then
-            path(p, location, 4)
-        end
-        return false
+    elseif overlap(entitycollision, playercollision) then
+        error("colliding with build location")
+        path(p, {p.position.x+5, p.position.y+5}, 6)
     end
+    if not route then
+        path(p, location, 4)
+    end
+    return false
 end
 
 function take(p, location, item, count, skip, inv)
@@ -216,7 +255,7 @@ function put(p, item, count, location, destinv)
 
     --this is to check if tomove = 0 as .insert doesn't like it
     if countininventory < 1 then
-        error("did not put any"  .. item)
+        error("did not put any "  .. item)
     elseif count < countininventory then --we have enough items to move
         inserted = destination.insert{name = item, count = count}
         p.remove_item{name=item, count=inserted}
@@ -273,16 +312,17 @@ function delroute(p)
     p.walking_state = {walking = false}
 end
 
-function within(one, two, margin)
-    if one.x>two.x-margin and one.x<two.x+margin and one.y>two.y-margin and one.y<two.y+margin then
-        return true
-    else
+--10000 offset is to negate negative numbers, they make it more complicated.
+function overlap(area1, area2)
+    if area1.left_top.x+10000 > area2.right_bottom.x+10000 or area2.left_top.x+10000 > area1.right_bottom.x+10000 then
+        return false
+    elseif area1.left_top.y+10000 > area2.right_bottom.y+10000 or area2.left_top.y+10000 > area1.right_bottom.y+10000 then
         return false
     end
+
+    -- we can assume that they are overlapping
+    return true
 end
-
-
-
 
 -----------------------------------------------------------------------------------------------------
 
@@ -290,7 +330,8 @@ function doTask(p, tasks)
     if tasks[1] == "build" then
         return build(p, tasks[2], tasks[3], tasks[4])
     elseif tasks[1] == "craft" then
-        return craft(p,tasks[2], tasks[3])
+        --return craft(p,tasks[2], tasks[3])
+        return calculateCraft(p, {item=tasks[2], count=tasks[3]})
     elseif tasks[1] == "mine" then
         return mine(p, tasks[2])
     elseif tasks[1] == "research" then
@@ -326,7 +367,7 @@ script.on_event(defines.events.on_tick, function(event)
                 moveAlongPath(p, route)
             end
             debug(current_task)
-            result = doTask(p, task[current_task])
+            result = doTask(p, taskList[current_task])
             if result ~= nil then
                 if result == true then
                     current_task = current_task + 1
@@ -337,9 +378,9 @@ script.on_event(defines.events.on_tick, function(event)
 
         else
             -- if the next task is not mining then we can do other ones whilst moving.
-            if task[current_task][1] ~= "mine" then
-                debug(current_task)
-                result = doTask(p, task[current_task])
+            if taskList[current_task][1] ~= "mine" then
+                debug(current_task+2)
+                result = doTask(p, taskList[current_task])
                 if result ~= nil then
                     if result == true then
                         current_task = current_task + 1

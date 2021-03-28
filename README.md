@@ -16,3 +16,15 @@ To use this mod:
 			3.a You will also need a tasks.lua file. Paste this into the AutoFactorio_* folder
 			4. Start up Factorio, enable the mod.
 			5. create a new game and choose the AutoFactorio scenario.  
+
+
+# To Do list
+1. ~~Improve detection for trying to build where player is stood~~
+   1. ~~use bounding boxes instead of within function~~
+2. better crafting
+   1. work out what needs crafting
+   2. craft all items that are needed before the next craft instruction
+3. better resource gathering
+   1. workout where resources are and go collect them
+4. work out if player is stuck running
+   1. save position and if it hasn't changed path somewhere else
