@@ -730,7 +730,6 @@ task[#task+1] = {"build", {x=-4.5, y=6.5}, "small-electric-pole", 0}
 task[#task+1] = {"craft"}
 task[#task+1] = {"build", {x=-15.5, y=22.5}, "assembling-machine-1", 0}
 task[#task+1] = {"recipe", {x=-15.5, y=22.5}, "copper-cable"}
-task[#task+1] = {"put", 50, {x=-15.5, y=22.5}}
 task[#task+1] = {"take", {x=-17, y=14}, -1, false}
 task[#task+1] = {"take", {x=-19, y=14}, -1, false}
 task[#task+1] = {"take", {x=-21, y=14}, -1, false}

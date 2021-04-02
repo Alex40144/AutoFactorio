@@ -137,6 +137,9 @@ end
 function mine(p, location)
     --check if there is an item where we are going to mine.
     --used to detect when mining has been finished so we can move on. This means you can't mine surface stuff
+    if not route then
+        path(p, location, 4)
+    end
     if p.can_place_entity{name = "transport-belt", position = location, direction = defines.direction.north} then
         delroute(p)
         return true
