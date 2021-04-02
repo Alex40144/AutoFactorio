@@ -21,14 +21,14 @@ To use this mod:
 # To Do list
 1. ~~Improve detection for trying to build where player is stood~~
    1. ~~use bounding boxes instead of within function~~
-2. better crafting
-   1. work out what needs crafting
-   2. craft all items that are needed before the next craft instruction
-3. better inventory selection
-   1. take could assume result
-   2. put could assume input or fuel
-   3. check what is in inventory and take that. don't define it in tasks.lua
-      1. this is likely only one type of item
+2. ~~better crafting~~
+   1. ~~work out what needs crafting~~
+   2. ~~craft all items that are needed before the next craft instruction~~
+3. ~~better inventory selection~~
+   1. ~~take could assume result~~
+   2. ~~put could assume input or fuel~~
+   3. ~~check what is in inventory and take that. don't define it in tasks.lua~~
+      1. ~~this is likely only one type of item~~
 4. work out if player is stuck running
    1. save position and if it hasn't changed path somewhere else
 5. better resource gathering

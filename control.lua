@@ -109,17 +109,16 @@ function calculateCraft(p, ...)
                     toCraft[item] = 1
                 else
                     toCraft[item] = toCraft[item] + 1
+                end
             elseif taskList[step][1] == "craft" then
                 iterate = false
             end
             step = step + 1
         end
-        --#TODO check that this works
+
         for key,value in pairs(toCraft) do
-            --i'm not sure if this will work, just print upto key and go from there.
-            debugtable(game.product_protoypes[key])
-            if not game.product_protoypes[key].results[1].amount == 1 then
-                value = value / game.product_protoypes[key].results[1].amount
+            if game.recipe_prototypes[key].products[1].amount ~= 1 then
+                value = value / game.recipe_prototypes[key].products[1].amount
                 value = math.ceil(value)
             end
             if not craft(p, key, value) then
@@ -204,7 +203,7 @@ function build(p, location, item, direction)
     return false
 end
 
-function take(p, location, item, count, skip, inv)
+function take(p, location, item, count, skip)
     p.update_selected_entity(location)
 
     if not p.can_reach_entity(p.selected) then
@@ -214,7 +213,7 @@ function take(p, location, item, count, skip, inv)
         return false
     end
 
-    inv = p.selected.get_inventory(inv)
+    inv = p.selected.get_output_inventory(inv)
     if not inv then
         error("no inventory found")
         return false
@@ -248,7 +247,7 @@ function take(p, location, item, count, skip, inv)
     end
 end
 
-function put(p, item, count, location, destinv)
+function put(p, item, count, location)
     p.update_selected_entity(location)
     if not p.can_reach_entity(p.selected) then
         if not route then
@@ -257,18 +256,17 @@ function put(p, item, count, location, destinv)
         return false
     end
 
-    local countininventory = p.get_item_count(item)
-    local destination = p.selected.get_inventory(destinv)
+    local playerCount = p.get_item_count(item)
 
     --this is to check if tomove = 0 as .insert doesn't like it
-    if countininventory < 1 then
+    if playerCount < 1 then
         error("did not put any "  .. item)
-    elseif count < countininventory then --we have enough items to move
-        inserted = destination.insert{name = item, count = count}
+    elseif count < playerCount then --we have enough items to move
+        inserted = p.selected.insert{name = item, count = count}
         p.remove_item{name=item, count=inserted}
     else --we don't have enough items to move, we will do all
-        tomove = math.min(countininventory, count)
-        inserted = destination.insert{name = item, count = tomove}
+        tomove = math.min(playerCount, count)
+        inserted = p.selected.insert{name = item, count = tomove}
         p.remove_item{name=item, count=inserted}
     end
     delroute(p)
@@ -301,7 +299,7 @@ function recipe(p, location, recipe)
     local contents = p.selected.set_recipe(recipe)
     if contents then
         for name, count in pairs(contents) do
-            p.insert{name = name, count = count}
+            p.selected.insert{name = name, count = count}
         end
     end
     delroute(p)
@@ -344,9 +342,9 @@ function doTask(p, tasks)
     elseif tasks[1] == "research" then
         return science(p)
     elseif tasks[1] == "put" then
-        return put(p, tasks[2], tasks[3], tasks[4], tasks[5])
+        return put(p, tasks[2], tasks[3], tasks[4])
     elseif tasks[1] == "take" then
-        return take(p, tasks[2], tasks[3], tasks[4], tasks[5], tasks[6])
+        return take(p, tasks[2], tasks[3], tasks[4], tasks[5])
     elseif tasks[1] == "recipe" then
         return recipe(p, tasks[2], tasks[3])
     elseif tasks[1] == "speed" then
@@ -373,7 +371,7 @@ script.on_event(defines.events.on_tick, function(event)
             if route then
                 moveAlongPath(p, route)
             end
-            debug(current_task)
+            debug(current_task+2)
             result = doTask(p, taskList[current_task])
             if result ~= nil then
                 if result == true then
