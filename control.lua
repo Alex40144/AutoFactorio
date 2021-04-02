@@ -104,17 +104,25 @@ function calculateCraft(p, ...)
         local toCraft = {}
         while iterate do
             if taskList[step][1] == "build" then
-                toCraft[#toCraft+1] = taskList[step][3]
+                local item = taskList[step][3]
+                if not toCraft[item] then
+                    toCraft[item] = 1
+                else
+                    toCraft[item] = toCraft[item] + 1
             elseif taskList[step][1] == "craft" then
                 iterate = false
             end
             step = step + 1
         end
-        debugtable(toCraft)
-
-        for i = 1, #toCraft do
-            local response = craft(p, toCraft[i], 1)
-            if not response then
+        --#TODO check that this works
+        for key,value in pairs(toCraft) do
+            --i'm not sure if this will work, just print upto key and go from there.
+            debugtable(game.product_protoypes[key])
+            if not game.product_protoypes[key].results[1].amount == 1 then
+                value = value / game.product_protoypes[key].results[1].amount
+                value = math.ceil(value)
+            end
+            if not craft(p, key, value) then
                 error("failed to craft all that was needed")
                 return false
             end
@@ -138,7 +146,6 @@ function mine(p, location)
         if p.selected ~= nil then
             if not p.can_reach_entity(p.selected) then
                 if not route then
-                    --#TODO choose nearest side??
                     path(p, p.selected.selection_box.right_bottom, 0.5) 
                 end
                 return false
