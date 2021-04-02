@@ -164,6 +164,10 @@ function build(p, location, item, direction)
 
     local playercollision = p.character.bounding_box
 
+    if not route then
+        path(p, location, 4)
+    end
+
     --can_place_entity already checks player reach
     --if out of reach, placing fails, but keep trying.
     --we can use this to place whilst walking as it will keep trying until it succeeds.
@@ -197,14 +201,12 @@ function build(p, location, item, direction)
         error("colliding with build location")
         path(p, {p.position.x+5, p.position.y+5}, 6)
     end
-    if not route then
-        path(p, location, 4)
-    end
     return false
 end
 
-function take(p, location, item, count, skip)
+function take(p, location, count, skip)
     p.update_selected_entity(location)
+    item = nil
 
     if not p.can_reach_entity(p.selected) then
         if not route then
@@ -213,34 +215,37 @@ function take(p, location, item, count, skip)
         return false
     end
 
-    inv = p.selected.get_output_inventory(inv)
-    if not inv then
-        error("no inventory found")
-        return false
-    end
-    ammountininv = inv.get_item_count(item)
-    if ammountininv < 1 then
-        error("There wasn't any " .. item)
+    --check if there is anything in the inventory
+    if next(p.selected.get_output_inventory().get_contents()) == nil then
+        error("There wasn't anything in the entity")
         if skip == true then
             delroute(p)
             return true
         else
             return false
         end
-    elseif count == -1 then  --take everything
+    end
+    debugtable(p.selected.get_output_inventory().get_contents())
+    for key, value in pairs(p.selected.get_output_inventory().get_contents()) do
+        item = key
+        ammountininv = tonumber(value)
+    end
+
+
+    if count == -1 then  --take everything
         p.insert{name=item, count=ammountininv}
-        inv.remove{name=item, count=ammountininv}
+        p.selected.remove_item{name=item, count=ammountininv}
         delroute(p)
         return true
     elseif count < ammountininv then
         p.insert{name=item, count=count}
-        inv.remove{name=item, count=count}
+        p.selected.remove_item{name=item, count=count}
         delroute(p)
         return true
     else
         take = math.min(count, ammountininv)
         p.insert{name=item, count=take}
-        inv.remove{name=item, count=take}
+        p.selected.remove_item{name=item, count=take}
         error("didn't take requested ammount of " .. item .. " only took "  .. take .. " of " .. count)
         delroute(p)
         return true
@@ -344,7 +349,7 @@ function doTask(p, tasks)
     elseif tasks[1] == "put" then
         return put(p, tasks[2], tasks[3], tasks[4])
     elseif tasks[1] == "take" then
-        return take(p, tasks[2], tasks[3], tasks[4], tasks[5])
+        return take(p, tasks[2], tasks[3], tasks[4])
     elseif tasks[1] == "recipe" then
         return recipe(p, tasks[2], tasks[3])
     elseif tasks[1] == "speed" then
