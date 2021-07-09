@@ -34,7 +34,6 @@ end
 
 
 function path(p, location, radius)
-
     local x1 = p.character.bounding_box.left_top.x - p.position.x
     local y1 = p.character.bounding_box.left_top.y - p.position.y
     local x2 = p.character.bounding_box.right_bottom.x - p.position.x
@@ -51,9 +50,10 @@ function path(p, location, radius)
         entity_to_ignore = p.character,
         path_resolution_modifier = 3,
         pathfinding_flags = {
-            allow_paths_through_own_entities = true,
-            prefer_straight_paths = false,
-            low_priority = false
+            cache = false,
+            allow_destroy_friendly_entities = false,
+            prefer_straight_paths = true,
+            no_break = true
         },
     })
     return
@@ -68,7 +68,7 @@ function moveAlongPath(p, path)
     local nodeDistance = Position.distance(p.position, nextNode.position)
 
     while nodeDistance <= p.character_running_speed * 4 do
-        path_progress = path_progress + 1
+        path_progress = path_progress + 2
         nextNode = path[path_progress]
         if nextNode == nil then
             return true
@@ -137,27 +137,24 @@ end
 function mine(p, location)
     --check if there is an item where we are going to mine.
     --used to detect when mining has been finished so we can move on. This means you can't mine surface stuff
-    if not route then
-        path(p, location, 4)
-    end
     if p.can_place_entity{name = "transport-belt", position = location, direction = defines.direction.north} then
         delroute(p)
         return true
     else
         p.update_selected_entity(location)
         if p.selected ~= nil then
-            if not p.can_reach_entity(p.selected) then
-                if not route then
-                    path(p, p.selected.selection_box.right_bottom, 0.5) 
+            if p.can_reach_entity(p.selected) == false then
+                if route == nil then
+                    path(p, p.selected.selection_box.right_bottom, 1) 
                 end
                 return false
             end
+            p.mining_state = {mining = true, position = location}
         else
             error("no entity selected")
             error(location)
             path(p, location, 4) 
         end
-        p.mining_state = {mining = true, position = location}
     end
 end
 
@@ -167,7 +164,7 @@ function build(p, location, item, direction)
 
     local playercollision = p.character.bounding_box
 
-    if not route then
+    if route == nil then
         path(p, location, 4)
     end
 
@@ -204,15 +201,16 @@ function build(p, location, item, direction)
         error("colliding with build location")
         path(p, {p.position.x+5, p.position.y+5}, 6)
     end
+
     return false
 end
 
-function take(p, location, count, skip)
+function take(p, location, numberToTake, skip)
     p.update_selected_entity(location)
     item = nil
 
     if not p.can_reach_entity(p.selected) then
-        if not route then
+        if route == nil then
             path(p, location, 3)
         end
         return false
@@ -231,25 +229,25 @@ function take(p, location, count, skip)
     debugtable(p.selected.get_output_inventory().get_contents())
     for key, value in pairs(p.selected.get_output_inventory().get_contents()) do
         item = key
-        ammountininv = tonumber(value)
+        numberInEntity = tonumber(value)
     end
 
 
-    if count == -1 then  --take everything
-        p.insert{name=item, count=ammountininv}
-        p.selected.remove_item{name=item, count=ammountininv}
+    if numberToTake == -1 then  --take everything
+        p.insert{name=item, count=numberInEntity}
+        p.selected.remove_item{name=item, count=numberInEntity}
         delroute(p)
         return true
-    elseif count < ammountininv then
-        p.insert{name=item, count=count}
-        p.selected.remove_item{name=item, count=count}
+    elseif numberToTake < numberInEntity then
+        p.insert{name=item, count=numberToTake}
+        p.selected.remove_item{name=item, count=numberToTake}
         delroute(p)
         return true
     else
-        take = math.min(count, ammountininv)
+        take = math.min(numberToTake, numberInEntity)
         p.insert{name=item, count=take}
         p.selected.remove_item{name=item, count=take}
-        error("didn't take requested ammount of " .. item .. " only took "  .. take .. " of " .. count)
+        error("didn't take requested ammount of " .. item .. " only took "  .. take .. " of " .. numberToTake)
         delroute(p)
         return true
     end
@@ -258,7 +256,7 @@ end
 function put(p, item, count, location)
     p.update_selected_entity(location)
     if not p.can_reach_entity(p.selected) then
-        if not route then
+        if route == nil then
             path(p, location, 3)
         end
         return false
@@ -304,12 +302,14 @@ function recipe(p, location, recipe)
         return false
     end
 
-    local contents = p.selected.set_recipe(recipe)
-    if contents then
-        for name, count in pairs(contents) do
-            p.selected.insert{name = name, count = count}
-        end
-    end
+    p.selected.set_recipe(recipe)
+    ingredients = game.recipe_prototypes["transport-belt"].ingredients
+    debugtable(ingredients)
+
+    --for ingredient in ipairs(ingredients) do
+    --    inserted = p.selected.insert{name = ingredient[1]}
+    --    p.remove_item{name=item, count=inserted}
+    --end
     delroute(p)
     return true
 end
@@ -322,6 +322,7 @@ end
 
 function delroute(p)
     route = nil
+    rendering.clear()
     p.walking_state = {walking = false}
 end
 
@@ -374,33 +375,18 @@ script.on_event(defines.events.on_tick, function(event)
 
     --only run if we are allowed to
     if enabled == true then
-        --game.print(current_task) -- +3 for line number
         if p.walking_state.walking == false then
-            if route then
+            if route ~= nil then
                 moveAlongPath(p, route)
             end
-            debug(current_task+2)
-            result = doTask(p, taskList[current_task])
-            if result ~= nil then
-                if result == true then
-                    current_task = current_task + 1
-                elseif result == "end" then
-                    enabled = false
-                end
-            end
-
-        else
-            -- if the next task is not mining then we can do other ones whilst moving.
-            if taskList[current_task][1] ~= "mine" then
-                debug(current_task+2)
-                result = doTask(p, taskList[current_task])
-                if result ~= nil then
-                    if result == true then
-                        current_task = current_task + 1
-                    elseif result == "end" then
-                        enabled = false
-                    end
-                end
+        end
+        debug(current_task+2)
+        result = doTask(p, taskList[current_task])
+        if result ~= nil then
+            if result == true then
+                current_task = current_task + 1
+            elseif result == "end" then
+                enabled = false
             end
         end
     end
@@ -408,8 +394,7 @@ end)
 
 script.on_event(defines.events.on_cutscene_cancelled, function(event)
     enabled = true
-
-
+    game.players[1].game_view_settings.show_entity_info = true
 end)
 
 --when we have out path
