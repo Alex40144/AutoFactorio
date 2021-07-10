@@ -21,7 +21,7 @@ function debug(msg)
     return true
 end
 
-function debugtable(msg)
+function debugTable(msg)
     game.print(serpent.line(msg))
 end
 
@@ -165,7 +165,7 @@ function build(p, location, item, direction)
     local playercollision = p.character.bounding_box
 
     if route == nil then
-        path(p, location, 4)
+        path(p, location, 3)
     end
 
     --can_place_entity already checks player reach
@@ -199,7 +199,7 @@ function build(p, location, item, direction)
     -- we might be stood where we want to place the object
     elseif overlap(entitycollision, playercollision) then
         error("colliding with build location")
-        path(p, {p.position.x+5, p.position.y+5}, 6)
+        path(p, {p.position.x+5, p.position.y+5}, 3)
     end
 
     return false
@@ -226,7 +226,7 @@ function take(p, location, numberToTake, skip)
             return false
         end
     end
-    debugtable(p.selected.get_output_inventory().get_contents())
+    debugTable(p.selected.get_output_inventory().get_contents())
     for key, value in pairs(p.selected.get_output_inventory().get_contents()) do
         item = key
         numberInEntity = tonumber(value)
@@ -303,13 +303,11 @@ function recipe(p, location, recipe)
     end
 
     p.selected.set_recipe(recipe)
-    ingredients = game.recipe_prototypes["transport-belt"].ingredients
-    debugtable(ingredients)
-
-    --for ingredient in ipairs(ingredients) do
-    --    inserted = p.selected.insert{name = ingredient[1]}
-    --    p.remove_item{name=item, count=inserted}
-    --end
+    ingredients = game.recipe_prototypes[recipe].ingredients
+    for key, ingredient in ipairs(ingredients) do
+        inserted = p.selected.insert(ingredient.name)
+        p.remove_item{name=item, count=inserted}
+    end
     delroute(p)
     return true
 end
@@ -415,6 +413,7 @@ script.on_event(defines.events.on_script_path_request_finished, function(event)
         end
     else
         error("Pathing failed")
+        route = nil
     end
 
 
