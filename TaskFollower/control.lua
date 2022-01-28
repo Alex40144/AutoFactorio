@@ -8,6 +8,13 @@ dbg = true
 enabled = false
 route = nil
 path_progress = 1
+
+wander_count = 0
+wander = 0
+stuck_count = 0
+past_positions = {}
+
+
 local current_task = 0
 local current_research = 0
 local destination = {x=0, y=0}
@@ -31,7 +38,15 @@ end
 
 -----------------------------------------------------------------------------------------------------
 
-
+local function pick_random(t)
+	local keys = {}
+	local i = 1
+	for k, _ in pairs(t) do
+		keys[i] = k
+		i = i + 1
+	end
+	return t[keys[math.random(1, #keys)]]
+end
 
 function path(p, location, radius)
     local x1 = p.character.bounding_box.left_top.x - p.position.x
@@ -77,6 +92,32 @@ function moveAlongPath(p, path)
     end
     local direction = Position.complex_direction_to(p.position, nextNode.position, true)
     p.character.walking_state = {walking = true, direction = direction}
+
+
+    --try to get out of stuck position
+    if wander_count > 0 then
+		player.walking_state = {
+			walking = true,
+			direction = wander,
+		}
+		wander_count = wander_count - 1
+		return true
+	end
+	if #past_positions >= 10 then
+		local dist = util.distance(past_positions[1], player.position)
+		past_positions = {}
+		if dist < 0.1 then
+			local tree = get_nearest_tree()
+			if tree ~= nil and entity_distance_to_player(tree) < 1 then
+				table.insert(deps, ChopTree:new(tree))
+				return true
+			end
+			wander = pick_random(defines.direction)
+			wander_count = math.random(10, 10 + stuck_count)
+			stuck_count = stuck_count + 1
+			return true
+		end
+	end
 end
 
 
@@ -173,6 +214,9 @@ function build(p, location, item, direction)
     --we can use this to place whilst walking as it will keep trying until it succeeds.
     if p.get_item_count(item) < 1 then
         error("did not have " .. item)
+        if (p.crafting_queue_size > 0) then return false --still have to wait for queue to finish, so no point working out if our item is queued
+        else craft(p, item, 1)
+        end
         return false
     elseif p.surface.can_fast_replace{name = item, position = location, direction = direction, force = "player"} then
         built = p.surface.create_entity{name = item, position = location, direction = direction, force="player", fast_replace = true, player = p}
@@ -199,7 +243,7 @@ function build(p, location, item, direction)
     -- we might be stood where we want to place the object
     elseif overlap(entitycollision, playercollision) then
         error("colliding with build location")
-        path(p, {p.position.x+5, p.position.y+5}, 3)
+        path(p, {p.position.x+4, p.position.y+4}, 3)
     end
 
     return false
@@ -399,7 +443,7 @@ end)
 
 script.on_event(defines.events.on_script_path_request_finished, function(event)
     if event.try_again_later then
-        error("pathing failed")
+        error("pathing failed trying again")
     elseif event.path then
         path_progress = 1
         route = event.path
@@ -415,8 +459,6 @@ script.on_event(defines.events.on_script_path_request_finished, function(event)
         error("Pathing failed")
         route = nil
     end
-
-
 end)
 
 
