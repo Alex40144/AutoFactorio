@@ -1,9 +1,9 @@
 {
     "name": "AutoFactorio",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "title": "AutoFactorio",
     "author": "Alex40144",
     "factorio_version": "1.1",
     "dependencies": ["base >= 1.1", "stdlib >= 1.4.6"],
-    "description": "This automates the automation"
+    "description": "This automates the automation of the automation"
 }

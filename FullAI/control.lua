@@ -1,5 +1,4 @@
 require "util"
-local taskList = require("tasks")
 local research = require("research")
 local Position = require("__stdlib__/stdlib/area/position")
 local Area = require("__stdlib__/stdlib/area/area")
@@ -7,17 +6,9 @@ local Area = require("__stdlib__/stdlib/area/area")
 dbg = true
 enabled = false
 route = nil
-path_progress = 1
 
-wander_count = 0
-wander = 0
-stuck_count = 0
-past_positions = {}
-
-
-local current_task = 0
+task = nil
 local current_research = 0
-local destination = {x=0, y=0}
 
 -----------------------------------------------------------------------------------------------------
 
@@ -74,50 +65,25 @@ function path(p, location, radius)
     return
 end
 
-function moveAlongPath(p, path)
-    local nextNode = path[path_progress]
+function moveAlongPath(p)
+    local nextNode = route[1]
+    if nextNode == nil then
+        return false
+    end
+    if Position.distance(p.position, nextNode.position) < 0.1 then
+        for i = p.character_running_speed,0,-1 do
+            table.remove(route, 1)
+            table.remove(route, 1)
+        end
+    end
+    nextNode = route[1]
     if nextNode == nil then
         return false
     end
 
-    local nodeDistance = Position.distance(p.position, nextNode.position)
-
-    while nodeDistance <= p.character_running_speed * 4 do
-        path_progress = path_progress + 2
-        nextNode = path[path_progress]
-        if nextNode == nil then
-            return true
-        end
-        nodeDistance = Position.distance(p.position, nextNode.position)
-    end
     local direction = Position.complex_direction_to(p.position, nextNode.position, true)
-    p.character.walking_state = {walking = true, direction = direction}
-
-
-    --try to get out of stuck position
-    if wander_count > 0 then
-		player.walking_state = {
-			walking = true,
-			direction = wander,
-		}
-		wander_count = wander_count - 1
-		return true
-	end
-	if #past_positions >= 10 then
-		local dist = util.distance(past_positions[1], player.position)
-		past_positions = {}
-		if dist < 0.1 then
-			local tree = get_nearest_tree()
-			if tree ~= nil and entity_distance_to_player(tree) < 1 then
-				table.insert(deps, ChopTree:new(tree))
-				return true
-			end
-			wander = pick_random(defines.direction)
-			wander_count = math.random(10, 10 + stuck_count)
-			stuck_count = stuck_count + 1
-			return true
-		end
-	end
+    p.walking_state = {walking = true, direction = direction}
+    error(direction)
 end
 
 
@@ -327,6 +293,7 @@ function time(p)
     mins = string.format("%02.f", math.floor(seconds/60 - (hours*60)));
     secs = string.format("%02.f", math.floor(seconds - hours*3600 - mins *60));
     error(hours..":"..mins..":"..secs)
+    return true
 end
 
 function science(p)
@@ -362,7 +329,7 @@ end
 function delroute(p)
     route = nil
     rendering.clear()
-    p.walking_state = {walking = false}
+    --p.walking_state = {walking = false}
 end
 
 --10000 offset is to negate negative numbers, they make it more complicated.
@@ -379,30 +346,40 @@ end
 
 -----------------------------------------------------------------------------------------------------
 
-function doTask(p, tasks)
-    if tasks[1] == "build" then
-        return build(p, tasks[2], tasks[3], tasks[4])
-    elseif tasks[1] == "craft" then
-        --return craft(p,tasks[2], tasks[3])
-        return calculateCraft(p, {item=tasks[2], count=tasks[3]})
-    elseif tasks[1] == "mine" then
-        return mine(p, tasks[2])
-    elseif tasks[1] == "research" then
-        return science(p)
-    elseif tasks[1] == "put" then
-        return put(p, tasks[2], tasks[3], tasks[4])
-    elseif tasks[1] == "take" then
-        return take(p, tasks[2], tasks[3], tasks[4])
-    elseif tasks[1] == "recipe" then
-        return recipe(p, tasks[2], tasks[3])
-    elseif tasks[1] == "speed" then
-        return speed(p, tasks[2])
-    elseif tasks[1] == "time" then
-        time(p)
-        return true
-    elseif tasks[1] == "end" then
-        debug("ending run")
-        return "end"
+function doTask(p)
+    if task ~= nil then
+        --continue with current task
+        if task[1] == "build" then
+            return build(p, task[2], task[3], task[4])
+        elseif task[1] == "craft" then
+            --return craft(p,task[2], task[3])
+            return calculateCraft(p, {item=task[2], count=task[3]})
+        elseif task[1] == "mine" then
+            return mine(p, task[2])
+        elseif task[1] == "research" then
+            return science(p)
+        elseif task[1] == "put" then
+            return put(p, task[2], task[3], task[4])
+        elseif task[1] == "take" then
+            return take(p, task[2], task[3], task[4])
+        elseif task[1] == "recipe" then
+            return recipe(p, task[2], task[3])
+        elseif task[1] == "speed" then
+            return speed(p, task[2])
+        elseif task[1] == "time" then
+            return time(p)
+        end
+    else
+        --mine big rocks first
+        entities = p.surface.find_entities_filtered{position = {0,0}, radius = 75, name = "rock-huge"}
+        if entities ~= nil then
+            for key, entity in pairs(entities) do
+                task = {"mine", entity.position}
+                debugTable(task)
+                break
+            end
+            
+        end
     end
 end
 
@@ -414,18 +391,14 @@ script.on_event(defines.events.on_tick, function(event)
 
     --only run if we are allowed to
     if enabled == true then
-        if p.walking_state.walking == false then
-            if route ~= nil then
-                moveAlongPath(p, route)
-            end
+        if route ~= nil then
+            moveAlongPath(p)
         end
-        debug(current_task+2)
-        result = doTask(p, taskList[current_task])
+        
+        result = doTask(p)
         if result ~= nil then
             if result == true then
-                current_task = current_task + 1
-            elseif result == "end" then
-                enabled = false
+                task = nil
             end
         end
     end
@@ -434,6 +407,7 @@ end)
 script.on_event(defines.events.on_cutscene_cancelled, function(event)
     enabled = true
     game.players[1].game_view_settings.show_entity_info = true
+    --speed(game.players[1], 5)
 end)
 
 --when we have out path

@@ -7,17 +7,13 @@ local Area = require("__stdlib__/stdlib/area/area")
 dbg = true
 enabled = false
 route = nil
-path_progress = 1
 
-wander_count = 0
-wander = 0
-stuck_count = 0
-past_positions = {}
-
+storage_devices = {"stone-furnace", "steel-furnace", "wooden-chest", "iron-chest"}
 
 local current_task = 0
 local current_research = 0
 local destination = {x=0, y=0}
+
 
 -----------------------------------------------------------------------------------------------------
 
@@ -25,10 +21,13 @@ function debug(msg)
     if dbg then
         game.print(msg)
     end
-    return true
 end
 
 function debugTable(msg)
+    if next(msg) == nil then
+        game.print("table is empty")
+        return
+     end
     game.print(serpent.line(msg))
 end
 
@@ -38,7 +37,7 @@ end
 
 -----------------------------------------------------------------------------------------------------
 
-local function pick_random(t)
+function pick_random(t)
 	local keys = {}
 	local i = 1
 	for k, _ in pairs(t) do
@@ -74,69 +73,75 @@ function path(p, location, radius)
     return
 end
 
-function moveAlongPath(p, path)
-    local nextNode = path[path_progress]
+function moveAlongPath(p)
+    local nextNode = route[1]
+    if nextNode == nil then
+        return false
+    end
+    if Position.distance(p.position, nextNode.position) < 0.1 then
+        for i = p.character_running_speed,0,-1 do
+            table.remove(route, 1)
+            table.remove(route, 1)
+        end
+    end
+    nextNode = route[1]
     if nextNode == nil then
         return false
     end
 
-    local nodeDistance = Position.distance(p.position, nextNode.position)
-
-    while nodeDistance <= p.character_running_speed * 4 do
-        path_progress = path_progress + 2
-        nextNode = path[path_progress]
-        if nextNode == nil then
-            return true
-        end
-        nodeDistance = Position.distance(p.position, nextNode.position)
-    end
     local direction = Position.complex_direction_to(p.position, nextNode.position, true)
-    p.character.walking_state = {walking = true, direction = direction}
-
-
-    --try to get out of stuck position
-    if wander_count > 0 then
-		player.walking_state = {
-			walking = true,
-			direction = wander,
-		}
-		wander_count = wander_count - 1
-		return true
-	end
-	if #past_positions >= 10 then
-		local dist = util.distance(past_positions[1], player.position)
-		past_positions = {}
-		if dist < 0.1 then
-			local tree = get_nearest_tree()
-			if tree ~= nil and entity_distance_to_player(tree) < 1 then
-				table.insert(deps, ChopTree:new(tree))
-				return true
-			end
-			wander = pick_random(defines.direction)
-			wander_count = math.random(10, 10 + stuck_count)
-			stuck_count = stuck_count + 1
-			return true
-		end
-	end
+    p.walking_state = {walking = true, direction = direction}
+    error(direction)
 end
 
 
 
 function craft(p, item, count)
-    if count == -1 then --craft as many as possible
-        count = p.get_craftable_count(item)
-    end
 
     crafted = p.begin_crafting{recipe = item, count = count}
     debug("crafting " .. count .. " " .. item)
 
     if crafted < count then
         error("Did not craft full count of " .. item)
+        --work out what material player did not have
+        --go and find some.
+        local ingredients = game.recipe_prototypes[item].ingredients
+        local box = Area.new{{-25, -25}, {25, 25}}
+        box = Area.offset(box, p.position)
+        local entities = p.surface.find_entities_filtered{area = box, name = storage_devices, limit = 150}
+        if next(entities) == nil then
+            debug("no entities to find ingredients")
+            --enabled = false if more stable
+            return false
+        end
+        debugTable(entities)
+        for key,entity in pairs(entities) do
+            local contents = entity.get_output_inventory().get_contents()
+            if next(contents) ~= nil then
+                --basically continue in python, skips to next iteration if nothing in entity
+                debugTable(contents)
+                for a, ingredient in pairs(ingredients) do --loop through every ingredient
+                    for item, b in pairs(contents) do --loop through every item in entity
+                        --check for a match
+                        debugTable(ingredient)
+                        if item == ingredient.name then
+                            debug("Taking " .. item .. " from " .. entity.name)
+                            take(p, entity.position, (ingredient.amount * count), false) --take deals with existing path
+                            return false
+                        end
+                    end
+                end
+                debug("could not find required ingredient in nearby entities")
+                return false
+            end
+        end
+        return false
     end
     return true
 end
 
 function calculateCraft(p, ...)
+
     local arg = ...
 
     if not arg.item and not arg.count then
@@ -157,12 +162,30 @@ function calculateCraft(p, ...)
             step = step + 1
         end
 
+        --if we already have it don't bother crafting.
+        local inventory = p.get_main_inventory().get_contents()
+        for item,a in pairs(toCraft) do
+            for invent, count in pairs(inventory) do
+                if item == invent then
+                    toCraft[item] = toCraft[item] - count
+                    if toCraft[item] < 1 then
+                        for i, name in ipairs(toCraft) do
+                            if name == item then
+                                table.remove(toCraft, i)
+                                break
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
         for key,value in pairs(toCraft) do
             if game.recipe_prototypes[key].products[1].amount ~= 1 then
                 value = value / game.recipe_prototypes[key].products[1].amount
                 value = math.ceil(value)
             end
-            if not craft(p, key, value) then
+            if craft(p, key, value) == false then
                 error("failed to craft all that was needed")
                 return false
             end
@@ -214,8 +237,10 @@ function build(p, location, item, direction)
     --we can use this to place whilst walking as it will keep trying until it succeeds.
     if p.get_item_count(item) < 1 then
         error("did not have " .. item)
-        if (p.crafting_queue_size > 0) then return false --still have to wait for queue to finish, so no point working out if our item is queued
-        else craft(p, item, 1)
+        if (p.crafting_queue_size > 0) then
+            return false --still have to wait for queue to finish, so no point working out if our item is queued
+        else
+            craft(p, item, 1)
         end
         return false
     elseif p.surface.can_fast_replace{name = item, position = location, direction = direction, force = "player"} then
@@ -267,10 +292,16 @@ function take(p, location, numberToTake, skip)
             delroute(p)
             return true
         else
+            -- if entity has fuel requirements.
+            if p.selected.get_fuel_inventory() ~= nil then
+                if p.selected.get_fuel_inventory().is_empty() then --has it run out of fuel?
+                    debug("fuel is empty, adding extra")
+                    put(p, "coal", 2, location)
+                end
+            end
             return false
         end
     end
-    debugTable(p.selected.get_output_inventory().get_contents())
     for key, value in pairs(p.selected.get_output_inventory().get_contents()) do
         item = key
         numberInEntity = tonumber(value)
@@ -313,10 +344,21 @@ function put(p, item, count, location)
         error("did not put any "  .. item)
     elseif count < playerCount then --we have enough items to move
         inserted = p.selected.insert{name = item, count = count}
+
+        if inserted <= 0 then 
+            error("tried to remove " .. inserted .. " items")
+            inserted = 1 --THIS CODE IS BAD, QUICK FIX FOR ISSUE
+        end
         p.remove_item{name=item, count=inserted}
     else --we don't have enough items to move, we will do all
         tomove = math.min(playerCount, count)
         inserted = p.selected.insert{name = item, count = tomove}
+
+        if inserted <= 0 then 
+            error("tried to remove " .. inserted .. " items")
+            inserted = 1 --THIS CODE IS BAD, QUICK FIX FOR ISSUE
+        end
+
         p.remove_item{name=item, count=inserted}
     end
     delroute(p)
@@ -365,7 +407,6 @@ end
 function delroute(p)
     route = nil
     rendering.clear()
-    p.walking_state = {walking = false}
 end
 
 --10000 offset is to negate negative numbers, they make it more complicated.
@@ -417,10 +458,8 @@ script.on_event(defines.events.on_tick, function(event)
 
     --only run if we are allowed to
     if enabled == true then
-        if p.walking_state.walking == false then
-            if route ~= nil then
-                moveAlongPath(p, route)
-            end
+        if route ~= nil then
+            moveAlongPath(p)
         end
         debug(current_task+2)
         result = doTask(p, taskList[current_task])
