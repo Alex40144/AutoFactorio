@@ -8,12 +8,11 @@ dbg = true
 enabled = false
 route = nil
 
-storage_devices = {"stone-furnace", "steel-furnace", "wooden-chest", "iron-chest"}
-
 local current_task = 0
 local current_research = 0
 local destination = {x=0, y=0}
 
+resources = {}
 
 -----------------------------------------------------------------------------------------------------
 
@@ -91,53 +90,42 @@ function moveAlongPath(p)
 
     local direction = Position.complex_direction_to(p.position, nextNode.position, true)
     p.walking_state = {walking = true, direction = direction}
-    error(direction)
 end
 
 
 
 function craft(p, item, count)
+    if count < 1 then
+        return
+    end
 
     crafted = p.begin_crafting{recipe = item, count = count}
     debug("crafting " .. count .. " " .. item)
 
     if crafted < count then
-        error("Did not craft full count of " .. item)
-        --work out what material player did not have
-        --go and find some.
+        error("Did not craft full count of " .. item .. " looking for ingredients")
         local ingredients = game.recipe_prototypes[item].ingredients
-        local box = Area.new{{-25, -25}, {25, 25}}
-        box = Area.offset(box, p.position)
-        local entities = p.surface.find_entities_filtered{area = box, name = storage_devices, limit = 150}
-        if next(entities) == nil then
-            debug("no entities to find ingredients")
-            --enabled = false if more stable
-            return false
-        end
-        debugTable(entities)
-        for key,entity in pairs(entities) do
-            local contents = entity.get_output_inventory().get_contents()
-            if next(contents) ~= nil then
-                --basically continue in python, skips to next iteration if nothing in entity
-                debugTable(contents)
-                for a, ingredient in pairs(ingredients) do --loop through every ingredient
-                    for item, b in pairs(contents) do --loop through every item in entity
-                        --check for a match
-                        debugTable(ingredient)
-                        if item == ingredient.name then
-                            debug("Taking " .. item .. " from " .. entity.name)
-                            take(p, entity.position, (ingredient.amount * count), false) --take deals with existing path
-                            return false
-                        end
-                    end
-                end
-                debug("could not find required ingredient in nearby entities")
-                return false
+        debugTable(ingredients)
+        local inventory = p.get_main_inventory().get_contents()
+        debugTable(inventory)
+        for key,value in pairs(ingredients) do
+            if inventory[key] == nil then
+                get(p, value.name)
             end
         end
-        return false
     end
     return true
+
+end
+
+function get(p, item)
+    if resources[item] == nil then
+        error("Can't find " .. item)
+        return
+    end
+    for key,value in pairs(resources[item]) do
+        table.insert(taskList, current_task, {"take", value, 5, true})
+    end
 end
 
 function calculateCraft(p, ...)
@@ -163,9 +151,26 @@ function calculateCraft(p, ...)
         end
 
         --if we already have it don't bother crafting.
-        local inventory = p.get_main_inventory().get_contents()
+        local inventory = p.get_main_inventory().get_contents() --not accounting for crafting queue
         for item,a in pairs(toCraft) do
             for invent, count in pairs(inventory) do
+                if item == invent then
+                    toCraft[item] = toCraft[item] - count
+                    if toCraft[item] < 1 then
+                        for i, name in ipairs(toCraft) do
+                            if name == item then
+                                table.remove(toCraft, i)
+                                break
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        local queue = p.crafting_queue
+        for item,a in pairs(toCraft) do
+            for invent, count in pairs(queue) do
                 if item == invent then
                     toCraft[item] = toCraft[item] - count
                     if toCraft[item] < 1 then
@@ -222,11 +227,13 @@ function mine(p, location)
     end
 end
 
-function build(p, location, item, direction)
+function build(p, location, item, direction, ...)
     local entitybounding = game.entity_prototypes[item].collision_box
     local entitycollision = Area.offset(entitybounding, location)
 
     local playercollision = p.character.bounding_box
+
+    local arg = ...
 
     if route == nil then
         path(p, location, 3)
@@ -249,6 +256,10 @@ function build(p, location, item, direction)
             delroute(p)
             --be honest
             p.remove_item{name=item, count=1}
+            if arg.group then
+                table.insert(resources[arg.group], location)
+                debugTable(resources)
+            end
             return true
         else
             error("Fast replace failed")
@@ -260,6 +271,14 @@ function build(p, location, item, direction)
             delroute(p)
             --be honest
             p.remove_item{name=item, count=1}
+            if arg.group then
+                if resources[arg.group] == nil then
+                    resources[arg.group] = {}
+                    debugTable(resources)
+                end
+                table.insert(resources[arg.group], {location.x, location.y})
+                debugTable(resources)
+            end
             return true
         else
             error("building failed")
@@ -268,7 +287,9 @@ function build(p, location, item, direction)
     -- we might be stood where we want to place the object
     elseif overlap(entitycollision, playercollision) then
         error("colliding with build location")
-        path(p, {p.position.x+4, p.position.y+4}, 3)
+        if route == nil then
+            path(p, {p.position.x+4, p.position.y+4}, 3)
+        end
     end
 
     return false
@@ -296,7 +317,7 @@ function take(p, location, numberToTake, skip)
             if p.selected.get_fuel_inventory() ~= nil then
                 if p.selected.get_fuel_inventory().is_empty() then --has it run out of fuel?
                     debug("fuel is empty, adding extra")
-                    put(p, "coal", 2, location)
+                    put(p, "wood", 2, location) --more likely to have wood
                 end
             end
             return false
@@ -319,10 +340,10 @@ function take(p, location, numberToTake, skip)
         delroute(p)
         return true
     else
-        take = math.min(numberToTake, numberInEntity)
-        p.insert{name=item, count=take}
-        p.selected.remove_item{name=item, count=take}
-        error("didn't take requested ammount of " .. item .. " only took "  .. take .. " of " .. numberToTake)
+        local count = math.min(numberToTake, numberInEntity)
+        p.insert{name=item, count=count}
+        p.selected.remove_item{name=item, count=count}
+        error("didn't take requested ammount of " .. item .. " only took "  .. count .. " of " .. numberToTake)
         delroute(p)
         return true
     end
@@ -425,7 +446,7 @@ end
 
 function doTask(p, tasks)
     if tasks[1] == "build" then
-        return build(p, tasks[2], tasks[3], tasks[4])
+        return build(p, tasks[2], tasks[3], tasks[4], {group=tasks[5]})
     elseif tasks[1] == "craft" then
         --return craft(p,tasks[2], tasks[3])
         return calculateCraft(p, {item=tasks[2], count=tasks[3]})

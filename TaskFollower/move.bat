@@ -4,4 +4,3 @@ copy "C:\Users\alex\Desktop\repos\AutoFactorio\TaskFollower\info.json" "C:\Users
 copy "C:\Users\alex\Desktop\repos\AutoFactorio\TaskFollower\research.lua" "C:\Users\alex\AppData\Roaming\Factorio\mods\AutoFactorio_1.0.0\research.lua"
 copy "C:\Users\alex\Desktop\repos\AutoFactorio\TaskFollower\tasks.lua" "C:\Users\alex\AppData\Roaming\Factorio\mods\AutoFactorio_1.0.0\tasks.lua"
 echo Done
-pause
