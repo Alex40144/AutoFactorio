@@ -121,21 +121,30 @@ end
 function get(p, item)
     if resources[item] == nil then
         error("Can't find " .. item)
-        return
-    end
-    for key,value in pairs(resources[item]) do
-        table.insert(taskList, current_task, {"take", value, 5, true})
+        --find ingredients
+        if game.recipe_prototypes[item] == nul then
+            return
+        end
+        local ingredients = game.recipe_prototypes[item].ingredients
+        for key, value in pairs(ingredients) do
+            get(p, value.name)
+        end
+    else
+        for key,value in pairs(resources[item]) do
+            table.insert(taskList, current_task, {"take", value, 5, true})
+        end
     end
 end
 
 function calculateCraft(p, ...)
 
     local arg = ...
+    local toCraft = {}
 
     if not arg.item and not arg.count then
         local step = current_task + 1
         local iterate = true
-        local toCraft = {}
+        
         while iterate do
             if taskList[step][1] == "build" then
                 local item = taskList[step][3]
@@ -149,56 +158,59 @@ function calculateCraft(p, ...)
             end
             step = step + 1
         end
-
-        --if we already have it don't bother crafting.
-        local inventory = p.get_main_inventory().get_contents() --not accounting for crafting queue
-        for item,a in pairs(toCraft) do
-            for invent, count in pairs(inventory) do
-                if item == invent then
-                    toCraft[item] = toCraft[item] - count
-                    if toCraft[item] < 1 then
-                        for i, name in ipairs(toCraft) do
-                            if name == item then
-                                table.remove(toCraft, i)
-                                break
-                            end
-                        end
-                    end
-                end
-            end
-        end
-
-        local queue = p.crafting_queue
-        for item,a in pairs(toCraft) do
-            for invent, count in pairs(queue) do
-                if item == invent then
-                    toCraft[item] = toCraft[item] - count
-                    if toCraft[item] < 1 then
-                        for i, name in ipairs(toCraft) do
-                            if name == item then
-                                table.remove(toCraft, i)
-                                break
-                            end
-                        end
-                    end
-                end
-            end
-        end
-
-        for key,value in pairs(toCraft) do
-            if game.recipe_prototypes[key].products[1].amount ~= 1 then
-                value = value / game.recipe_prototypes[key].products[1].amount
-                value = math.ceil(value)
-            end
-            if craft(p, key, value) == false then
-                error("failed to craft all that was needed")
-                return false
-            end
-        end
-        return true
     else
-        return craft(p, arg.item, arg.count)
+        toCraft = {{arg.item, arg.count}}
     end
+    --if we already have it don't bother crafting.
+    local inventory = p.get_main_inventory().get_contents() --not accounting for crafting queue
+    for item,a in pairs(toCraft) do
+        for invent, count in pairs(inventory) do
+            if item == invent then
+                toCraft[item] = toCraft[item] - count
+                if toCraft[item] < 1 then
+                    for i, name in ipairs(toCraft) do
+                        if name == item then
+                            table.remove(toCraft, i)
+                            break
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    local queue = p.crafting_queue
+    if queue then
+        debugTable(queue)
+        for item,a in pairs(toCraft) do
+            for key, val in pairs(queue) do
+                if item == val.recipe then
+                    toCraft[item] = toCraft[item] - val.count
+                    if toCraft[item] < 1 then
+                        for i, name in ipairs(toCraft) do
+                            if name == item then
+                                table.remove(toCraft, i)
+                                break
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    for key,value in pairs(toCraft) do
+        error(value)
+        if game.recipe_prototypes[key].products[1].amount ~= 1 then
+            value = value / game.recipe_prototypes[key].products[1].amount
+            value = math.ceil(value)
+        end
+        if craft(p, key, value) == false then
+            error("failed to craft all that was needed")
+            return false
+        end
+    end
+    return true
 end
             
 
