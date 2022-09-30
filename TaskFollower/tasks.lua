@@ -1360,7 +1360,6 @@ task[#task+1] = {"build", {x=-20.5, y=18.5}, "transport-belt", 2}
 task[#task+1] = {"build", {x=-19.5, y=18.5}, "transport-belt", 2}
 task[#task+1] = {"build", {x=-18.5, y=18.5}, "transport-belt", 2}
 task[#task+1] = {"craft"}
-task[#task+1] = {"mine", {x=-14.5, y=19.5}}
 task[#task+1] = {"mine", {x=-14.5, y=22.5}}
 task[#task+1] = {"build", {x=-17.5, y=18.5}, "transport-belt", 2}
 task[#task+1] = {"build", {x=-16.5, y=18.5}, "transport-belt", 4}

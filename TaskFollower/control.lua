@@ -106,12 +106,8 @@ function craft(p, item, count)
         error("Did not craft full count of " .. item .. " looking for ingredients")
         local ingredients = game.recipe_prototypes[item].ingredients
         debugTable(ingredients)
-        local inventory = p.get_main_inventory().get_contents()
-        debugTable(inventory)
         for key,value in pairs(ingredients) do
-            if inventory[key] == nil then
-                get(p, value.name)
-            end
+            get(p, value.name)
         end
     end
     return true
@@ -159,7 +155,7 @@ function calculateCraft(p, ...)
             step = step + 1
         end
     else
-        toCraft = {{arg.item, arg.count}}
+        toCraft[arg.item] = arg.count
     end
     --if we already have it don't bother crafting.
     local inventory = p.get_main_inventory().get_contents() --not accounting for crafting queue
@@ -200,7 +196,6 @@ function calculateCraft(p, ...)
     end
 
     for key,value in pairs(toCraft) do
-        error(value)
         if game.recipe_prototypes[key].products[1].amount ~= 1 then
             value = value / game.recipe_prototypes[key].products[1].amount
             value = math.ceil(value)
@@ -299,9 +294,7 @@ function build(p, location, item, direction, ...)
     -- we might be stood where we want to place the object
     elseif overlap(entitycollision, playercollision) then
         error("colliding with build location")
-        if route == nil then
-            path(p, {p.position.x+4, p.position.y+4}, 3)
-        end
+        path(p, {p.position.x+4, p.position.y}, 3)
     end
 
     return false
@@ -425,7 +418,7 @@ function recipe(p, location, recipe)
     ingredients = game.recipe_prototypes[recipe].ingredients
     for key, ingredient in ipairs(ingredients) do
         inserted = p.selected.insert(ingredient.name)
-        p.remove_item{name=item, count=inserted}
+        p.remove_item{name=ingredient.name, count=inserted}
     end
     delroute(p)
     return true
@@ -494,11 +487,12 @@ script.on_event(defines.events.on_tick, function(event)
         if route ~= nil then
             moveAlongPath(p)
         end
-        debug(current_task+2)
+        debugTable(taskList[current_task])
         result = doTask(p, taskList[current_task])
         if result ~= nil then
             if result == true then
                 current_task = current_task + 1
+                delroute(p)
             elseif result == "end" then
                 enabled = false
             end
