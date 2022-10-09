@@ -1,3 +1,10 @@
+--ToDo list
+--fix Crafting
+--change miner phase to use get function
+--function to restock coal / copper-plates
+
+
+------------------------------------------------------------------------------------------------------
 require "util"
 local taskList = require("tasks")
 local research = require("research")
@@ -7,6 +14,8 @@ local Area = require("__stdlib__/stdlib/area/area")
 dbg = true
 enabled = false
 route = nil
+
+colliding = false
 
 local current_task = 0
 local current_research = 0
@@ -53,6 +62,7 @@ function path(p, location, radius)
     local y2 = p.character.bounding_box.right_bottom.y - p.position.y
     local bounding = {{x1, y1},{x2, y2}}
 
+    route = {}
     p.surface.request_path({
         bounding_box = bounding,
         collision_mask = p.character.prototype.collision_mask,
@@ -95,29 +105,29 @@ end
 
 
 function craft(p, item, count)
-    if count < 1 then
-        return
-    end
-
-    crafted = p.begin_crafting{recipe = item, count = count}
-    debug("crafting " .. count .. " " .. item)
-
-    if crafted < count then
-        error("Did not craft full count of " .. item .. " looking for ingredients")
-        local ingredients = game.recipe_prototypes[item].ingredients
-        debugTable(ingredients)
-        for key,value in pairs(ingredients) do
+    --check if we have enough ingredients
+    --if not, get ingredients
+    local ingredients = game.recipe_prototypes[item].ingredients
+    for key,value in pairs(ingredients) do
+        debug(value.name .. " have: " .. p.get_item_count(value.name) .. " need: " .. count * game.recipe_prototypes[item].ingredients[key].amount)
+        if p.get_item_count(value.name) < (count * game.recipe_prototypes[item].ingredients[key].amount) then
+            --we don't have an ingredient
             get(p, value.name)
+            
         end
     end
-    return true
-
+    if p.get_craftable_count(item) >= count then
+        crafted = p.begin_crafting{recipe = item, count = count}
+        debug("crafting " .. count .. " " .. item)
+        if crafted < count then
+            error("Did not craft full count of " .. item .. " looking for ingredients")
+        end
+    end
 end
 
 function get(p, item)
-    if resources[item] == nil then
+    if resources[item] == nil then -- if we don't know where to find item
         error("Can't find " .. item)
-        --find ingredients
         if game.recipe_prototypes[item] == nul then
             return
         end
@@ -194,7 +204,7 @@ function calculateCraft(p, ...)
             end
         end
     end
-
+    debugTable(toCraft)
     for key,value in pairs(toCraft) do
         if game.recipe_prototypes[key].products[1].amount ~= 1 then
             value = value / game.recipe_prototypes[key].products[1].amount
@@ -261,6 +271,7 @@ function build(p, location, item, direction, ...)
         built = p.surface.create_entity{name = item, position = location, direction = direction, force="player", fast_replace = true, player = p}
         if built then
             delroute(p)
+            colliding = false
             --be honest
             p.remove_item{name=item, count=1}
             if arg.group then
@@ -276,6 +287,7 @@ function build(p, location, item, direction, ...)
         built = p.surface.create_entity{name = item, position = location, direction = direction, force="player"}
         if built then
             delroute(p)
+            colliding = false
             --be honest
             p.remove_item{name=item, count=1}
             if arg.group then
@@ -293,8 +305,11 @@ function build(p, location, item, direction, ...)
         end
     -- we might be stood where we want to place the object
     elseif overlap(entitycollision, playercollision) then
-        error("colliding with build location")
-        path(p, {p.position.x+4, p.position.y}, 3)
+        if not colliding then
+            error("colliding with build location")
+            path(p, {p.position.x+4, p.position.y}, 1)
+        end
+        colliding = true
     end
 
     return false
