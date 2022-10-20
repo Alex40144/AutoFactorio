@@ -18,7 +18,7 @@ route = nil
 colliding = false
 
 local current_task = 0
-local current_research = 0
+current_research = 0
 local destination = {x=0, y=0}
 
 resources = {}
@@ -105,6 +105,9 @@ end
 
 
 function craft(p, item, count)
+    if count == 0 then
+        return
+    end
     --check if we have enough ingredients
     --if not, get ingredients
     local ingredients = game.recipe_prototypes[item].ingredients
@@ -174,12 +177,7 @@ function calculateCraft(p, ...)
             if item == invent then
                 toCraft[item] = toCraft[item] - count
                 if toCraft[item] < 1 then
-                    for i, name in ipairs(toCraft) do
-                        if name == item then
-                            table.remove(toCraft, i)
-                            break
-                        end
-                    end
+                    toCraft[item] = 0
                 end
             end
         end
@@ -192,13 +190,9 @@ function calculateCraft(p, ...)
             for key, val in pairs(queue) do
                 if item == val.recipe then
                     toCraft[item] = toCraft[item] - val.count
+                    debug(toCraft[item])
                     if toCraft[item] < 1 then
-                        for i, name in ipairs(toCraft) do
-                            if name == item then
-                                table.remove(toCraft, i)
-                                break
-                            end
-                        end
+                        toCraft[item] = 0
                     end
                 end
             end
