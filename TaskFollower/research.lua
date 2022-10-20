@@ -2,6 +2,7 @@ local research = {}
 research[0] = "automation"
 research[#research+1] = "electronics"
 research[#research+1] = "fast-inserter"
+research[#research+1] = "logistics"
 research[#research+1] = "logistic-science-pack"
 research[#research+1] = "steel-processing"
 research[#research+1] = "steel-axe"
