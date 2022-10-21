@@ -17,6 +17,8 @@ route = nil
 
 colliding = false
 
+counter = 0
+
 local current_task = 0
 current_research = 0
 local destination = {x=0, y=0}
@@ -35,7 +37,7 @@ function debugTable(msg)
     if next(msg) == nil then
         game.print("table is empty")
         return
-     end
+    end
     game.print(serpent.line(msg))
 end
 
@@ -132,17 +134,34 @@ function get(p, item)
     if resources[item] == nil then -- if we don't know where to find item
         error("Can't find " .. item)
         if game.recipe_prototypes[item] == nul then
-            return
+            return false
         end
         local ingredients = game.recipe_prototypes[item].ingredients
-        for key, value in pairs(ingredients) do
-            get(p, value.name)
+        for key, ingredient in pairs(ingredients) do
+            get(p, ingredient.name)
         end
     else
-        for key,value in pairs(resources[item]) do
-            table.insert(taskList, current_task, {"take", value, 5, true})
+        for key,location in pairs(resources[item]) do
+            table.insert(taskList, current_task, {"take", location, 2, true})
         end
     end
+    return true
+end
+
+function checkFuel(p)
+    if resources ~= nil then
+        for item, value in pairs(resources) do
+            for key,location in pairs(resources[item]) do
+                p.update_selected_entity(location)
+                if p.selected.get_fuel_inventory() ~= nil then
+                    if p.selected.get_fuel_inventory().is_empty() then --has it run out of fuel?
+                        put(p, "coal", 40, location)
+                    end
+                end
+            end
+        end
+    end
+    return
 end
 
 function calculateCraft(p, ...)
@@ -373,11 +392,7 @@ function put(p, item, count, location)
     end
 
     local playerCount = p.get_item_count(item)
-
-    --this is to check if tomove = 0 as .insert doesn't like it
-    if playerCount < 1 then
-        error("did not put any "  .. item)
-    elseif count < playerCount then --we have enough items to move
+    if count <= playerCount then --we have enough items to move
         inserted = p.selected.insert{name = item, count = count}
 
         if inserted <= 0 then 
@@ -385,16 +400,19 @@ function put(p, item, count, location)
             inserted = 1 --THIS CODE IS BAD, QUICK FIX FOR ISSUE
         end
         p.remove_item{name=item, count=inserted}
-    else --we don't have enough items to move, we will do all
-        tomove = math.min(playerCount, count)
-        inserted = p.selected.insert{name = item, count = tomove}
+    else --we don't have enough items to move, use get to find more
+        if not get(p, item) then 
+            --can't find more
+            tomove = 1
+            inserted = p.selected.insert{name = item, count = tomove}
 
-        if inserted <= 0 then 
-            error("tried to remove " .. inserted .. " items")
-            inserted = 1 --THIS CODE IS BAD, QUICK FIX FOR ISSUE
+            if inserted <= 0 then 
+                error("tried to remove " .. inserted .. " items")
+                inserted = 1 --THIS CODE IS BAD, QUICK FIX FOR ISSUE
+            end
+
+            p.remove_item{name=item, count=inserted}
         end
-
-        p.remove_item{name=item, count=inserted}
     end
     delroute(p)
     return true
@@ -459,6 +477,11 @@ end
 -----------------------------------------------------------------------------------------------------
 
 function doTask(p, tasks)
+    counter = counter + 1
+    if counter == 600 then --run every 10 sec * speed
+        checkFuel(p)
+        counter = 0
+    end
     if tasks[1] == "build" then
         return build(p, tasks[2], tasks[3], tasks[4], {group=tasks[5]})
     elseif tasks[1] == "craft" then
