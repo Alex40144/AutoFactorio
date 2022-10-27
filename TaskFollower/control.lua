@@ -17,13 +17,12 @@ route = nil
 
 colliding = false
 
-counter = 0
-
 local current_task = 0
 current_research = 0
 local destination = {x=0, y=0}
 
 resources = {}
+group = {}
 
 -----------------------------------------------------------------------------------------------------
 
@@ -114,11 +113,18 @@ function craft(p, item, count)
     --if not, get ingredients
     local ingredients = game.recipe_prototypes[item].ingredients
     for key,value in pairs(ingredients) do
-        debug(value.name .. " have: " .. p.get_item_count(value.name) .. " need: " .. count * game.recipe_prototypes[item].ingredients[key].amount)
-        if p.get_item_count(value.name) < (count * game.recipe_prototypes[item].ingredients[key].amount) then
-            --we don't have an ingredient
-            get(p, value.name)
-            
+        local have = p.get_item_count(value.name) --need to account for queue
+        local need = count * game.recipe_prototypes[item].ingredients[key].amount
+        debug(value.name .. " have: " .. have .. " need: " .. need)
+        if need < have then
+            if game.recipe_prototypes[value.name] ~= nil then --is an ingredient craftable?
+                craft(p, value.name, need) --recursive
+            else        
+                if p.get_item_count(value.name) < (need) then
+                    --we don't have an ingredient
+                    get(p, value.name)
+                end
+            end
         end
     end
     if p.get_craftable_count(item) >= count then
@@ -148,15 +154,14 @@ function get(p, item)
     return true
 end
 
-function checkFuel(p)
-    if resources ~= nil then
-        for item, value in pairs(resources) do
-            for key,location in pairs(resources[item]) do
-                p.update_selected_entity(location)
-                if p.selected.get_fuel_inventory() ~= nil then
-                    if p.selected.get_fuel_inventory().is_empty() then --has it run out of fuel?
-                        put(p, "coal", 40, location)
-                    end
+function checkBurnerFuel(p)
+    local locations = {"iron-burner-miner", "iron-burner-furnace", "copper-burner-miner", "copper-burner-furnace"}
+    for k, v in pairs(locations) do
+        for key,location in pairs(resources[v]) do
+            p.update_selected_entity(location)
+            if p.selected.get_fuel_inventory() ~= nil then
+                if p.selected.get_fuel_inventory().is_empty() then --has it run out of fuel?
+                    put(p, "coal", 40, location)
                 end
             end
         end
@@ -288,8 +293,10 @@ function build(p, location, item, direction, ...)
             --be honest
             p.remove_item{name=item, count=1}
             if arg.group then
-                table.insert(resources[arg.group], location)
-                debugTable(resources)
+                table.insert(group[arg.group], location)
+            end
+            if arg.resource then
+                table.insert(resource[arg.group], location)
             end
             return true
         else
@@ -304,12 +311,16 @@ function build(p, location, item, direction, ...)
             --be honest
             p.remove_item{name=item, count=1}
             if arg.group then
+                if group[arg.group] == nil then
+                    group[arg.group] = {}
+                end
+                table.insert(group[arg.group], {location.x, location.y})
+            end
+            if arg.resource then
                 if resources[arg.group] == nil then
                     resources[arg.group] = {}
-                    debugTable(resources)
                 end
                 table.insert(resources[arg.group], {location.x, location.y})
-                debugTable(resources)
             end
             return true
         else
@@ -477,13 +488,8 @@ end
 -----------------------------------------------------------------------------------------------------
 
 function doTask(p, tasks)
-    counter = counter + 1
-    if counter == 600 then --run every 10 sec * speed
-        checkFuel(p)
-        counter = 0
-    end
     if tasks[1] == "build" then
-        return build(p, tasks[2], tasks[3], tasks[4], {group=tasks[5]})
+        return build(p, tasks[2], tasks[3], tasks[4], {group=tasks[5], resource=tasks[6]})
     elseif tasks[1] == "craft" then
         --return craft(p,tasks[2], tasks[3])
         return calculateCraft(p, {item=tasks[2], count=tasks[3]})
@@ -495,6 +501,8 @@ function doTask(p, tasks)
         return put(p, tasks[2], tasks[3], tasks[4])
     elseif tasks[1] == "take" then
         return take(p, tasks[2], tasks[3], tasks[4])
+    elseif tasks[1] == "checkBurnerFuel" then
+        return checkBurnerFuel(p)
     elseif tasks[1] == "recipe" then
         return recipe(p, tasks[2], tasks[3])
     elseif tasks[1] == "speed" then
