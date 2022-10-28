@@ -107,31 +107,32 @@ end
 
 function craft(p, item, count)
     if count == 0 then
-        return
+        return 0
     end
     --check if we have enough ingredients
     --if not, get ingredients
-    local ingredients = game.recipe_prototypes[item].ingredients
-    for key,value in pairs(ingredients) do
-        local have = p.get_item_count(value.name) --need to account for queue
-        local need = count * game.recipe_prototypes[item].ingredients[key].amount
-        debug(value.name .. " have: " .. have .. " need: " .. need)
-        if need < have then
-            if game.recipe_prototypes[value.name] ~= nil then --is an ingredient craftable?
-                craft(p, value.name, need) --recursive
-            else        
-                if p.get_item_count(value.name) < (need) then
-                    --we don't have an ingredient
-                    get(p, value.name)
-                end
-            end
-        end
-    end
     if p.get_craftable_count(item) >= count then
         crafted = p.begin_crafting{recipe = item, count = count}
         debug("crafting " .. count .. " " .. item)
         if crafted < count then
-            error("Did not craft full count of " .. item .. " looking for ingredients")
+            error("Did not craft full count of " .. item)
+        end
+    else
+        local ingredients = game.recipe_prototypes[item].ingredients
+        for key,value in pairs(ingredients) do
+            local have = p.get_item_count(value.name) --need to account for queue
+            local need = count * game.recipe_prototypes[item].ingredients[key].amount
+            debug(value.name .. " have: " .. have .. " need: " .. need)
+            if have < need then
+                debug(game.recipe_prototypes[value.name].category)
+                if game.recipe_prototypes[value.name].category == "crafting" then --is an ingredient craftable?
+                    debug(game.recipe_prototypes[value.name].category)
+                    debug("can craft " .. value.name)
+                    craft(p, value.name, need) --recursive
+                else        
+                    get(p, value.name)
+                end
+            end
         end
     end
 end
@@ -139,13 +140,7 @@ end
 function get(p, item)
     if resources[item] == nil then -- if we don't know where to find item
         error("Can't find " .. item)
-        if game.recipe_prototypes[item] == nul then
-            return false
-        end
-        local ingredients = game.recipe_prototypes[item].ingredients
-        for key, ingredient in pairs(ingredients) do
-            get(p, ingredient.name)
-        end
+        return false
     else
         for key,location in pairs(resources[item]) do
             table.insert(taskList, current_task, {"take", location, 2, true})
@@ -157,7 +152,7 @@ end
 function checkBurnerFuel(p)
     local locations = {"iron-burner-miner", "iron-burner-furnace", "copper-burner-miner", "copper-burner-furnace"}
     for k, v in pairs(locations) do
-        for key,location in pairs(resources[v]) do
+        for key,location in pairs(group[v]) do
             p.update_selected_entity(location)
             if p.selected.get_fuel_inventory() ~= nil then
                 if p.selected.get_fuel_inventory().is_empty() then --has it run out of fuel?
@@ -233,6 +228,7 @@ function calculateCraft(p, ...)
             return false
         end
     end
+    delroute(p)
     return true
 end
             
@@ -279,6 +275,7 @@ function build(p, location, item, direction, ...)
     --we can use this to place whilst walking as it will keep trying until it succeeds.
     if p.get_item_count(item) < 1 then
         error("did not have " .. item)
+        delroute(p)
         if (p.crafting_queue_size > 0) then
             return false --still have to wait for queue to finish, so no point working out if our item is queued
         else
@@ -287,7 +284,7 @@ function build(p, location, item, direction, ...)
         return false
     elseif p.surface.can_fast_replace{name = item, position = location, direction = direction, force = "player"} then
         built = p.surface.create_entity{name = item, position = location, direction = direction, force="player", fast_replace = true, player = p}
-        if built then
+        if built ~= nil then
             delroute(p)
             colliding = false
             --be honest
@@ -296,7 +293,7 @@ function build(p, location, item, direction, ...)
                 table.insert(group[arg.group], location)
             end
             if arg.resource then
-                table.insert(resource[arg.group], location)
+                table.insert(resources[arg.group], location)
             end
             return true
         else
@@ -305,7 +302,7 @@ function build(p, location, item, direction, ...)
         end
     elseif p.can_place_entity{name = item, position = location, direction = direction, force = "player"} then
         built = p.surface.create_entity{name = item, position = location, direction = direction, force="player"}
-        if built then
+        if built ~= nil then
             delroute(p)
             colliding = false
             --be honest
@@ -317,10 +314,10 @@ function build(p, location, item, direction, ...)
                 table.insert(group[arg.group], {location.x, location.y})
             end
             if arg.resource then
-                if resources[arg.group] == nil then
-                    resources[arg.group] = {}
+                if resources[arg.resource] == nil then
+                    resources[arg.resource] = {}
                 end
-                table.insert(resources[arg.group], {location.x, location.y})
+                table.insert(resources[arg.resource], {location.x, location.y})
             end
             return true
         else
@@ -471,6 +468,7 @@ end
 function delroute(p)
     route = nil
     rendering.clear()
+    debug("del route")
 end
 
 --10000 offset is to negate negative numbers, they make it more complicated.
