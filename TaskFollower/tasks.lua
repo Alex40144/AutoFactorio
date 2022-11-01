@@ -115,8 +115,8 @@ task[#task+1] = {"craft"}
 task[#task+1] = {"mine", {x=-23.5, y=43.5}}
 task[#task+1] = {"build", {x=-25, y=29}, "stone-furnace", 0, "copper-burner-furnace", "copper-plate"}
 task[#task+1] = {"build", {x=-25, y=27}, "stone-furnace", 0, "copper-burner-furnace", "copper-plate"}
-task[#task+1] = {"build", {x=-27, y=29}, "burner-mining-drill", 2, "copper-miner"}
-task[#task+1] = {"build", {x=-27, y=27}, "burner-mining-drill", 3, "copper-miner"}
+task[#task+1] = {"build", {x=-27, y=29}, "burner-mining-drill", 2, "copper-burner-miner"}
+task[#task+1] = {"build", {x=-27, y=27}, "burner-mining-drill", 3, "copper-burner-miner"}
 task[#task+1] = {"mine", {x=-39.5, y=59.8125}}
 task[#task+1] = {"mine", {x=-41.5, y=60.5625}}
 task[#task+1] = {"mine", {x=-41.6875, y=66.5625}}
@@ -155,19 +155,19 @@ task[#task+1] = {"mine", {x=-4.875, y=75.36328125}}
 task[#task+1] = {"mine", {x=-1.8125, y=75.92578125}}
 task[#task+1] = {"craft"}
 task[#task+1] = {"build", {x=-25, y=31}, "stone-furnace", 0, "copper-burner-furnace", "copper-plate"}
-task[#task+1] = {"build", {x=-27, y=31}, "burner-mining-drill", 2, "copper-miner"}
+task[#task+1] = {"build", {x=-27, y=31}, "burner-mining-drill", 2, "copper-burner-miner"}
 task[#task+1] = {"put", "coal", 5, {x=-27, y=31}}
 task[#task+1] = {"put", "coal", 5, {x=-25, y=31}}
 task[#task+1] = {"build", {x=-25, y=33}, "stone-furnace", 0, "copper-burner-furnace", "copper-plate"}
-task[#task+1] = {"build", {x=-27, y=33}, "burner-mining-drill", 2, "copper-miner"}
+task[#task+1] = {"build", {x=-27, y=33}, "burner-mining-drill", 2, "copper-burner-miner"}
 task[#task+1] = {"put", "coal", 5, {x=-25, y=33}}
 task[#task+1] = {"put", "coal", 5, {x=-27, y=33}}
 task[#task+1] = {"build", {x=-25, y=35}, "stone-furnace", 0, "copper-burner-furnace", "copper-plate"}
-task[#task+1] = {"build", {x=-27, y=35}, "burner-mining-drill", 2, "copper-miner"}
+task[#task+1] = {"build", {x=-27, y=35}, "burner-mining-drill", 2, "copper-burner-miner"}
 task[#task+1] = {"put", "coal", 5, {x=-25, y=35}}
 task[#task+1] = {"put", "coal", 5, {x=-27, y=35}}
 task[#task+1] = {"build", {x=-25, y=37}, "stone-furnace", 0, "copper-burner-furnace", "copper-plate"}
-task[#task+1] = {"build", {x=-27, y=37}, "burner-mining-drill", 2, "copper-miner"}
+task[#task+1] = {"build", {x=-27, y=37}, "burner-mining-drill", 2, "copper-burner-miner"}
 task[#task+1] = {"put", "coal", 5, {x=-25, y=37}}
 task[#task+1] = {"put", "coal", 5, {x=-27, y=37}}
 task[#task+1] = {"build", {x=-67, y=80}, "burner-mining-drill", 4, "stone-miner"}

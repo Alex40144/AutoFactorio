@@ -124,9 +124,9 @@ function craft(p, item, count)
             local need = count * game.recipe_prototypes[item].ingredients[key].amount
             debug(value.name .. " have: " .. have .. " need: " .. need)
             if have < need then
-                debug(game.recipe_prototypes[value.name].category)
-                if game.recipe_prototypes[value.name].category == "crafting" then --is an ingredient craftable?
-                    debug(game.recipe_prototypes[value.name].category)
+                if value.name == "stone" then --stone causer an error as it is an ingredient, but not a recipe itself
+                    get(p, value.name)
+                elseif game.recipe_prototypes[value.name].category == "crafting" then --is an ingredient craftable?
                     debug("can craft " .. value.name)
                     craft(p, value.name, need) --recursive
                 else        
@@ -134,6 +134,7 @@ function craft(p, item, count)
                 end
             end
         end
+        delroute(p)
     end
 end
 
@@ -152,6 +153,7 @@ end
 function checkBurnerFuel(p)
     local locations = {"iron-burner-miner", "iron-burner-furnace", "copper-burner-miner", "copper-burner-furnace"}
     for k, v in pairs(locations) do
+        debug(v)
         for key,location in pairs(group[v]) do
             p.update_selected_entity(location)
             if p.selected.get_fuel_inventory() ~= nil then
@@ -165,7 +167,7 @@ function checkBurnerFuel(p)
 end
 
 function calculateCraft(p, ...)
-
+    delroute(p)
     local arg = ...
     local toCraft = {}
 
@@ -202,6 +204,7 @@ function calculateCraft(p, ...)
         end
     end
 
+    --don't craft if already crafting
     local queue = p.crafting_queue
     if queue then
         debugTable(queue)
@@ -217,16 +220,15 @@ function calculateCraft(p, ...)
             end
         end
     end
+
     debugTable(toCraft)
     for key,value in pairs(toCraft) do
+        --account for multiple products in crafting recipes 
         if game.recipe_prototypes[key].products[1].amount ~= 1 then
             value = value / game.recipe_prototypes[key].products[1].amount
             value = math.ceil(value)
         end
-        if craft(p, key, value) == false then
-            error("failed to craft all that was needed")
-            return false
-        end
+        craft(p, key, value)
     end
     delroute(p)
     return true
@@ -268,6 +270,7 @@ function build(p, location, item, direction, ...)
 
     if route == nil then
         path(p, location, 3)
+        return false
     end
 
     --can_place_entity already checks player reach
@@ -275,34 +278,16 @@ function build(p, location, item, direction, ...)
     --we can use this to place whilst walking as it will keep trying until it succeeds.
     if p.get_item_count(item) < 1 then
         error("did not have " .. item)
-        delroute(p)
         if (p.crafting_queue_size > 0) then
-            return false --still have to wait for queue to finish, so no point working out if our item is queued
+            return false --still have to wait for queue to finish, so no point working out if our item is queued (efficiency??)
         else
-            craft(p, item, 1)
+            calculateCraft(p, {item = item, count = 1})
         end
         return false
-    elseif p.surface.can_fast_replace{name = item, position = location, direction = direction, force = "player"} then
-        built = p.surface.create_entity{name = item, position = location, direction = direction, force="player", fast_replace = true, player = p}
-        if built ~= nil then
-            delroute(p)
-            colliding = false
-            --be honest
-            p.remove_item{name=item, count=1}
-            if arg.group then
-                table.insert(group[arg.group], location)
-            end
-            if arg.resource then
-                table.insert(resources[arg.group], location)
-            end
-            return true
-        else
-            error("Fast replace failed")
-            return false
-        end
     elseif p.can_place_entity{name = item, position = location, direction = direction, force = "player"} then
         built = p.surface.create_entity{name = item, position = location, direction = direction, force="player"}
         if built ~= nil then
+            debug("built")
             delroute(p)
             colliding = false
             --be honest
@@ -319,6 +304,7 @@ function build(p, location, item, direction, ...)
                 end
                 table.insert(resources[arg.resource], {location.x, location.y})
             end
+            delroute(p)
             return true
         else
             error("building failed")
@@ -433,6 +419,7 @@ function time(p)
     mins = string.format("%02.f", math.floor(seconds/60 - (hours*60)));
     secs = string.format("%02.f", math.floor(seconds - hours*3600 - mins *60));
     error(hours..":"..mins..":"..secs)
+    return true
 end
 
 function science(p)
@@ -450,11 +437,7 @@ function recipe(p, location, recipe)
     end
 
     p.selected.set_recipe(recipe)
-    ingredients = game.recipe_prototypes[recipe].ingredients
-    for key, ingredient in ipairs(ingredients) do
-        inserted = p.selected.insert(ingredient.name)
-        p.remove_item{name=ingredient.name, count=inserted}
-    end
+
     delroute(p)
     return true
 end
@@ -506,8 +489,7 @@ function doTask(p, tasks)
     elseif tasks[1] == "speed" then
         return speed(p, tasks[2])
     elseif tasks[1] == "time" then
-        time(p)
-        return true
+        return time(p)
     elseif tasks[1] == "end" then
         debug("ending run")
         return "end"
@@ -529,8 +511,8 @@ script.on_event(defines.events.on_tick, function(event)
         result = doTask(p, taskList[current_task])
         if result ~= nil then
             if result == true then
-                current_task = current_task + 1
                 delroute(p)
+                current_task = current_task + 1
             elseif result == "end" then
                 enabled = false
             end
