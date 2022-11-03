@@ -183,6 +183,7 @@ task[#task+1] = {"craft", "automation-science-pack", 10}
 task[#task+1] = {"mine", {x=-65.5, y=77.488}}
 task[#task+1] = {"mine", {x=-47.875, y=103.30078125}}
 task[#task+1] = {"mine", {x=-58, y=94}}
+task[#task+1] = {"checkBurnerFuel"}
 task[#task+1] = {"craft"}
 task[#task+1] = {"build", {x=-55.875, y=-21.5}, "offshore-pump", 6}
 task[#task+1] = {"build", {x=-54.599609375, y=-21.5}, "pipe", 0}

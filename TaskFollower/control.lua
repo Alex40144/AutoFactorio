@@ -146,6 +146,7 @@ function get(p, item)
         for key,location in pairs(resources[item]) do
             table.insert(taskList, current_task, {"take", location, 2, true})
         end
+        delroute(p)
     end
     return true
 end
@@ -284,6 +285,30 @@ function build(p, location, item, direction, ...)
             calculateCraft(p, {item = item, count = 1})
         end
         return false
+    elseif p.surface.can_fast_replace{name = item, position = location, direction = direction, force = "player"} then
+        built = p.surface.create_entity{name = item, position = location, direction = direction, force="player", fast_replace = true, player = p}
+        if built ~= nil then
+            delroute(p)
+            colliding = false
+            --be honest
+            p.remove_item{name=item, count=1}
+            if arg.group then
+                if group[arg.group] == nil then
+                    group[arg.group] = {}
+                end
+                table.insert(group[arg.group], {location.x, location.y})
+            end
+            if arg.resource then
+                if resources[arg.resource] == nil then
+                    resources[arg.resource] = {}
+                end
+                table.insert(resources[arg.resource], {location.x, location.y})
+            end
+            return true
+        else
+            error("Fast replace failed")
+            return false
+        end
     elseif p.can_place_entity{name = item, position = location, direction = direction, force = "player"} then
         built = p.surface.create_entity{name = item, position = location, direction = direction, force="player"}
         if built ~= nil then
