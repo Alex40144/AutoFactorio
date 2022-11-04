@@ -124,11 +124,11 @@ function craft(p, item, count)
             local need = count * game.recipe_prototypes[item].ingredients[key].amount
             debug(value.name .. " have: " .. have .. " need: " .. need)
             if have < need then
-                if value.name == "stone" then --stone causer an error as it is an ingredient, but not a recipe itself
+                if value.name == "stone" then --stone causes an error as it is an ingredient, but not a recipe itself
                     get(p, value.name)
                 elseif game.recipe_prototypes[value.name].category == "crafting" then --is an ingredient craftable?
                     debug("can craft " .. value.name)
-                    craft(p, value.name, need) --recursive
+                    craft(p, value.name, need - have)
                 else        
                     get(p, value.name)
                 end
@@ -144,7 +144,7 @@ function get(p, item)
         return false
     else
         for key,location in pairs(resources[item]) do
-            table.insert(taskList, current_task, {"take", location, 2, true})
+            table.insert(taskList, current_task, {"take", location, -1, true})
         end
         delroute(p)
     end
@@ -164,7 +164,7 @@ function checkBurnerFuel(p)
             end
         end
     end
-    return
+    return true
 end
 
 function calculateCraft(p, ...)
@@ -262,10 +262,10 @@ function mine(p, location)
 end
 
 function build(p, location, item, direction, ...)
-    local entitybounding = game.entity_prototypes[item].collision_box
-    local entitycollision = Area.offset(entitybounding, location)
+    local entitycollision = game.entity_prototypes[item].collision_box
+    local entitybounding = Area.offset(entitybounding, location)
 
-    local playercollision = p.character.bounding_box
+    local playerbounding = p.character.bounding_box
 
     local arg = ...
 
@@ -336,8 +336,8 @@ function build(p, location, item, direction, ...)
             return false
         end
     -- we might be stood where we want to place the object
-    elseif overlap(entitycollision, playercollision) then
-        if not colliding then
+    elseif Area.collides(entitybounding, playerbounding) then
+        if colliding ~= true then
             error("colliding with build location")
             path(p, {p.position.x+4, p.position.y}, 1)
         end
@@ -419,6 +419,8 @@ function put(p, item, count, location)
             inserted = 1 --THIS CODE IS BAD, QUICK FIX FOR ISSUE
         end
         p.remove_item{name=item, count=inserted}
+        delroute(p)
+            return true
     else --we don't have enough items to move, use get to find more
         if not get(p, item) then 
             --can't find more
@@ -431,10 +433,11 @@ function put(p, item, count, location)
             end
 
             p.remove_item{name=item, count=inserted}
+            delroute(p)
+            return true
         end
+        return false
     end
-    delroute(p)
-    return true
 
 end
 
@@ -477,18 +480,6 @@ function delroute(p)
     route = nil
     rendering.clear()
     debug("del route")
-end
-
---10000 offset is to negate negative numbers, they make it more complicated.
-function overlap(area1, area2)
-    if area1.left_top.x+10000 > area2.right_bottom.x+10000 or area2.left_top.x+10000 > area1.right_bottom.x+10000 then
-        return false
-    elseif area1.left_top.y+10000 > area2.right_bottom.y+10000 or area2.left_top.y+10000 > area1.right_bottom.y+10000 then
-        return false
-    end
-
-    -- we can assume that they are overlapping
-    return true
 end
 
 -----------------------------------------------------------------------------------------------------
