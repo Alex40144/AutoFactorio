@@ -96,6 +96,7 @@ function moveAlongPath(p)
     end
     nextNode = route[1]
     if nextNode == nil then
+        delroute(p) --reached end
         return false
     end
 
@@ -109,6 +110,7 @@ function craft(p, item, count)
     if count == 0 then
         return 0
     end
+    debug(item)
     --check if we have enough ingredients
     --if not, get ingredients
     if p.get_craftable_count(item) >= count then
@@ -119,18 +121,18 @@ function craft(p, item, count)
         end
     else
         local ingredients = game.recipe_prototypes[item].ingredients
-        for key,value in pairs(ingredients) do
-            local have = p.get_item_count(value.name) --need to account for queue
+        for key,ingredient in pairs(ingredients) do
+            local have = p.get_item_count(ingredient.name) --need to account for queue
             local need = count * game.recipe_prototypes[item].ingredients[key].amount
-            debug(value.name .. " have: " .. have .. " need: " .. need)
+            debug(ingredient.name .. " have: " .. have .. " need: " .. need)
             if have < need then
-                if value.name == "stone" then --stone causes an error as it is an ingredient, but not a recipe itself
-                    get(p, value.name)
-                elseif game.recipe_prototypes[value.name].category == "crafting" then --is an ingredient craftable?
-                    debug("can craft " .. value.name)
-                    craft(p, value.name, need - have)
+                if ingredient.name == "stone" then --stone causes an error as it is an ingredient, but not a recipe itself
+                    get(p, ingredient.name)
+                elseif game.recipe_prototypes[ingredient.name].category == "crafting" then --is an ingredient craftable?
+                    debug("can craft " .. ingredient.name)
+                    calculateCraft(p, {item = ingredient.name, count = need})
                 else        
-                    get(p, value.name)
+                    get(p, ingredient.name)
                 end
             end
         end
@@ -155,11 +157,13 @@ function checkBurnerFuel(p)
     local locations = {"iron-burner-miner", "iron-burner-furnace", "copper-burner-miner", "copper-burner-furnace"}
     for k, v in pairs(locations) do
         debug(v)
-        for key,location in pairs(group[v]) do
-            p.update_selected_entity(location)
-            if p.selected.get_fuel_inventory() ~= nil then
-                if p.selected.get_fuel_inventory().is_empty() then --has it run out of fuel?
-                    put(p, "coal", 40, location)
+        if group[v] then
+            for key,location in pairs(group[v]) do
+                p.update_selected_entity(location)
+                if p.selected.get_fuel_inventory() ~= nil then
+                    if p.selected.get_fuel_inventory().is_empty() then --has it run out of fuel?
+                        table.insert(taskList, current_task, {"put", "coal", 10,  location})
+                    end
                 end
             end
         end
@@ -223,13 +227,13 @@ function calculateCraft(p, ...)
     end
 
     debugTable(toCraft)
-    for key,value in pairs(toCraft) do
+    for item, numToCraft in pairs(toCraft) do
         --account for multiple products in crafting recipes 
-        if game.recipe_prototypes[key].products[1].amount ~= 1 then
-            value = value / game.recipe_prototypes[key].products[1].amount
-            value = math.ceil(value)
+        if game.recipe_prototypes[item].products[1].amount ~= 1 then
+            numToCraft = numToCraft / game.recipe_prototypes[item].products[1].amount
+            numToCraft = math.ceil(numToCraft)
         end
-        craft(p, key, value)
+        craft(p, item, numToCraft)
     end
     delroute(p)
     return true
@@ -263,7 +267,7 @@ end
 
 function build(p, location, item, direction, ...)
     local entitycollision = game.entity_prototypes[item].collision_box
-    local entitybounding = Area.offset(entitybounding, location)
+    local entitybounding = Area.offset(entitycollision, location)
 
     local playerbounding = p.character.bounding_box
 
@@ -271,7 +275,10 @@ function build(p, location, item, direction, ...)
 
     if route == nil then
         path(p, location, 3)
-        return false
+        while path == nil
+        do
+            --wait for path
+        end
     end
 
     --can_place_entity already checks player reach
@@ -365,13 +372,6 @@ function take(p, location, numberToTake, skip)
             delroute(p)
             return true
         else
-            -- if entity has fuel requirements.
-            if p.selected.get_fuel_inventory() ~= nil then
-                if p.selected.get_fuel_inventory().is_empty() then --has it run out of fuel?
-                    debug("fuel is empty, adding extra")
-                    put(p, "wood", 2, location) --more likely to have wood
-                end
-            end
             return false
         end
     end
@@ -382,8 +382,13 @@ function take(p, location, numberToTake, skip)
 
 
     if numberToTake == -1 then  --take everything
-        p.insert{name=item, count=numberInEntity}
-        p.selected.remove_item{name=item, count=numberInEntity}
+        if p.selected.name == "burner-miner" then
+            p.insert{name=item, count=numberInEntity - 1}
+            p.selected.remove_item{name=item, count=numberInEntity - 1}
+        else
+            p.insert{name=item, count=numberInEntity}
+            p.selected.remove_item{name=item, count=numberInEntity}
+        end
         delroute(p)
         return true
     elseif numberToTake < numberInEntity then
