@@ -65,8 +65,8 @@ function path(p, location, radius)
 
     route = {}
     p.surface.request_path({
-        bounding_box = bounding,
-        collision_mask = p.character.prototype.collision_mask,
+        bounding_box = p.character.prototype.collision_box,
+        collision_mask = { "object-layer", "water-tile" },
         start = p.position,
         radius = radius,
         goal = location,
@@ -74,10 +74,7 @@ function path(p, location, radius)
         entity_to_ignore = p.character,
         path_resolution_modifier = 3,
         pathfinding_flags = {
-            cache = false,
-            allow_destroy_friendly_entities = false,
-            prefer_straight_paths = true,
-            no_break = true
+            prefer_straight_paths = false,
         },
     })
     return
@@ -154,6 +151,8 @@ function get(p, item)
 end
 
 function checkBurnerFuel(p)
+    --remove this task from the task list. Stops repeating this task
+    table.remove(taskList, current_task)
     local locations = {"iron-burner-miner", "iron-burner-furnace", "copper-burner-miner", "copper-burner-furnace"}
     for k, v in pairs(locations) do
         debug(v)
