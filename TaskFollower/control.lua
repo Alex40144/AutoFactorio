@@ -66,7 +66,7 @@ function path(p, location, radius)
     route = {}
     p.surface.request_path({
         bounding_box = p.character.prototype.collision_box,
-        collision_mask = { "object-layer", "water-tile" },
+        collision_mask = p.character.prototype.collision_mask,
         start = p.position,
         radius = radius,
         goal = location,
@@ -74,7 +74,8 @@ function path(p, location, radius)
         entity_to_ignore = p.character,
         path_resolution_modifier = 3,
         pathfinding_flags = {
-            prefer_straight_paths = false,
+            allow_destroy_friendly_entities = false,
+            prefer_straight_paths = true
         },
     })
     return
@@ -267,6 +268,7 @@ end
 function build(p, location, item, direction, ...)
     local entitycollision = game.entity_prototypes[item].collision_box
     local entitybounding = Area.offset(entitycollision, location)
+    entitybounding = Area.expand(entitybounding, 2)
 
     local playerbounding = p.character.bounding_box
 
