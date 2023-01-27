@@ -57,13 +57,8 @@ function pick_random(t)
 end
 
 function path(p, location, radius)
-    local x1 = p.character.bounding_box.left_top.x - p.position.x
-    local y1 = p.character.bounding_box.left_top.y - p.position.y
-    local x2 = p.character.bounding_box.right_bottom.x - p.position.x
-    local y2 = p.character.bounding_box.right_bottom.y - p.position.y
-    local bounding = {{x1, y1},{x2, y2}}
 
-    route = {}
+    delroute(p)
     p.surface.request_path({
         bounding_box = p.character.prototype.collision_box,
         collision_mask = p.character.prototype.collision_mask,
@@ -72,11 +67,11 @@ function path(p, location, radius)
         goal = location,
         force = p.force,
         entity_to_ignore = p.character,
-        path_resolution_modifier = 3,
+        path_resolution_modifier = -1,
         pathfinding_flags = {
             allow_destroy_friendly_entities = false,
             prefer_straight_paths = true
-        },
+        }
     })
     return
 end
@@ -88,7 +83,6 @@ function moveAlongPath(p)
     end
     if Position.distance(p.position, nextNode.position) < 0.1 then
         for i = p.character_running_speed,0,-1 do
-            table.remove(route, 1)
             table.remove(route, 1)
         end
     end
@@ -252,7 +246,7 @@ function mine(p, location)
         if p.selected ~= nil then
             if p.can_reach_entity(p.selected) == false then
                 if route == nil then
-                    path(p, p.selected.selection_box.right_bottom, 1) 
+                    path(p, p.selected.selection_box.right_bottom, 2) 
                 end
                 return false
             end
@@ -345,8 +339,11 @@ function build(p, location, item, direction, ...)
         end
     -- we might be stood where we want to place the object
     elseif Area.collides(entitybounding, playerbounding) then
+        --I believe there to be an issue with this, logging so when the issue occurs I can fix it.
+        error("colliding with build location")
+        error("" .. entitybounding)
+        debugTable(playerbounding)
         if colliding ~= true then
-            error("colliding with build location")
             path(p, {p.position.x+4, p.position.y}, 1)
         end
         colliding = true
@@ -553,7 +550,6 @@ script.on_event(defines.events.on_script_path_request_finished, function(event)
     if event.try_again_later then
         error("pathing failed trying again")
     elseif event.path then
-        path_progress = 1
         route = event.path
         if dbg then
             local i = 1
