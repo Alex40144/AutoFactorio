@@ -333,6 +333,7 @@ task[#task+1] = {"build", {x=-1.5, y=31.5}, "small-electric-pole", 0}
 task[#task+1] = {"mine", {x=-6.5, y=28.5}}
 task[#task+1] = {"checkBurnerFuel"}
 task[#task+1] = {"craft"}
+task[#task+1] = {"take", {x=-17, y=14}, 1, true} --fix pathing issue
 task[#task+1] = {"mine", {x=1, y=-2}}
 task[#task+1] = {"build", {x=-3, y=6}, "stone-furnace", 0}
 task[#task+1] = {"build", {x=-3, y=4}, "stone-furnace", 0}

@@ -69,8 +69,7 @@ function path(p, location, radius)
         entity_to_ignore = p.character,
         path_resolution_modifier = -1,
         pathfinding_flags = {
-            allow_destroy_friendly_entities = false,
-            prefer_straight_paths = true
+            cache = false
         }
     })
     return
@@ -542,6 +541,7 @@ end)
 script.on_event(defines.events.on_cutscene_cancelled, function(event)
     enabled = true
     game.players[1].game_view_settings.show_entity_info = true
+    game.map_settings.path_finder.use_path_cache = false
 end)
 
 --when we have out path
