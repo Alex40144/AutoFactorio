@@ -70,7 +70,7 @@ function path(p, location, radius)
         path_resolution_modifier = -1,
         pathfind_flags = {
             cache = false,
-            prefer_straight_paths = true
+            prefer_straight_paths = false
         }
     })
     return
@@ -118,18 +118,19 @@ function craft(p, item, count)
             local need = count * game.recipe_prototypes[item].ingredients[key].amount
             debug(ingredient.name .. " have: " .. have .. " need: " .. need)
             if have < need then
-                if ingredient.name == "stone" then --stone causes an error as it is an ingredient, but not a recipe itself
-                    get(p, ingredient.name)
+                if get(p, ingredient.name) then
+
                 elseif game.recipe_prototypes[ingredient.name].category == "crafting" then --is an ingredient craftable?
                     debug("can craft " .. ingredient.name)
                     calculateCraft(p, {item = ingredient.name, count = need})
-                else        
-                    get(p, ingredient.name)
+                else
+                    error("can't find or craft " .. ingredient.name)
                 end
             end
         end
         delroute(p)
     end
+    return true
 end
 
 function get(p, item)
@@ -138,6 +139,7 @@ function get(p, item)
         return false
     else
         for key,location in pairs(resources[item]) do
+            debug("getting " .. item .. " from " .. location[1] .. " " .. location[2])
             table.insert(taskList, current_task, {"take", location, -1, true})
         end
         delroute(p)
@@ -203,15 +205,13 @@ function calculateCraft(p, ...)
         end
     end
 
-    --don't craft if already crafting
+    --don't craft if in crafting queue
     local queue = p.crafting_queue
     if queue then
-        debugTable(queue)
         for item,a in pairs(toCraft) do
             for key, val in pairs(queue) do
                 if item == val.recipe then
                     toCraft[item] = toCraft[item] - val.count
-                    debug(toCraft[item])
                     if toCraft[item] < 1 then
                         toCraft[item] = 0
                     end
@@ -260,21 +260,8 @@ function mine(p, location)
 end
 
 function build(p, location, item, direction, ...)
-    local entitycollision = game.entity_prototypes[item].collision_box
-    local entitybounding = Area.offset(entitycollision, location)
-    entitybounding = Area.expand(entitybounding, 2)
-
-    local playerbounding = p.character.bounding_box
-
     local arg = ...
 
-    if route == nil then
-        path(p, location, 3)
-        while path == nil
-        do
-            --wait for path
-        end
-    end
 
     --can_place_entity already checks player reach
     --if out of reach, placing fails, but keep trying.
@@ -337,16 +324,31 @@ function build(p, location, item, direction, ...)
             error("building failed")
             return false
         end
-    -- we might be stood where we want to place the object
-    elseif Area.collides(entitybounding, playerbounding) then
+    end
+    local entitycollision = game.entity_prototypes[item].collision_box
+    local entitybounding = Area.offset(entitycollision, location)
+    entitybounding = Area.expand(entitybounding, 1)
+
+    local playerbounding = p.character.bounding_box
+    playerbounding = Area.construct(playerbounding)
+    if Area.collides(playerbounding, entitybounding) then
         --I believe there to be an issue with this, logging so when the issue occurs I can fix it.
         error("colliding with build location")
         error("" .. entitybounding)
+        rendering.draw_rectangle{surface = game.players[1].surface, left_top = entitybounding.left_top, right_bottom = entitybounding.right_bottom, color = {g=1}, width = 2, filled = fales}
         debugTable(playerbounding)
+        rendering.draw_rectangle{surface = game.players[1].surface, left_top = playerbounding.left_top, right_bottom = playerbounding.right_bottom, color = {b=1}, width = 2, filled = fales}
+
         if colliding ~= true then
             path(p, {p.position.x+4, p.position.y}, 1)
         end
         colliding = true
+        return false
+    else 
+        if route == nil then
+            path(p, location, 3)
+            return false
+        end
     end
 
     return false
@@ -442,6 +444,24 @@ function put(p, item, count, location)
         return false
     end
 
+end
+
+function collides(p, area1, area2)
+    debugTable(area1)
+    debugTable(area2)
+    -- if rectangle has area 0, no overlap
+    if area1.left_top.x == area1.right_bottom.x or area1.left_top.y == area1.right_bottom.y or area2.right_bottom.x == area2.left_top.x or area2.left_top.y == area2.right_bottom.y then
+        return False
+    end
+    -- If one rectangle is on left side of other
+    if area1.left_top.x > area2.right_bottom.x or area2.left_top.x > area1.right_bottom.x then
+        return False
+    end 
+    -- If one rectangle is above other
+    if area1.right_bottom.y > area2.left_top.y or area2.right_bottom.y > area1.left_top.y then
+        return False
+    end
+    return True
 end
 
 function time(p)
