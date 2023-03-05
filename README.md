@@ -33,3 +33,4 @@ To use this mod:
    2. change get to use count value.
       1. issue with getting stone
       1. prefer closest entities
+5. build queue check

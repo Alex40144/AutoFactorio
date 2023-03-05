@@ -255,6 +255,7 @@ function mine(p, location)
             error("no entity selected")
             error(location)
             path(p, location, 4) 
+            return true --it there is no entity there, it is likely that the object has been mined.
         end
     end
 end
@@ -262,12 +263,11 @@ end
 function build(p, location, item, direction, ...)
     local arg = ...
 
-
     --can_place_entity already checks player reach
     --if out of reach, placing fails, but keep trying.
     --we can use this to place whilst walking as it will keep trying until it succeeds.
     if p.get_item_count(item) < 1 then
-        error("did not have " .. item)
+        debug("did not have " .. item)
         if (p.crafting_queue_size > 0) then
             return false --still have to wait for queue to finish, so no point working out if our item is queued (efficiency??)
         else
@@ -277,6 +277,7 @@ function build(p, location, item, direction, ...)
     elseif p.surface.can_fast_replace{name = item, position = location, direction = direction, force = "player"} then
         built = p.surface.create_entity{name = item, position = location, direction = direction, force="player", fast_replace = true, player = p}
         if built ~= nil then
+            debug("fast replaced")
             delroute(p)
             colliding = false
             --be honest
@@ -325,16 +326,19 @@ function build(p, location, item, direction, ...)
             return false
         end
     end
+
     local entitycollision = game.entity_prototypes[item].collision_box
-    local entitybounding = Area.offset(entitycollision, location)
-    entitybounding = Area.expand(entitybounding, 1)
+    local entitybounding = {left_top = { x = entitycollision.left_top.x + location.x, y = entitycollision.left_top.y + location.y}, right_bottom = { x = entitycollision.right_bottom.x + location.x, y = entitycollision.right_bottom.y + location.y}}
+    
+    entitybounding = {left_top = { x = entitybounding.left_top.x - 1, y = entitybounding.left_top.y - 1}, right_bottom = { x = entitybounding.right_bottom.x + 1, y = entitybounding.right_bottom.y + 1}}
 
     local playerbounding = p.character.bounding_box
-    playerbounding = Area.construct(playerbounding)
-    if Area.collides(playerbounding, entitybounding) then
+
+
+    if collides(entitybounding, playerbounding) then
         --I believe there to be an issue with this, logging so when the issue occurs I can fix it.
-        error("colliding with build location")
-        error("" .. entitybounding)
+        debug("colliding with build location")
+        debugTable(entitybounding)
         rendering.draw_rectangle{surface = game.players[1].surface, left_top = entitybounding.left_top, right_bottom = entitybounding.right_bottom, color = {g=1}, width = 2, filled = fales}
         debugTable(playerbounding)
         rendering.draw_rectangle{surface = game.players[1].surface, left_top = playerbounding.left_top, right_bottom = playerbounding.right_bottom, color = {b=1}, width = 2, filled = fales}
@@ -446,22 +450,20 @@ function put(p, item, count, location)
 
 end
 
-function collides(p, area1, area2)
+function collides(area1, area2)
+    debug("area1: ")
     debugTable(area1)
+    debug("area2: ")
     debugTable(area2)
-    -- if rectangle has area 0, no overlap
-    if area1.left_top.x == area1.right_bottom.x or area1.left_top.y == area1.right_bottom.y or area2.right_bottom.x == area2.left_top.x or area2.left_top.y == area2.right_bottom.y then
-        return False
-    end
-    -- If one rectangle is on left side of other
+    -- If there is horizontal separatation 
     if area1.left_top.x > area2.right_bottom.x or area2.left_top.x > area1.right_bottom.x then
-        return False
+        return false
     end 
-    -- If one rectangle is above other
-    if area1.right_bottom.y > area2.left_top.y or area2.right_bottom.y > area1.left_top.y then
-        return False
+    -- If there is vertical separation
+    if area1.right_bottom.y < area2.left_top.y or area2.right_bottom.y < area1.left_top.y then
+        return false
     end
-    return True
+    return true
 end
 
 function time(p)
