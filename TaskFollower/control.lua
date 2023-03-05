@@ -118,7 +118,7 @@ function craft(p, item, count)
             local need = count * game.recipe_prototypes[item].ingredients[key].amount
             debug(ingredient.name .. " have: " .. have .. " need: " .. need)
             if have < need then
-                if get(p, ingredient.name) then
+                if get(p, ingredient.name, need - have) then
 
                 elseif game.recipe_prototypes[ingredient.name].category == "crafting" then --is an ingredient craftable?
                     debug("can craft " .. ingredient.name)
@@ -133,18 +133,31 @@ function craft(p, item, count)
     return true
 end
 
-function get(p, item)
+function get(p, item, count)
     if resources[item] == nil then -- if we don't know where to find item
         error("Can't find " .. item)
         return false
     else
         for key,location in pairs(resources[item]) do
-            debug("getting " .. item .. " from " .. location[1] .. " " .. location[2])
-            table.insert(taskList, current_task, {"take", location, -1, true})
+            p.update_selected_entity(location)
+
+            if next(p.selected.get_output_inventory().get_contents()) then
+                for itemininv, value in pairs(p.selected.get_output_inventory().get_contents()) do
+                    numberInEntity = tonumber(value)
+                    if item == itemininv  and numberInEntity > 0 then
+                        debug("getting " .. item .. " from " .. location[1] .. " " .. location[2])
+                        table.insert(taskList, current_task, {"take", location, -1, true})
+                        count = count - numberInEntity
+                    end
+                end
+            end
+        end
+        if count > 0 then
+            checkBurnerFuel(p)
         end
         delroute(p)
     end
-    return true
+    return count <= 0
 end
 
 function checkBurnerFuel(p)
@@ -217,6 +230,12 @@ function calculateCraft(p, ...)
                     end
                 end
             end
+        end
+    end
+
+    for item,count in pairs(toCraft) do
+        if get(p, item, count) then
+            toCraft[item] = 0
         end
     end
 
@@ -431,7 +450,7 @@ function put(p, item, count, location)
         delroute(p)
             return true
     else --we don't have enough items to move, use get to find more
-        if not get(p, item) then 
+        if not get(p, item, count) then 
             --can't find more
             tomove = 1
             inserted = p.selected.insert{name = item, count = tomove}
@@ -451,10 +470,6 @@ function put(p, item, count, location)
 end
 
 function collides(area1, area2)
-    debug("area1: ")
-    debugTable(area1)
-    debug("area2: ")
-    debugTable(area2)
     -- If there is horizontal separatation 
     if area1.left_top.x > area2.right_bottom.x or area2.left_top.x > area1.right_bottom.x then
         return false
