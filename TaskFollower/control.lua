@@ -106,11 +106,9 @@ function craft(p, item, count)
     --check if we have enough ingredients
     --if not, get ingredients
     if p.get_craftable_count(item) >= count then
-        crafted = p.begin_crafting{recipe = item, count = count}
+        p.begin_crafting{recipe = item, count = count}
         debug("crafting " .. count .. " " .. item)
-        if crafted < count then
-            error("Did not craft full count of " .. item)
-        end
+        return true
     else
         local ingredients = game.recipe_prototypes[item].ingredients
         for key,ingredient in pairs(ingredients) do
@@ -123,13 +121,13 @@ function craft(p, item, count)
                     error("having a stone issue")
                 elseif game.recipe_prototypes[ingredient.name].category == "crafting" then --is an ingredient craftable?
                     debug("can craft " .. ingredient.name)
-                    calculateCraft(p, {item = ingredient.name, count = need})
+                    craft(p, ingredient.name, need)
                 else
                     error("can't find or craft " .. ingredient.name)
                 end
             end
         end
-        delroute(p)
+        return false
     end
     return true
 end
@@ -150,8 +148,15 @@ function get(p, item, count)
                         if taskList[current_task][1] == "craft" and taskList[current_task][2] == nil then
                             table.remove(taskList, current_task)
                         end
-                        table.insert(taskList, current_task, {"take", location, -1, true})
+                        if numberInEntity > count then
+                            table.insert(taskList, current_task, {"take", location, count, true})
+                        else 
+                            table.insert(taskList, current_task, {"take", location, -1, true})
+                        end
                         count = count - numberInEntity
+                        if count <= 0 then
+                            goto exitfromget
+                        end
                     end
                 end
             end
@@ -161,6 +166,7 @@ function get(p, item, count)
         end
         delroute(p)
     end
+    ::exitfromget::
     return count <= 0
 end
 
@@ -169,6 +175,7 @@ function checkBurnerFuel(p)
     --remove this task from the task list. Stops repeating this task
     table.remove(taskList, current_task)
     local locations = {"iron-burner-miner", "iron-burner-furnace", "copper-burner-miner", "copper-burner-furnace", "stone-burner-miner"}
+    local count = 0
     for k, v in pairs(locations) do
         if group[v] then
             for key,location in pairs(group[v]) do
@@ -176,11 +183,13 @@ function checkBurnerFuel(p)
                 if p.selected.get_fuel_inventory() ~= nil then
                     if p.selected.get_fuel_inventory().is_empty() then --has it run out of fuel?
                         table.insert(taskList, current_task, {"put", "coal", 10,  location})
+                        count = count + 10
                     end
                 end
             end
         end
     end
+    get(p, "coal", count)
     return true
 end
 
@@ -244,16 +253,18 @@ function calculateCraft(p, ...)
     end
 
     debugTable(toCraft)
-    for item, numToCraft in pairs(toCraft) do
-        --account for multiple products in crafting recipes 
-        if game.recipe_prototypes[item].products[1].amount ~= 1 then
-            numToCraft = numToCraft / game.recipe_prototypes[item].products[1].amount
-            numToCraft = math.ceil(numToCraft)
+        for item, numToCraft in pairs(toCraft) do
+            --account for multiple products in crafting recipes 
+            if game.recipe_prototypes[item].products[1].amount ~= 1 then
+                numToCraft = numToCraft / game.recipe_prototypes[item].products[1].amount
+                numToCraft = math.ceil(numToCraft)
+            end
+            if craft(p, item, numToCraft) then
+                toCraft[item] = 0
+            end
         end
-        craft(p, item, numToCraft)
-    end
     delroute(p)
-    return true
+    return not anyPositive(toCraft)
 end
             
 
@@ -322,7 +333,11 @@ function build(p, location, item, direction, ...)
             return false
         end
     elseif p.can_place_entity{name = item, position = location, direction = direction, force = "player"} then
-        built = p.surface.create_entity{name = item, position = location, direction = direction, force="player"}
+        if item == "underground-belt" then
+            built = p.surface.create_entity{name = item, position = location, direction = direction, force="player", type = arg.group}
+        else 
+            built = p.surface.create_entity{name = item, position = location, direction = direction, force="player"}
+        end
         if built ~= nil  then
             debug("built")
             colliding = false
@@ -359,9 +374,9 @@ function build(p, location, item, direction, ...)
         --I believe there to be an issue with this, logging so when the issue occurs I can fix it.
         debug("colliding with build location")
         debugTable(entitybounding)
-        rendering.draw_rectangle{surface = game.players[1].surface, left_top = entitybounding.left_top, right_bottom = entitybounding.right_bottom, color = {g=1}, width = 2, filled = fales}
+        rendering.draw_rectangle{surface = game.players[1].surface, left_top = entitybounding.left_top, right_bottom = entitybounding.right_bottom, color = {g=1}, width = 2, filled = false}
         debugTable(playerbounding)
-        rendering.draw_rectangle{surface = game.players[1].surface, left_top = playerbounding.left_top, right_bottom = playerbounding.right_bottom, color = {b=1}, width = 2, filled = fales}
+        rendering.draw_rectangle{surface = game.players[1].surface, left_top = playerbounding.left_top, right_bottom = playerbounding.right_bottom, color = {b=1}, width = 2, filled = false}
 
         if colliding ~= true then
             path(p, {p.position.x+4, p.position.y}, 1)
@@ -496,6 +511,15 @@ function science(p)
     return true
 end
 
+function anyPositive(t)
+    for i,v in ipairs(t) do
+      if v > 0 then
+        return true
+      end
+    end
+    return false
+end
+
 function recipe(p, location, recipe)
     p.update_selected_entity(location)
     if not p.can_reach_entity(p.selected) then
@@ -599,7 +623,6 @@ script.on_event(defines.events.on_script_path_request_finished, function(event)
         end
     else
         error("Pathing failed")
-        route = {{position = {x=game.players[1].position.x + 1, y=game.players[1].position.y + 1}}}
     end
 end)
 
