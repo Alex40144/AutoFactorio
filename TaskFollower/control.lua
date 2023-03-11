@@ -156,7 +156,7 @@ function get(p, item, count)
                 end
             end
         end
-        if count > 0 and (item == "iron-plate" or item == "copper-plate") then
+        if count > 0 and (item == "iron-plate" or item == "copper-plate" or item == "stone") then
             checkBurnerFuel(p)
         end
         delroute(p)
@@ -168,7 +168,7 @@ function checkBurnerFuel(p)
     debug("checking burner fuel")
     --remove this task from the task list. Stops repeating this task
     table.remove(taskList, current_task)
-    local locations = {"iron-burner-miner", "iron-burner-furnace", "copper-burner-miner", "copper-burner-furnace"}
+    local locations = {"iron-burner-miner", "iron-burner-furnace", "copper-burner-miner", "copper-burner-furnace", "stone-burner-miner"}
     for k, v in pairs(locations) do
         if group[v] then
             for key,location in pairs(group[v]) do
