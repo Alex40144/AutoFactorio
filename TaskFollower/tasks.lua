@@ -627,9 +627,9 @@ task[#task+1] = {"build", {x=-21.5, y=18.5}, "transport-belt", 2}
 task[#task+1] = {"build", {x=-20.5, y=18.5}, "transport-belt", 2}
 task[#task+1] = {"build", {x=-19.5, y=18.5}, "transport-belt", 2}
 task[#task+1] = {"build", {x=-18.5, y=18.5}, "transport-belt", 2}
+task[#task+1] = {"build", {x=-17.5, y=18.5}, "transport-belt", 2}
 task[#task+1] = {"craft"}
 task[#task+1] = {"checkBurnerFuel"}
-task[#task+1] = {"build", {x=-17.5, y=18.5}, "transport-belt", 2}
 task[#task+1] = {"build", {x=-16.5, y=18.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-16.5, y=19.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-16.5, y=20.5}, "transport-belt", 4}
@@ -922,23 +922,23 @@ task[#task+1] = {"build", {x=-3.5, y=-18.5}, "transport-belt", 2}
 task[#task+1] = {"build", {x=-4.5, y=-18.5}, "transport-belt", 2}
 task[#task+1] = {"build", {x=-5.5, y=-18.5}, "transport-belt", 2}
 task[#task+1] = {"build", {x=-5.5, y=-17.5}, "transport-belt", 0}
-task[#task+1] = {"build", {x=-12.5, y=-6.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-12.5, y=-5.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-12.5, y=-4.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-12.5, y=-3.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-12.5, y=-2.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-12.5, y=-1.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-12.5, y=-0.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-12.5, y=0.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-12.5, y=1.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-12.5, y=2.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-12.5, y=3.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-12.5, y=4.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-14.5, y=1.5}, "electric-mining-drill", 2}
-task[#task+1] = {"build", {x=-14.5, y=-1.5}, "electric-mining-drill", 2}
-task[#task+1] = {"build", {x=-14.5, y=-6.5}, "electric-mining-drill", 2}
-task[#task+1] = {"build", {x=-10.5, y=4.5}, "electric-mining-drill", 6}
-task[#task+1] = {"build", {x=-10.5, y=1.5}, "electric-mining-drill", 6}
+task[#task+1] = {"build", {x=-13.5, y=-6.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-13.5, y=-5.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-13.5, y=-4.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-13.5, y=-3.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-13.5, y=-2.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-13.5, y=-1.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-13.5, y=-0.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-13.5, y=0.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-13.5, y=1.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-13.5, y=2.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-13.5, y=3.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-13.5, y=4.5}, "transport-belt", 4}
+task[#task+1] = {"build", {x=-15.5, y=1.5}, "electric-mining-drill", 2}
+task[#task+1] = {"build", {x=-15.5, y=-1.5}, "electric-mining-drill", 2}
+task[#task+1] = {"build", {x=-15.5, y=-6.5}, "electric-mining-drill", 2}
+task[#task+1] = {"build", {x=-11.5, y=4.5}, "electric-mining-drill", 6}
+task[#task+1] = {"build", {x=-11.5, y=1.5}, "electric-mining-drill", 6}
 task[#task+1] = {"build", {x=-7.5, y=4.5}, "electric-mining-drill", 2}
 task[#task+1] = {"build", {x=-7.5, y=1.5}, "electric-mining-drill", 2}
 task[#task+1] = {"build", {x=-7.5, y=-1.5}, "electric-mining-drill", 2}
@@ -1188,30 +1188,24 @@ task[#task+1] = {"build", {x=-2.5, y=64.5}, "long-handed-inserter", 2}
 task[#task+1] = {"build", {x=-2.5, y=58.5}, "long-handed-inserter", 2}
 task[#task+1] = {"build", {x=-2.5, y=59.5}, "long-handed-inserter", 2}
 task[#task+1] = {"build", {x=-2.5, y=62.5}, "long-handed-inserter", 2}
-task[#task+1] = {"build", {x=-2.5, y=63.5}, "long-handed-inserter", 2}
+task[#task+1] = {"build", {x=-2.5, y=61.5}, "long-handed-inserter", 2}
 task[#task+1] = {"build", {x=-6.5, y=74.5}, "small-electric-pole", 0}
 task[#task+1] = {"build", {x=-2.5, y=74.5}, "small-electric-pole", 0}
 task[#task+1] = {"build", {x=-6.5, y=68.5}, "small-electric-pole", 0}
 task[#task+1] = {"build", {x=-2.5, y=68.5}, "small-electric-pole", 0}
 task[#task+1] = {"build", {x=-2.5, y=65.5}, "small-electric-pole", 0}
-task[#task+1] = {"build", {x=-6.5, y=63.5}, "small-electric-pole", 0}
 task[#task+1] = {"build", {x=-2.5, y=60.5}, "small-electric-pole", 0}
 task[#task+1] = {"build", {x=-6.5, y=60.5}, "fast-inserter", 2}
 task[#task+1] = {"build", {x=-6.5, y=61.5}, "fast-inserter", 2}
 task[#task+1] = {"build", {x=-7.5, y=60.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-7.5, y=61.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-7.5, y=62.5}, "transport-belt", 4}
-task[#task+1] = {"mine", {x=-6.5, y=63.5}}
 task[#task+1] = {"build", {x=-7.5, y=63.5}, "transport-belt", 2}
 task[#task+1] = {"build", {x=-6.5, y=62.5}, "small-electric-pole", 0}
 task[#task+1] = {"craft"}
 task[#task+1] = {"checkBurnerFuel"}
 task[#task+1] = {"build", {x=-6.5, y=63.5}, "underground-belt", 2}
-task[#task+1] = {"build", {x=-1.5, y=63.5}, "underground-belt", 2}
-task[#task+1] = {"mine", {x=-2.5, y=63.5}}
-task[#task+1] = {"mine", {x=-1.5, y=63.5}}
 task[#task+1] = {"build", {x=-2.5, y=63.5}, "underground-belt", 2}
-task[#task+1] = {"build", {x=-2.5, y=61.5}, "long-handed-inserter", 2}
 task[#task+1] = {"build", {x=-0.5, y=58.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-0.5, y=59.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-0.5, y=60.5}, "transport-belt", 4}

@@ -21,6 +21,8 @@ local current_task = 0
 current_research = 0
 local destination = {x=0, y=0}
 
+built = false
+
 resources = {}
 group = {}
 
@@ -100,7 +102,7 @@ end
 
 function craft(p, item, count)
     if count == 0 then
-        return 0
+        return false
     end
     debug(item)
     --check if we have enough ingredients
@@ -119,7 +121,8 @@ function craft(p, item, count)
             debug(ingredient.name .. " have: " .. have .. " need: " .. need)
             if have < need then
                 if get(p, ingredient.name, need - have) then
-
+                elseif ingredient.name == "stone" then
+                    error("having a stone issue")
                 elseif game.recipe_prototypes[ingredient.name].category == "crafting" then --is an ingredient craftable?
                     debug("can craft " .. ingredient.name)
                     calculateCraft(p, {item = ingredient.name, count = need})
@@ -146,13 +149,16 @@ function get(p, item, count)
                     numberInEntity = tonumber(value)
                     if item == itemininv  and numberInEntity > 0 then
                         debug("getting " .. item .. " from " .. location[1] .. " " .. location[2])
+                        if taskList[current_task][1] == "craft" and taskList[current_task][2] == nil then
+                            table.remove(taskList, current_task)
+                        end
                         table.insert(taskList, current_task, {"take", location, -1, true})
                         count = count - numberInEntity
                     end
                 end
             end
         end
-        if count > 0 then
+        if count > 0 and (item == "iron-plate" or item == "copper-plate") then
             checkBurnerFuel(p)
         end
         delroute(p)
@@ -161,11 +167,11 @@ function get(p, item, count)
 end
 
 function checkBurnerFuel(p)
+    debug("checking burner fuel")
     --remove this task from the task list. Stops repeating this task
     table.remove(taskList, current_task)
     local locations = {"iron-burner-miner", "iron-burner-furnace", "copper-burner-miner", "copper-burner-furnace"}
     for k, v in pairs(locations) do
-        debug(v)
         if group[v] then
             for key,location in pairs(group[v]) do
                 p.update_selected_entity(location)
@@ -285,19 +291,31 @@ function build(p, location, item, direction, ...)
     --can_place_entity already checks player reach
     --if out of reach, placing fails, but keep trying.
     --we can use this to place whilst walking as it will keep trying until it succeeds.
+    if built then
+        error("built is true")
+        p.update_selected_entity(location)
+        if p.selected ~= nil then
+            error("selected entity")
+            error(p.selected.name)
+            if p.selected.name == item then
+                built = false
+                return true
+            end
+        end
+    end
+    built = false
     if p.get_item_count(item) < 1 then
         debug("did not have " .. item)
         if (p.crafting_queue_size > 0) then
             return false --still have to wait for queue to finish, so no point working out if our item is queued (efficiency??)
         else
-            calculateCraft(p, {item = item, count = 1})
+            local temp = calculateCraft(p, {item = item, count = 1})
         end
         return false
     elseif p.surface.can_fast_replace{name = item, position = location, direction = direction, force = "player"} then
         built = p.surface.create_entity{name = item, position = location, direction = direction, force="player", fast_replace = true, player = p}
         if built ~= nil then
             debug("fast replaced")
-            delroute(p)
             colliding = false
             --be honest
             p.remove_item{name=item, count=1}
@@ -313,16 +331,16 @@ function build(p, location, item, direction, ...)
                 end
                 table.insert(resources[arg.resource], {location.x, location.y})
             end
-            return true
+            return false
         else
             error("Fast replace failed")
             return false
         end
     elseif p.can_place_entity{name = item, position = location, direction = direction, force = "player"} then
         built = p.surface.create_entity{name = item, position = location, direction = direction, force="player"}
-        if built ~= nil then
+        p.update_selected_entity(location)
+        if built ~= nil and p.selected.name == item then
             debug("built")
-            delroute(p)
             colliding = false
             --be honest
             p.remove_item{name=item, count=1}
@@ -338,10 +356,9 @@ function build(p, location, item, direction, ...)
                 end
                 table.insert(resources[arg.resource], {location.x, location.y})
             end
-            delroute(p)
-            return true
+            return false
         else
-            error("building failed")
+            error("did not build entity")
             return false
         end
     end
@@ -610,4 +627,9 @@ script.on_event(defines.events.on_research_finished, function()
     local p = game.players[1]
     current_research = current_research + 1
     p.force.add_research(research[current_research])
+end)
+
+
+script.on_event(defines.events.script_raised_built, function()
+    built = true
 end)
