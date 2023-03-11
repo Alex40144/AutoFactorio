@@ -599,6 +599,7 @@ script.on_event(defines.events.on_script_path_request_finished, function(event)
         end
     else
         error("Pathing failed")
+        game.players[1].walking_state = {walking = true, direction = defines.direction.southeast}
         route = nil
     end
 end)
