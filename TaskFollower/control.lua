@@ -21,8 +21,6 @@ local current_task = 0
 current_research = 0
 local destination = {x=0, y=0}
 
-built = false
-
 resources = {}
 group = {}
 
@@ -291,19 +289,6 @@ function build(p, location, item, direction, ...)
     --can_place_entity already checks player reach
     --if out of reach, placing fails, but keep trying.
     --we can use this to place whilst walking as it will keep trying until it succeeds.
-    if built then
-        error("built is true")
-        p.update_selected_entity(location)
-        if p.selected ~= nil then
-            error("selected entity")
-            error(p.selected.name)
-            if p.selected.name == item then
-                built = false
-                return true
-            end
-        end
-    end
-    built = false
     if p.get_item_count(item) < 1 then
         debug("did not have " .. item)
         if (p.crafting_queue_size > 0) then
@@ -331,15 +316,14 @@ function build(p, location, item, direction, ...)
                 end
                 table.insert(resources[arg.resource], {location.x, location.y})
             end
-            return false
+            return true
         else
             error("Fast replace failed")
             return false
         end
     elseif p.can_place_entity{name = item, position = location, direction = direction, force = "player"} then
         built = p.surface.create_entity{name = item, position = location, direction = direction, force="player"}
-        p.update_selected_entity(location)
-        if built ~= nil and p.selected.name == item then
+        if built ~= nil  then
             debug("built")
             colliding = false
             --be honest
@@ -356,7 +340,7 @@ function build(p, location, item, direction, ...)
                 end
                 table.insert(resources[arg.resource], {location.x, location.y})
             end
-            return false
+            return true
         else
             error("did not build entity")
             return false
@@ -627,9 +611,4 @@ script.on_event(defines.events.on_research_finished, function()
     local p = game.players[1]
     current_research = current_research + 1
     p.force.add_research(research[current_research])
-end)
-
-
-script.on_event(defines.events.script_raised_built, function()
-    built = true
 end)
