@@ -1154,9 +1154,9 @@ task[#task+1] = {"recipe", {x=-8.5, y=68.5}, "copper-cable"}
 task[#task+1] = {"build", {x=-4.5, y=65.5}, "assembling-machine-1", 0}
 task[#task+1] = {"recipe", {x=-4.5, y=65.5}, "electronic-circuit"}
 task[#task+1] = {"build", {x=-4.5, y=62.5}, "assembling-machine-1", 0}
-task[#task+1] = {"recipe", {x=-4.5, y=62.5}, "electronic-circuit"}
+task[#task+1] = {"recipe", {x=-4.5, y=62.5}, "iron-gear-wheel"}
 task[#task+1] = {"build", {x=-4.5, y=59.5}, "assembling-machine-1", 0}
-task[#task+1] = {"recipe", {x=-4.5, y=59.5}, "electronic-circuit"}
+task[#task+1] = {"recipe", {x=-4.5, y=59.5}, "iron-gear-wheel"}
 task[#task+1] = {"build", {x=-8.5, y=65.5}, "assembling-machine-1", 0}
 task[#task+1] = {"recipe", {x=-8.5, y=65.5}, "copper-cable"}
 task[#task+1] = {"build", {x=-2.5, y=72.5}, "fast-inserter", 6}
@@ -1400,8 +1400,11 @@ task[#task+1] = {"build", {x=-1.5, y=79.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-1.5, y=78.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-1.5, y=77.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-5.5, y=79.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-5.5, y=79.5}, "inserter"}
 task[#task+1] = {"build", {x=-5.5, y=82.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-5.5, y=82.5}, "inserter"}
 task[#task+1] = {"build", {x=-5.5, y=85.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-5.5, y=85.5}, "transport-belt"}
 task[#task+1] = {"craft"}
 task[#task+1] = {"build", {x=-3.5, y=79.5}, "long-handed-inserter", 2}
 task[#task+1] = {"build", {x=-3.5, y=80.5}, "long-handed-inserter", 2}
@@ -1527,17 +1530,18 @@ task[#task+1] = {"build", {x=-13.5, y=88.5}, "transport-belt", 6}
 task[#task+1] = {"build", {x=-9.5, y=62.5}, "long-handed-inserter", 2}
 task[#task+1] = {"build", {x=-9.5, y=61.5}, "long-handed-inserter", 2}
 task[#task+1] = {"build", {x=-9.5, y=60.5}, "small-electric-pole", 0}
-task[#task+1] = {"build", {x=-13.5, y=90.5}, "assembling-machine-1", 0}
 task[#task+1] = {"mine", {x=-12.625, y=94.67578125}}
 task[#task+1] = {"mine", {x=-17.3125, y=93.75}}
+task[#task+1] = {"build", {x=-13.5, y=90.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-13.5, y=90.5}, "logistic-science-pack"}
 task[#task+1] = {"build", {x=-13.5, y=93.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-13.5, y=93.5}, "logistic-science-pack"}
 task[#task+1] = {"build", {x=-13.5, y=96.5}, "assembling-machine-1", 0}
-task[#task+1] = {"build", {x=-14.5, y=99.5}, "assembling-machine-1", 0}
-task[#task+1] = {"build", {x=-14.5, y=102.5}, "assembling-machine-1", 0}
-task[#task+1] = {"mine", {x=-14.5, y=99.5}}
-task[#task+1] = {"mine", {x=-14.5, y=102.5}}
+task[#task+1] = {"recipe", {x=-13.5, y=96.5}, "logistic-science-pack"}
 task[#task+1] = {"build", {x=-13.5, y=99.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-13.5, y=99.5}, "logistic-science-pack"}
 task[#task+1] = {"build", {x=-13.5, y=102.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-13.5, y=102.5}, "logistic-science-pack"}
 task[#task+1] = {"build", {x=-16.5, y=90.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-16.5, y=91.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-16.5, y=92.5}, "transport-belt", 4}
@@ -1547,6 +1551,7 @@ task[#task+1] = {"build", {x=-16.5, y=95.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-16.5, y=96.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-16.5, y=97.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-19.5, y=90.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-19.5, y=90.5}, "automation-science-pack"}
 task[#task+1] = {"build", {x=-14.5, y=88.5}, "transport-belt", 6}
 task[#task+1] = {"build", {x=-15.5, y=88.5}, "transport-belt", 6}
 task[#task+1] = {"build", {x=-16.5, y=88.5}, "transport-belt", 6}
@@ -1570,18 +1575,15 @@ task[#task+1] = {"build", {x=-22.5, y=97.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-22.5, y=98.5}, "transport-belt", 4}
 task[#task+1] = {"mine", {x=-23.5625, y=100.625}}
 task[#task+1] = {"build", {x=-19.5, y=93.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-19.5, y=93.5}, "automation-science-pack"}
 task[#task+1] = {"build", {x=-19.5, y=96.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-19.5, y=96.5}, "automation-science-pack"}
 task[#task+1] = {"build", {x=-19.5, y=99.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-19.5, y=99.5}, "automation-science-pack"}
 task[#task+1] = {"build", {x=-19.5, y=102.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-19.5, y=102.5}, "automation-science-pack"}
 task[#task+1] = {"build", {x=-16.5, y=98.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-16.5, y=99.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-15.5, y=99.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-15.5, y=100.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-15.5, y=101.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-16.5, y=101.5}, "transport-belt", 4}
-task[#task+1] = {"mine", {x=-15.5, y=99.5}}
-task[#task+1] = {"mine", {x=-15.5, y=100.5}}
-task[#task+1] = {"mine", {x=-15.5, y=101.5}}
 task[#task+1] = {"build", {x=-10.5, y=95.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-10.5, y=96.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-10.5, y=97.5}, "transport-belt", 4}
@@ -1599,21 +1601,26 @@ task[#task+1] = {"build", {x=-22.5, y=101.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-22.5, y=102.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-22.5, y=103.5}, "transport-belt", 4}
 task[#task+1] = {"craft"}
-task[#task+1] = {"craft"}
 task[#task+1] = {"build", {x=-19.5, y=105.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-19.5, y=105.5}, "automation-science-pack"}
 task[#task+1] = {"build", {x=-19.5, y=108.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-19.5, y=108.5}, "automation-science-pack"}
 task[#task+1] = {"build", {x=-13.5, y=105.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-13.5, y=105.5}, "logistic-science-pack"}
 task[#task+1] = {"build", {x=-13.5, y=108.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-13.5, y=108.5}, "logistic-science-pack"}
 task[#task+1] = {"build", {x=-13.5, y=111.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-13.5, y=111.5}, "logistic-science-pack"}
 task[#task+1] = {"build", {x=-13.5, y=114.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-13.5, y=114.5}, "logistic-science-pack"}
 task[#task+1] = {"build", {x=-13.5, y=117.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-13.5, y=117.5}, "logistic-science-pack"}
 task[#task+1] = {"build", {x=-13.5, y=120.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-13.5, y=120.5}, "logistic-science-pack"}
 task[#task+1] = {"build", {x=-13.5, y=123.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-13.5, y=123.5}, "logistic-science-pack"}
 task[#task+1] = {"mine", {x=-18.75, y=114.5625}}
 task[#task+1] = {"craft"}
-task[#task+1] = {"craft"}
-task[#task+1] = {"craft"}
-task[#task+1] = {"mine", {x=-19.5, y=111.5}}
 task[#task+1] = {"build", {x=-21.5, y=91.5}, "inserter", 6}
 task[#task+1] = {"build", {x=-21.5, y=92.5}, "inserter", 6}
 task[#task+1] = {"build", {x=-17.5, y=92.5}, "inserter", 6}
@@ -1632,23 +1639,19 @@ task[#task+1] = {"build", {x=-21.5, y=97.5}, "inserter", 6}
 task[#task+1] = {"build", {x=-21.5, y=98.5}, "inserter", 6}
 task[#task+1] = {"build", {x=-21.5, y=103.5}, "inserter", 6}
 task[#task+1] = {"build", {x=-21.5, y=104.5}, "inserter", 6}
-task[#task+1] = {"build", {x=-21.5, y=105.5}, "inserter", 6}
-task[#task+1] = {"mine", {x=-21.5, y=105.5}}
 task[#task+1] = {"build", {x=-17.5, y=103.5}, "inserter", 6}
 task[#task+1] = {"build", {x=-17.5, y=104.5}, "inserter", 6}
 task[#task+1] = {"build", {x=-15.5, y=103.5}, "inserter", 2}
 task[#task+1] = {"build", {x=-15.5, y=104.5}, "inserter", 2}
 task[#task+1] = {"craft"}
-task[#task+1] = {"craft"}
-task[#task+1] = {"craft"}
-task[#task+1] = {"craft"}
-task[#task+1] = {"craft"}
-task[#task+1] = {"craft"}
 task[#task+1] = {"build", {x=-11.5, y=103.5}, "inserter", 2}
 task[#task+1] = {"build", {x=-11.5, y=104.5}, "inserter", 2}
 task[#task+1] = {"build", {x=-19.5, y=111.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-19.5, y=111.5}, "automation-science-pack"}
 task[#task+1] = {"build", {x=-19.5, y=114.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-19.5, y=114.5}, "automation-science-pack"}
 task[#task+1] = {"build", {x=-19.5, y=117.5}, "assembling-machine-1", 0}
+task[#task+1] = {"recipe", {x=-19.5, y=117.5}, "automation-science-pack"}
 task[#task+1] = {"build", {x=-16.5, y=104.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-16.5, y=105.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-16.5, y=106.5}, "transport-belt", 4}
@@ -1702,20 +1705,10 @@ task[#task+1] = {"build", {x=-22.5, y=111.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-22.5, y=112.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-22.5, y=113.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-22.5, y=114.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-23.5, y=114.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-23.5, y=115.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-23.5, y=116.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-23.5, y=117.5}, "transport-belt", 4}
-task[#task+1] = {"build", {x=-23.5, y=118.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-22.5, y=115.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-22.5, y=116.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-22.5, y=117.5}, "transport-belt", 4}
 task[#task+1] = {"build", {x=-22.5, y=118.5}, "transport-belt", 4}
-task[#task+1] = {"mine", {x=-23.5, y=118.5}}
-task[#task+1] = {"mine", {x=-23.5, y=117.5}}
-task[#task+1] = {"mine", {x=-23.5, y=116.5}}
-task[#task+1] = {"mine", {x=-23.5, y=115.5}}
-task[#task+1] = {"mine", {x=-23.5, y=114.5}}
 task[#task+1] = {"build", {x=-17.5, y=109.5}, "inserter", 6}
 task[#task+1] = {"build", {x=-17.5, y=110.5}, "inserter", 6}
 task[#task+1] = {"build", {x=-21.5, y=110.5}, "inserter", 6}
@@ -3958,9 +3951,7 @@ task[#task+1] = {"mine", {x=-8.5, y=68.5}}
 task[#task+1] = {"build", {x=-8.5, y=68.5}, "assembling-machine-2", 0}
 task[#task+1] = {"mine", {x=-8.5, y=65.5}}
 task[#task+1] = {"build", {x=-8.5, y=65.5}, "assembling-machine-2", 0}
-task[#task+1] = {"mine", {x=-4.5, y=62.5}}
 task[#task+1] = {"build", {x=-4.5, y=62.5}, "assembling-machine-2", 0}
-task[#task+1] = {"mine", {x=-4.5, y=59.5}}
 task[#task+1] = {"build", {x=-4.5, y=59.5}, "assembling-machine-2", 0}
 task[#task+1] = {"mine", {x=-8.5, y=56.5}}
 task[#task+1] = {"build", {x=-8.5, y=56.5}, "assembling-machine-2", 0}
@@ -4011,34 +4002,19 @@ task[#task+1] = {"build", {x=-13.5, y=111.5}, "assembling-machine-2", 0}
 task[#task+1] = {"mine", {x=-13.5, y=114.5}}
 task[#task+1] = {"build", {x=-13.5, y=114.5}, "assembling-machine-2", 0}
 task[#task+1] = {"craft"}
-task[#task+1] = {"craft"}
-task[#task+1] = {"mine", {x=-13.5, y=117.5}}
 task[#task+1] = {"build", {x=-13.5, y=117.5}, "assembling-machine-2", 0}
-task[#task+1] = {"mine", {x=-13.5, y=120.5}}
 task[#task+1] = {"build", {x=-13.5, y=120.5}, "assembling-machine-2", 0}
-task[#task+1] = {"mine", {x=-13.5, y=123.5}}
 task[#task+1] = {"build", {x=-13.5, y=123.5}, "assembling-machine-2", 0}
-task[#task+1] = {"mine", {x=-19.5, y=117.5}}
 task[#task+1] = {"build", {x=-19.5, y=117.5}, "assembling-machine-2", 0}
-task[#task+1] = {"mine", {x=-19.5, y=114.5}}
 task[#task+1] = {"build", {x=-19.5, y=114.5}, "assembling-machine-2", 0}
-task[#task+1] = {"mine", {x=-19.5, y=111.5}}
 task[#task+1] = {"build", {x=-19.5, y=111.5}, "assembling-machine-2", 0}
-task[#task+1] = {"mine", {x=-19.5, y=108.5}}
 task[#task+1] = {"build", {x=-19.5, y=108.5}, "assembling-machine-2", 0}
-task[#task+1] = {"mine", {x=-19.5, y=105.5}}
 task[#task+1] = {"build", {x=-19.5, y=105.5}, "assembling-machine-2", 0}
-task[#task+1] = {"mine", {x=-19.5, y=102.5}}
 task[#task+1] = {"build", {x=-19.5, y=102.5}, "assembling-machine-2", 0}
-task[#task+1] = {"mine", {x=-19.5, y=99.5}}
 task[#task+1] = {"build", {x=-19.5, y=99.5}, "assembling-machine-2", 0}
 task[#task+1] = {"craft"}
-task[#task+1] = {"craft"}
-task[#task+1] = {"mine", {x=-19.5, y=96.5}}
 task[#task+1] = {"build", {x=-19.5, y=96.5}, "assembling-machine-2", 0}
-task[#task+1] = {"mine", {x=-19.5, y=93.5}}
 task[#task+1] = {"build", {x=-19.5, y=93.5}, "assembling-machine-2", 0}
-task[#task+1] = {"mine", {x=-19.5, y=90.5}}
 task[#task+1] = {"build", {x=-19.5, y=90.5}, "assembling-machine-2", 0}
 task[#task+1] = {"build", {x=-5.5, y=88.5}, "assembling-machine-1", 0}
 task[#task+1] = {"build", {x=-5.5, y=91.5}, "assembling-machine-1", 0}

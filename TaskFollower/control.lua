@@ -98,11 +98,10 @@ end
 
 
 
-function craft(p, item, count)
+function craftItem(p, item, count)
     if count == 0 then
         return false
     end
-    debug(item)
     --check if we have enough ingredients
     --if not, get ingredients
     if p.get_craftable_count(item) >= count then
@@ -111,9 +110,9 @@ function craft(p, item, count)
         return true
     else
         local ingredients = game.recipe_prototypes[item].ingredients
-        for key,ingredient in pairs(ingredients) do
-            local have = p.get_item_count(ingredient.name) --need to account for queue
-            local need = count * game.recipe_prototypes[item].ingredients[key].amount
+        for key,ingredient in ipairs(ingredients) do
+            local have = p.get_item_count(ingredient.name) + getCraftingCount(p, ingredient.name) --need to account for queue
+            local need = count * ingredient.amount
             debug(ingredient.name .. " have: " .. have .. " need: " .. need)
             if have < need then
                 if get(p, ingredient.name, need - have) then
@@ -121,7 +120,10 @@ function craft(p, item, count)
                     error("having a stone issue")
                 elseif game.recipe_prototypes[ingredient.name].category == "crafting" then --is an ingredient craftable?
                     debug("can craft " .. ingredient.name)
-                    craft(p, ingredient.name, need)
+                    local numToCraft = need - have
+                    numToCraft = numToCraft / game.recipe_prototypes[item].products[1].amount
+                    numToCraft = math.ceil(numToCraft)
+                    craftItem(p, ingredient.name, numToCraft)
                 else
                     error("can't find or craft " .. ingredient.name)
                 end
@@ -129,7 +131,6 @@ function craft(p, item, count)
         end
         return false
     end
-    return true
 end
 
 function get(p, item, count)
@@ -141,19 +142,17 @@ function get(p, item, count)
             p.update_selected_entity(location)
 
             if next(p.selected.get_output_inventory().get_contents()) then
-                for itemininv, value in pairs(p.selected.get_output_inventory().get_contents()) do
-                    numberInEntity = tonumber(value)
-                    if item == itemininv  and numberInEntity > 0 then
+
+                for itemininv, numberInEntity in pairs(p.selected.get_output_inventory().get_contents()) do
+                    if item == itemininv and numberInEntity > 0 then
                         debug("getting " .. item .. " from " .. location[1] .. " " .. location[2])
-                        if taskList[current_task][1] == "craft" and taskList[current_task][2] == nil then
-                            table.remove(taskList, current_task)
-                        end
                         if numberInEntity > count then
                             table.insert(taskList, current_task, {"take", location, count, true})
+                            count = count - count
                         else 
-                            table.insert(taskList, current_task, {"take", location, -1, true})
+                            table.insert(taskList, current_task, {"take", location, numberInEntity, true})
+                            count = count - numberInEntity
                         end
-                        count = count - numberInEntity
                         if count <= 0 then
                             goto exitfromget
                         end
@@ -161,6 +160,7 @@ function get(p, item, count)
                 end
             end
         end
+        --if we still need plates, then check fuel in burners
         if count > 0 and (item == "iron-plate" or item == "copper-plate" or item == "stone") then
             checkBurnerFuel(p)
         end
@@ -170,34 +170,59 @@ function get(p, item, count)
     return count <= 0
 end
 
-function checkBurnerFuel(p)
-    debug("checking burner fuel")
-    --remove this task from the task list. Stops repeating this task
-    table.remove(taskList, current_task)
-    local locations = {"iron-burner-miner", "iron-burner-furnace", "copper-burner-miner", "copper-burner-furnace", "stone-burner-miner"}
-    local count = 0
-    for k, v in pairs(locations) do
-        if group[v] then
-            for key,location in pairs(group[v]) do
-                p.update_selected_entity(location)
-                if p.selected.get_fuel_inventory() ~= nil then
-                    if p.selected.get_fuel_inventory().is_empty() then --has it run out of fuel?
-                        table.insert(taskList, current_task, {"put", "coal", 10,  location})
-                        count = count + 10
-                    end
+
+function calculateCraft(p, toCraft)
+    --if we already have it don't bother crafting.
+    local inventory = p.get_main_inventory().get_contents()
+    for item,a in pairs(toCraft) do
+        for invent, count in pairs(inventory) do
+            if item == invent then
+                toCraft[item] = toCraft[item] - count
+                if toCraft[item] < 1 then
+                    toCraft[item] = 0
                 end
             end
         end
     end
-    get(p, "coal", count)
-    return true
+    
+    --don't craft if in crafting queue
+    local queue = p.crafting_queue
+    if queue then
+        for item,_ in pairs(toCraft) do
+            count = getCraftingCount(p, item)
+            toCraft[item] = toCraft[item] - count
+            if toCraft[item] < 1 then
+                toCraft[item] = 0
+            end
+        end
+    end
+    
+    --if we can get it, don't craft
+    for item,count in pairs(toCraft) do
+        if count > 0 then
+            if get(p, item, count) then
+                toCraft[item] = 0
+            end
+        end
+    end
+    
+    debugTable(toCraft)
+    for item, numToCraft in pairs(toCraft) do
+        --account for multiple products in crafting recipes 
+        numToCraft = numToCraft / game.recipe_prototypes[item].products[1].amount
+        numToCraft = math.ceil(numToCraft)
+        if craftItem(p, item, numToCraft) then
+            debug("crafted" .. item)
+            toCraft[item] = 0
+        end
+    end
+    return not anyPositive(toCraft)
 end
 
-function calculateCraft(p, ...)
-    delroute(p)
+function craft(p, ...)
     local arg = ...
     local toCraft = {}
-
+    
     if not arg.item and not arg.count then
         local step = current_task + 1
         local iterate = true
@@ -218,56 +243,34 @@ function calculateCraft(p, ...)
     else
         toCraft[arg.item] = arg.count
     end
-    --if we already have it don't bother crafting.
-    local inventory = p.get_main_inventory().get_contents() --not accounting for crafting queue
-    for item,a in pairs(toCraft) do
-        for invent, count in pairs(inventory) do
-            if item == invent then
-                toCraft[item] = toCraft[item] - count
-                if toCraft[item] < 1 then
-                    toCraft[item] = 0
-                end
-            end
-        end
-    end
+    
+    return calculateCraft(p, toCraft)
+end
 
-    --don't craft if in crafting queue
-    local queue = p.crafting_queue
-    if queue then
-        for item,a in pairs(toCraft) do
-            for key, val in pairs(queue) do
-                if item == val.recipe then
-                    toCraft[item] = toCraft[item] - val.count
-                    if toCraft[item] < 1 then
-                        toCraft[item] = 0
+function checkBurnerFuel(p)
+    debug("checking burner fuel")
+    --remove this task from the task list. Stops repeating this task
+    if taskList[current_task][1] == "checkBurnerFuel" then
+        table.remove(taskList, current_task)
+    end
+    local locations = {"iron-burner-miner", "iron-burner-furnace", "copper-burner-miner", "copper-burner-furnace", "stone-burner-miner"}
+    local count = 0
+    for k, v in pairs(locations) do
+        if group[v] then
+            for key,location in pairs(group[v]) do
+                p.update_selected_entity(location)
+                if p.selected.get_fuel_inventory() ~= nil then
+                    if p.selected.get_fuel_inventory().is_empty() then --has it run out of fuel?
+                        table.insert(taskList, current_task, {"put", "coal", 10,  location})
+                        count = count + 10
                     end
                 end
             end
         end
     end
-
-    for item,count in pairs(toCraft) do
-        if get(p, item, count) then
-            toCraft[item] = 0
-        end
-    end
-
-    debugTable(toCraft)
-        for item, numToCraft in pairs(toCraft) do
-            --account for multiple products in crafting recipes 
-            if game.recipe_prototypes[item].products[1].amount ~= 1 then
-                numToCraft = numToCraft / game.recipe_prototypes[item].products[1].amount
-                numToCraft = math.ceil(numToCraft)
-            end
-            if craft(p, item, numToCraft) then
-                toCraft[item] = 0
-            end
-        end
-    delroute(p)
-    return not anyPositive(toCraft)
+    get(p, "coal", count)
+    return true
 end
-            
-
 
 function mine(p, location)
     --check if there is an item where we are going to mine.
@@ -302,10 +305,11 @@ function build(p, location, item, direction, ...)
     --we can use this to place whilst walking as it will keep trying until it succeeds.
     if p.get_item_count(item) < 1 then
         debug("did not have " .. item)
-        if (p.crafting_queue_size > 0) then
+        if (getCraftingCount(p, item) > 0) then
+            debug("waiting for crafting to finish")
             return false --still have to wait for queue to finish, so no point working out if our item is queued (efficiency??)
         else
-            local temp = calculateCraft(p, {item = item, count = 1})
+            craft(p, {item = item, count = 1})
         end
         return false
     elseif p.surface.can_fast_replace{name = item, position = location, direction = direction, force = "player"} then
@@ -430,7 +434,9 @@ function take(p, location, numberToTake, skip)
         end
         delroute(p)
         return true
-    elseif numberToTake < numberInEntity then
+    elseif numberToTake == 0 then --I have no idea why this happens, but you can't insert 0 items
+        return true
+    elseif numberToTake <= numberInEntity then
         p.insert{name=item, count=numberToTake}
         p.selected.remove_item{name=item, count=numberToTake}
         delroute(p)
@@ -512,12 +518,25 @@ function science(p)
 end
 
 function anyPositive(t)
-    for i,v in ipairs(t) do
+    for _,v in pairs(t) do
       if v > 0 then
         return true
       end
     end
     return false
+end
+
+function getCraftingCount(p, item)
+    local queue = p.crafting_queue
+    local count = 0
+    if queue then
+        for key, val in pairs(queue) do
+            if item == val.recipe and val.prerequisite == false then
+                count = count + val.count
+            end
+        end
+    end
+    return count
 end
 
 function recipe(p, location, recipe)
@@ -553,8 +572,7 @@ function doTask(p, tasks)
     if tasks[1] == "build" then
         return build(p, tasks[2], tasks[3], tasks[4], {group=tasks[5], resource=tasks[6]})
     elseif tasks[1] == "craft" then
-        --return craft(p,tasks[2], tasks[3])
-        return calculateCraft(p, {item=tasks[2], count=tasks[3]})
+        return craft(p, {item=tasks[2], count=tasks[3]})
     elseif tasks[1] == "mine" then
         return mine(p, tasks[2])
     elseif tasks[1] == "research" then
