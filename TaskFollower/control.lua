@@ -140,8 +140,10 @@ function get(p, item, count)
     else
         for key,location in pairs(resources[item]) do
             p.update_selected_entity(location)
-
-            if next(p.selected.get_output_inventory().get_contents()) then
+            local outputInventory = p.selected.get_output_inventory()
+            if outputInventory == nil then
+                debug("selected entity has no output inventory")
+            elseif next(p.selected.get_output_inventory().get_contents()) then
 
                 for itemininv, numberInEntity in pairs(p.selected.get_output_inventory().get_contents()) do
                     if item == itemininv and numberInEntity > 0 then
@@ -198,9 +200,11 @@ function calculateCraft(p, toCraft)
     end
     
     --if we can get it, don't craft
+    local getting = false
     for item,count in pairs(toCraft) do
         if count > 0 then
             if get(p, item, count) then
+                getting = true
                 toCraft[item] = 0
             end
         end
@@ -212,11 +216,14 @@ function calculateCraft(p, toCraft)
         numToCraft = numToCraft / game.recipe_prototypes[item].products[1].amount
         numToCraft = math.ceil(numToCraft)
         if craftItem(p, item, numToCraft) then
-            debug("crafted" .. item)
             toCraft[item] = 0
         end
     end
-    return not anyPositive(toCraft)
+    if getting then
+        return false
+    else
+        return not anyPositive(toCraft)
+    end
 end
 
 function craft(p, ...)
@@ -389,7 +396,7 @@ function build(p, location, item, direction, ...)
         return false
     else 
         if route == nil then
-            path(p, location, 3)
+            path(p, location, 5)
             return false
         end
     end
