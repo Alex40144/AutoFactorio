@@ -9,13 +9,13 @@ require "util"
 local taskList = require("tasks")
 local research = require("research")
 local Position = require("__stdlib__/stdlib/area/position")
+local Direction = require("__stdlib__/stdlib/area/direction")
 local Area = require("__stdlib__/stdlib/area/area")
 
 dbg = true
 enabled = false
 route = nil
 
-colliding = false
 
 local current_task = 0
 current_research = 0
@@ -323,7 +323,6 @@ function build(p, location, item, direction, ...)
         built = p.surface.create_entity{name = item, position = location, direction = direction, force="player", fast_replace = true, player = p}
         if built ~= nil then
             debug("fast replaced")
-            colliding = false
             --be honest
             p.remove_item{name=item, count=1}
             if arg.group then
@@ -351,7 +350,6 @@ function build(p, location, item, direction, ...)
         end
         if built ~= nil  then
             debug("built")
-            colliding = false
             --be honest
             p.remove_item{name=item, count=1}
             if arg.group then
@@ -388,11 +386,7 @@ function build(p, location, item, direction, ...)
         rendering.draw_rectangle{surface = game.players[1].surface, left_top = entitybounding.left_top, right_bottom = entitybounding.right_bottom, color = {g=1}, width = 2, filled = false}
         debugTable(playerbounding)
         rendering.draw_rectangle{surface = game.players[1].surface, left_top = playerbounding.left_top, right_bottom = playerbounding.right_bottom, color = {b=1}, width = 2, filled = false}
-
-        if colliding ~= true then
-            path(p, {p.position.x+4, p.position.y}, 1)
-        end
-        colliding = true
+        p.walking_state = {walking = true, direction = defines.direction.southwest}
         return false
     else 
         if route == nil then
@@ -636,6 +630,7 @@ end)
 script.on_event(defines.events.on_script_path_request_finished, function(event)
     if event.try_again_later then
         error("pathing failed trying again")
+        game.players[1].walking_state = {walking = true, direction = defines.direction.southwest}
     elseif event.path then
         route = event.path
         if dbg then
