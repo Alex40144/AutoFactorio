@@ -555,6 +555,21 @@ function recipe(p, location, recipe)
     return true
 end
 
+function bar(p, location, limit)
+    p.update_selected_entity(location)
+    if not p.can_reach_entity(p.selected) then
+        if not route then
+            path(p, location, 5)
+        end
+        return false
+    end
+
+    p.selected.get_inventory(defines.inventory.chest).set_bar(limit)
+
+    delroute(p)
+    return true
+end
+
 function speed(p, speed)
     game.speed = speed
     error("game speed set to " .. speed)
@@ -586,6 +601,8 @@ function doTask(p, tasks)
         return checkBurnerFuel(p)
     elseif tasks[1] == "recipe" then
         return recipe(p, tasks[2], tasks[3])
+    elseif tasks[1] == "bar" then
+        return bar(p, tasks[2], tasks[3])
     elseif tasks[1] == "speed" then
         return speed(p, tasks[2])
     elseif tasks[1] == "time" then
