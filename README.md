@@ -31,7 +31,5 @@ To use this mod:
 4. better resource gathering
    1. ~~save the position of chests that we can refer to when we need stuff~~
    2. ~~change get to use count value.~~
-      1. issue with getting stone
+      1. ~~issue with getting stone~~
       1. prefer closest entities
-5. build queue check
-6. build skipping?
