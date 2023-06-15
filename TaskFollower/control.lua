@@ -1,8 +1,3 @@
---ToDo list
---fix Crafting
---change miner phase to use get function
---function to restock coal / copper-plates
-
 
 ------------------------------------------------------------------------------------------------------
 require "util"
@@ -15,7 +10,7 @@ local Area = require("__stdlib__/stdlib/area/area")
 dbg = true
 enabled = false
 route = nil
-
+pathing_failed = false
 
 local current_task = 0
 current_research = 0
@@ -282,7 +277,8 @@ end
 function mine(p, location)
     --check if there is an item where we are going to mine.
     --used to detect when mining has been finished so we can move on. This means you can't mine surface stuff
-    if p.can_place_entity{name = "transport-belt", position = location, direction = defines.direction.north} then
+    --changed to programmable speaker as a belt allows fast replace
+    if p.can_place_entity{name = "programmable-speaker", position = location, direction = defines.direction.north} then
         delroute(p)
         return true
     else
@@ -298,7 +294,7 @@ function mine(p, location)
         else
             error("no entity selected")
             error(location)
-            path(p, location, 4) 
+            path(p, location, 10) 
             return true --it there is no entity there, it is likely that the object has been mined.
         end
     end
@@ -390,7 +386,7 @@ function build(p, location, item, direction, ...)
         return false
     else 
         if route == nil then
-            path(p, location, 5)
+            path(p, location, 10)
             return false
         end
     end
@@ -643,6 +639,10 @@ script.on_event(defines.events.on_tick, function(event)
 
     --only run if we are allowed to
     if enabled == true then
+        if pathing_failed == true then
+            game.players[1].walking_state = {walking = true, direction = defines.direction.south}
+            pathing_failed = false
+        end
         if route ~= nil then
             moveAlongPath(p)
         end
@@ -669,8 +669,9 @@ end)
 script.on_event(defines.events.on_script_path_request_finished, function(event)
     if event.try_again_later then
         error("pathing failed trying again")
-        game.players[1].walking_state = {walking = true, direction = defines.direction.southwest}
+        pathing_failed = true
     elseif event.path then
+        pathing_failed = false
         route = event.path
         if dbg then
             local i = 1
@@ -682,6 +683,7 @@ script.on_event(defines.events.on_script_path_request_finished, function(event)
         end
     else
         error("Pathing failed")
+        pathing_failed = true
     end
 end)
 
