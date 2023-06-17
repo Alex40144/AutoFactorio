@@ -10,7 +10,7 @@ local Area = require("__stdlib__/stdlib/area/area")
 dbg = true
 enabled = false
 route = nil
-pathing_failed = false
+pathing_failed = 0
 
 local current_task = 0
 current_research = 0
@@ -370,7 +370,7 @@ function build(p, location, item, direction, ...)
     local entitycollision = game.entity_prototypes[item].collision_box
     local entitybounding = {left_top = { x = entitycollision.left_top.x + location.x, y = entitycollision.left_top.y + location.y}, right_bottom = { x = entitycollision.right_bottom.x + location.x, y = entitycollision.right_bottom.y + location.y}}
     
-    entitybounding = {left_top = { x = entitybounding.left_top.x - 1, y = entitybounding.left_top.y - 1}, right_bottom = { x = entitybounding.right_bottom.x + 1, y = entitybounding.right_bottom.y + 1}}
+    entitybounding = {left_top = { x = entitybounding.left_top.x - 2, y = entitybounding.left_top.y - 2}, right_bottom = { x = entitybounding.right_bottom.x + 2, y = entitybounding.right_bottom.y + 2}}
 
     local playerbounding = p.character.bounding_box
 
@@ -639,9 +639,20 @@ script.on_event(defines.events.on_tick, function(event)
 
     --only run if we are allowed to
     if enabled == true then
-        if pathing_failed == true then
+        if pathing_failed > 0 and pathing_failed < 40 then
             game.players[1].walking_state = {walking = true, direction = defines.direction.south}
-            pathing_failed = false
+        end
+        if pathing_failed > 40 and pathing_failed < 80 then
+            game.players[1].walking_state = {walking = true, direction = defines.direction.west}
+        end
+        if pathing_failed > 80 and pathing_failed < 120 then
+            game.players[1].walking_state = {walking = true, direction = defines.direction.north}
+        end
+        if pathing_failed > 120 and pathing_failed < 160 then
+            game.players[1].walking_state = {walking = true, direction = defines.direction.east}
+        end
+        if pathing_failed > 80 then
+            pathing_failed = 0
         end
         if route ~= nil then
             moveAlongPath(p)
@@ -669,9 +680,9 @@ end)
 script.on_event(defines.events.on_script_path_request_finished, function(event)
     if event.try_again_later then
         error("pathing failed trying again")
-        pathing_failed = true
+        pathing_failed = pathing_failed + 1
     elseif event.path then
-        pathing_failed = false
+        pathing_failed = 0
         route = event.path
         if dbg then
             local i = 1
@@ -683,7 +694,7 @@ script.on_event(defines.events.on_script_path_request_finished, function(event)
         end
     else
         error("Pathing failed")
-        pathing_failed = true
+        pathing_failed = pathing_failed + 1
     end
 end)
 
