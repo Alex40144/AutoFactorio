@@ -41,16 +41,6 @@ end
 
 -----------------------------------------------------------------------------------------------------
 
-function pick_random(t)
-	local keys = {}
-	local i = 1
-	for k, _ in pairs(t) do
-		keys[i] = k
-		i = i + 1
-	end
-	return t[keys[math.random(1, #keys)]]
-end
-
 function path(p, location, radius)
 
     delroute(p)
